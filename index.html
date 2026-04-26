@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Stans Trip Planner</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<style>
+  :root {
+    --bg: #f5f6f8;
+    --panel: #ffffff;
+    --border: #e1e4ea;
+    --text: #1f2430;
+    --muted: #6b7280;
+    --accent: #2563eb;
+    --hover: #f0f2f5;
+    --r5: #16a34a;
+    --r4: #65a30d;
+    --r3: #ca8a04;
+    --r2: #ea580c;
+    --r1: #dc2626;
+    --r0: #9ca3af;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); }
+  #app { display: grid; grid-template-columns: 380px 1fr; height: 100vh; }
+  #sidebar { background: var(--panel); border-right: 1px solid var(--border); overflow-y: auto; display: flex; flex-direction: column; }
+  #map { height: 100vh; }
+
+  .sidebar-header { padding: 16px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--panel); z-index: 10; }
+  .sidebar-header h1 { margin: 0 0 4px; font-size: 18px; }
+  .sidebar-header .sub { color: var(--muted); font-size: 12px; }
+  .stats { font-size: 12px; color: var(--muted); margin-top: 8px; }
+
+  .filters { padding: 12px 16px; border-bottom: 1px solid var(--border); display: grid; gap: 8px; }
+  .filters label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .filters select, .filters input { width: 100%; background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 4px; padding: 6px 8px; font-size: 13px; }
+  .filter-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+  .card-list { flex: 1; padding: 8px; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 10px; overflow: hidden; transition: box-shadow 0.15s, transform 0.15s; }
+  .card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .card-image { width: 100%; height: 120px; background: linear-gradient(135deg, #bcd3f5, #e9c6d8); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 600; letter-spacing: 1px; text-shadow: 0 1px 2px rgba(0,0,0,0.25); background-size: cover; background-position: center; }
+  .card-body { padding: 10px 12px; cursor: pointer; }
+  .card-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .card-name { font-weight: 600; font-size: 15px; }
+  .card-rating { font-size: 12px; white-space: nowrap; }
+  .card-meta { font-size: 11px; color: var(--muted); margin-top: 2px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .card-meta .tag { background: var(--hover); padding: 1px 6px; border-radius: 3px; }
+  .card-notes { font-size: 12px; color: #4b5563; margin-top: 6px; line-height: 1.45; }
+
+  .attractions-toggle { padding: 6px 12px; font-size: 12px; color: var(--accent); cursor: pointer; border-top: 1px solid var(--border); background: #fafbfc; user-select: none; }
+  .attractions-toggle:hover { background: var(--hover); }
+  .attractions { border-top: 1px solid var(--border); background: #fafbfc; display: none; }
+  .attractions.open { display: block; }
+  .attraction { padding: 8px 12px 8px 20px; border-bottom: 1px solid var(--border); cursor: pointer; display: flex; gap: 10px; }
+  .attraction:last-child { border-bottom: none; }
+  .attraction:hover { background: var(--hover); }
+  .attraction-thumb { flex: 0 0 48px; height: 48px; border-radius: 4px; background: linear-gradient(135deg, #bcd3f5, #e9c6d8); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: 600; text-shadow: 0 1px 1px rgba(0,0,0,0.3); }
+  .attraction-body { flex: 1; min-width: 0; }
+  .attraction-name { font-size: 13px; font-weight: 500; display: flex; justify-content: space-between; gap: 6px; }
+  .attraction-notes { font-size: 11px; color: #6b7280; margin-top: 2px; line-height: 1.3; }
+
+  .legend { background: var(--panel); padding: 8px 12px; border-radius: 6px; font-size: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+  .legend-row { display: flex; align-items: center; gap: 6px; margin: 2px 0; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid white; }
+
+  .leaflet-popup-content-wrapper { border-radius: 8px; }
+  .leaflet-popup-content { margin: 0; font-size: 13px; line-height: 1.5; min-width: 220px; }
+  .popup { padding: 0; }
+  .popup-image { width: 100%; height: 110px; background: linear-gradient(135deg, #bcd3f5, #e9c6d8); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; color: white; font-size: 22px; font-weight: 600; text-shadow: 0 1px 2px rgba(0,0,0,0.3); border-radius: 8px 8px 0 0; }
+  .popup-body { padding: 10px 12px 12px; }
+  .popup h3 { margin: 0 0 4px; font-size: 15px; }
+  .popup .meta { color: var(--muted); font-size: 11px; margin-bottom: 4px; }
+  .popup .notes { font-size: 12px; margin-top: 6px; }
+  .popup .in-city { font-size: 11px; color: var(--muted); margin-top: 6px; font-style: italic; }
+
+  .rating-stars { letter-spacing: 1px; font-size: 12px; }
+  .r5 { color: var(--r5); }
+  .r4 { color: var(--r4); }
+  .r3 { color: var(--r3); }
+  .r2 { color: var(--r2); }
+  .r1 { color: var(--r1); }
+  .r0 { color: var(--r0); }
+
+  .empty { padding: 24px 16px; color: var(--muted); font-size: 13px; text-align: center; }
+  .error { padding: 16px; color: var(--r1); font-size: 13px; }
+
+  .itinerary-box { border-bottom: 1px solid var(--border); background: #eef4ff; }
+  .itinerary-header { padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; }
+  .itinerary-header h2 { margin: 0; font-size: 13px; font-weight: 600; color: #1e40af; letter-spacing: 0.3px; }
+  .itinerary-header .toggle-line { font-size: 11px; color: #1e40af; }
+  .itinerary-list { display: none; padding: 4px 8px 10px; }
+  .itinerary-list.open { display: block; }
+  .itinerary-stop { display: flex; gap: 10px; padding: 5px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; align-items: baseline; }
+  .itinerary-stop:hover { background: #dbe6ff; }
+  .itinerary-num { flex: 0 0 auto; min-width: 22px; height: 22px; padding: 0 7px; background: #2563eb; color: white; border-radius: 11px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+  .itinerary-body { flex: 1; min-width: 0; }
+  .itinerary-name { font-weight: 500; color: #1f2430; }
+  .itinerary-note { color: var(--muted); font-size: 11px; }
+  .itinerary-days { color: #1e40af; font-size: 11px; font-weight: 600; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div id="app">
+  <aside id="sidebar">
+    <div class="sidebar-header">
+      <h1>Stans Trip Planner</h1>
+      <div class="sub">Click cards to zoom. Click ▸ to expand attractions.</div>
+      <div class="stats" id="stats"></div>
+    </div>
+    <div class="itinerary-box" id="itinerary-box" style="display:none">
+      <div class="itinerary-header" id="itinerary-header">
+        <h2 id="itinerary-title">Itinerary</h2>
+        <span class="toggle-line" id="itinerary-toggle">▾ hide</span>
+      </div>
+      <div class="itinerary-list open" id="itinerary-list"></div>
+    </div>
+    <div class="filters">
+      <div>
+        <label for="f-country">Country</label>
+        <select id="f-country"><option value="">All</option></select>
+      </div>
+      <div class="filter-row">
+        <div>
+          <label for="f-type">Type</label>
+          <select id="f-type">
+            <option value="">All</option>
+            <option value="city">Cities</option>
+            <option value="place">Nature / Routes</option>
+          </select>
+        </div>
+        <div>
+          <label for="f-rating">Min rating</label>
+          <select id="f-rating">
+            <option value="0">Any</option>
+            <option value="1">1★+</option>
+            <option value="2">2★+</option>
+            <option value="3">3★+</option>
+            <option value="4">4★+</option>
+            <option value="5">5★ only</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label for="f-search">Search</label>
+        <input id="f-search" type="text" placeholder="name, notes…">
+      </div>
+      <div>
+        <label for="f-sort">Sort</label>
+        <select id="f-sort">
+          <option value="rating">Rating (high → low)</option>
+          <option value="name">Name (A → Z)</option>
+          <option value="country">Country</option>
+        </select>
+      </div>
+    </div>
+    <div id="card-list" class="card-list"></div>
+  </aside>
+  <div id="map"></div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="places.js"></script>
+<script src="route.js"></script>
+<script>
+const RATING_COLORS = { 5: '#16a34a', 4: '#65a30d', 3: '#ca8a04', 2: '#ea580c', 1: '#dc2626', 0: '#9ca3af' };
+
+const state = { cities: [], places: [], markers: {}, map: null, itineraryLayer: null, itineraryNumMarkers: [] };
+
+function escapeHTML(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+}
+
+function ratingStars(r) {
+  if (!r) return '<span class="rating-stars r0">— unrated</span>';
+  const filled = '★'.repeat(r);
+  const empty = '☆'.repeat(5 - r);
+  return `<span class="rating-stars r${r}">${filled}${empty}</span>`;
+}
+
+function initials(name) {
+  return name.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+}
+
+function imageStyle(image) {
+  if (image) return `background-image: url('${escapeHTML(image)}');`;
+  return '';
+}
+
+function makeIcon(rating, size = 18) {
+  const color = RATING_COLORS[rating || 0];
+  const html = `<div style="background:${color};width:${size}px;height:${size}px;border-radius:50%;border:2px solid white;box-shadow:0 0 0 1px rgba(0,0,0,0.3);"></div>`;
+  return L.divIcon({ html, className: '', iconSize: [size, size], iconAnchor: [size/2, size/2] });
+}
+
+function popupHTML(item, cityName) {
+  const metaParts = [item.country, item.category].filter(Boolean);
+  const inCity = cityName ? `<div class="in-city">in ${escapeHTML(cityName)}</div>` : '';
+  const img = item.image
+    ? `<div class="popup-image" style="${imageStyle(item.image)}"></div>`
+    : `<div class="popup-image">${escapeHTML(initials(item.name))}</div>`;
+  return `
+    <div class="popup">
+      ${img}
+      <div class="popup-body">
+        <h3>${escapeHTML(item.name)}</h3>
+        ${metaParts.length ? `<div class="meta">${metaParts.map(escapeHTML).join(' · ')}</div>` : ''}
+        <div>${ratingStars(item.rating)}</div>
+        ${item.notes ? `<div class="notes">${escapeHTML(item.notes)}</div>` : ''}
+        ${inCity}
+      </div>
+    </div>
+  `;
+}
+
+function populateFilterOptions() {
+  const countries = new Set();
+  state.cities.forEach(c => c.country && countries.add(c.country));
+  state.places.forEach(p => p.country && countries.add(p.country));
+  const cSel = document.getElementById('f-country');
+  [...countries].sort().forEach(c => cSel.insertAdjacentHTML('beforeend', `<option value="${escapeHTML(c)}">${escapeHTML(c)}</option>`));
+}
+
+function currentFilters() {
+  return {
+    country: document.getElementById('f-country').value,
+    type: document.getElementById('f-type').value,
+    minRating: +document.getElementById('f-rating').value,
+    search: document.getElementById('f-search').value.trim().toLowerCase(),
+    sort: document.getElementById('f-sort').value,
+  };
+}
+
+function matchRating(r, min) {
+  if (min === 0) return true;
+  if (min === 5) return r === 5;
+  return r >= min;
+}
+
+function matchSearch(hay, q) {
+  if (!q) return true;
+  return hay.toLowerCase().includes(q);
+}
+
+function filteredCards() {
+  const f = currentFilters();
+  const cards = [];
+
+  if (f.type === '' || f.type === 'city') {
+    state.cities.forEach(c => {
+      if (f.country && c.country !== f.country) return;
+      if (!matchRating(c.rating || 0, f.minRating)) return;
+      const hay = `${c.name} ${c.country} ${c.notes} ${(c.attractions||[]).map(a => a.name + ' ' + a.notes).join(' ')}`;
+      if (!matchSearch(hay, f.search)) return;
+      cards.push({ kind: 'city', data: c });
+    });
+  }
+  if (f.type === '' || f.type === 'place') {
+    state.places.forEach(p => {
+      if (f.country && p.country !== f.country) return;
+      if (!matchRating(p.rating || 0, f.minRating)) return;
+      const hay = `${p.name} ${p.country} ${p.category} ${p.notes}`;
+      if (!matchSearch(hay, f.search)) return;
+      cards.push({ kind: 'place', data: p });
+    });
+  }
+
+  if (f.sort === 'rating') cards.sort((a,b) => (b.data.rating||0) - (a.data.rating||0) || a.data.name.localeCompare(b.data.name));
+  else if (f.sort === 'name') cards.sort((a,b) => a.data.name.localeCompare(b.data.name));
+  else if (f.sort === 'country') cards.sort((a,b) => (a.data.country||'').localeCompare(b.data.country||'') || a.data.name.localeCompare(b.data.name));
+
+  return cards;
+}
+
+function renderCityCard(c) {
+  const atts = c.attractions || [];
+  const meta = [c.country, `${atts.length} ${atts.length === 1 ? 'attraction' : 'attractions'}`];
+  const img = c.image
+    ? `<div class="card-image" style="${imageStyle(c.image)}"></div>`
+    : `<div class="card-image">${escapeHTML(initials(c.name))}</div>`;
+  const attList = atts.length ? `
+    <div class="attractions-toggle" data-toggle="${escapeHTML(c.id)}">▸ ${atts.length} ${atts.length === 1 ? 'attraction' : 'attractions'}</div>
+    <div class="attractions" data-atts="${escapeHTML(c.id)}">
+      ${atts.map(a => `
+        <div class="attraction" data-attraction-id="${escapeHTML(a.id)}" data-city-id="${escapeHTML(c.id)}">
+          <div class="attraction-thumb" style="${imageStyle(a.image)}">${a.image ? '' : escapeHTML(initials(a.name))}</div>
+          <div class="attraction-body">
+            <div class="attraction-name"><span>${escapeHTML(a.name)}</span>${ratingStars(a.rating)}</div>
+            ${a.notes ? `<div class="attraction-notes">${escapeHTML(a.notes)}</div>` : ''}
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  ` : '';
+  return `
+    <div class="card" data-city-id="${escapeHTML(c.id)}">
+      ${img}
+      <div class="card-body" data-city-click="${escapeHTML(c.id)}">
+        <div class="card-top">
+          <div class="card-name">${escapeHTML(c.name)}</div>
+          <div class="card-rating">${ratingStars(c.rating)}</div>
+        </div>
+        <div class="card-meta">${meta.map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('')}</div>
+        ${c.notes ? `<div class="card-notes">${escapeHTML(c.notes)}</div>` : ''}
+      </div>
+      ${attList}
+    </div>
+  `;
+}
+
+function renderPlaceCard(p) {
+  const meta = [p.country, p.category].filter(Boolean);
+  const img = p.image
+    ? `<div class="card-image" style="${imageStyle(p.image)}"></div>`
+    : `<div class="card-image">${escapeHTML(initials(p.name))}</div>`;
+  return `
+    <div class="card" data-place-id="${escapeHTML(p.id)}">
+      ${img}
+      <div class="card-body" data-place-click="${escapeHTML(p.id)}">
+        <div class="card-top">
+          <div class="card-name">${escapeHTML(p.name)}</div>
+          <div class="card-rating">${ratingStars(p.rating)}</div>
+        </div>
+        <div class="card-meta">${meta.map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('')}</div>
+        ${p.notes ? `<div class="card-notes">${escapeHTML(p.notes)}</div>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function renderSidebar() {
+  const cards = filteredCards();
+  const list = document.getElementById('card-list');
+  const total = state.cities.length + state.places.length;
+  document.getElementById('stats').textContent = `${cards.length} of ${total} shown`;
+
+  if (cards.length === 0) {
+    list.innerHTML = '<div class="empty">No matches.</div>';
+  } else {
+    list.innerHTML = cards.map(c => c.kind === 'city' ? renderCityCard(c.data) : renderPlaceCard(c.data)).join('');
+    wireCardEvents();
+  }
+
+  updateMarkerVisibility(cards);
+}
+
+function wireCardEvents() {
+  document.querySelectorAll('[data-city-click]').forEach(el => {
+    el.addEventListener('click', () => focusCity(el.getAttribute('data-city-click')));
+  });
+  document.querySelectorAll('[data-place-click]').forEach(el => {
+    el.addEventListener('click', () => focusPlace(el.getAttribute('data-place-click')));
+  });
+  document.querySelectorAll('[data-toggle]').forEach(el => {
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      const id = el.getAttribute('data-toggle');
+      const panel = document.querySelector(`[data-atts="${CSS.escape(id)}"]`);
+      const open = panel.classList.toggle('open');
+      el.textContent = (open ? '▾' : '▸') + el.textContent.slice(1);
+    });
+  });
+  document.querySelectorAll('[data-attraction-id]').forEach(el => {
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      focusAttraction(el.getAttribute('data-city-id'), el.getAttribute('data-attraction-id'));
+    });
+  });
+}
+
+function focusCity(cityId) {
+  const c = state.cities.find(x => x.id === cityId);
+  if (!c) return;
+  const atts = c.attractions || [];
+  if (atts.length > 0) {
+    const pts = atts.map(a => [a.lat, a.lng]);
+    pts.push([c.lat, c.lng]);
+    state.map.fitBounds(pts, { padding: [40, 40], maxZoom: 14 });
+  } else {
+    state.map.setView([c.lat, c.lng], 11);
+    if (state.markers[cityId]) state.markers[cityId].openPopup();
+  }
+}
+
+function focusAttraction(cityId, attractionId) {
+  const key = `${cityId}:${attractionId}`;
+  const m = state.markers[key];
+  if (m) {
+    const p = m.getLatLng();
+    state.map.setView([p.lat, p.lng], Math.max(state.map.getZoom(), 13));
+    m.openPopup();
+  }
+}
+
+function focusPlace(placeId) {
+  const m = state.markers[placeId];
+  if (m) {
+    const p = m.getLatLng();
+    state.map.setView([p.lat, p.lng], Math.max(state.map.getZoom(), 9));
+    m.openPopup();
+  }
+}
+
+function addLegend() {
+  const legend = L.control({ position: 'bottomright' });
+  legend.onAdd = () => {
+    const div = L.DomUtil.create('div', 'legend');
+    div.innerHTML = `
+      <div style="font-weight:600;margin-bottom:4px">Rating</div>
+      ${[5,4,3,2,1].map(r => `<div class="legend-row"><span class="legend-dot" style="background:${RATING_COLORS[r]}"></span>${r}★</div>`).join('')}
+      <div class="legend-row"><span class="legend-dot" style="background:${RATING_COLORS[0]}"></span>unrated</div>
+      <div style="font-weight:600;margin:6px 0 4px">Route</div>
+      <div class="legend-row"><span style="display:inline-block;width:18px;height:0;border-top:3px solid #2563eb"></span>road</div>
+      <div class="legend-row"><span style="display:inline-block;width:18px;height:0;border-top:3px dashed #7c3aed"></span>train</div>
+    `;
+    return div;
+  };
+  legend.addTo(state.map);
+}
+
+function loadData() {
+  if (!window.PLACES) throw new Error('places.js missing');
+  state.cities = window.PLACES.cities || [];
+  state.places = window.PLACES.places || [];
+}
+
+function resolveStop(id) {
+  const c = state.cities.find(x => x.id === id);
+  if (c) return { lat: c.lat, lng: c.lng, name: c.name };
+  for (const city of state.cities) {
+    const a = (city.attractions || []).find(x => x.id === id);
+    if (a) return { lat: a.lat, lng: a.lng, name: a.name };
+  }
+  const p = state.places.find(x => x.id === id);
+  if (p) return { lat: p.lat, lng: p.lng, name: p.name };
+  return null;
+}
+
+function resolveRoutePoint(item) {
+  if (typeof item === 'string') {
+    const r = resolveStop(item);
+    return r ? { lat: r.lat, lng: r.lng, name: r.name } : null;
+  }
+  if (item && typeof item.lat === 'number' && typeof item.lng === 'number') return item;
+  return null;
+}
+
+function drawItinerary() {
+  const it = window.ITINERARY;
+  if (!it || !Array.isArray(it.stops) || it.stops.length < 2) return;
+  const box = document.getElementById('itinerary-box');
+  box.style.display = 'block';
+  document.getElementById('itinerary-title').textContent = it.name || 'Itinerary';
+
+  const stops = it.stops.map(s => ({ ...s, ...resolveStop(s.id) })).filter(s => s.lat != null);
+
+  stops.forEach(s => {
+    const label = `Day ${s.days}`;
+    const approxWidth = Math.max(28, 14 + String(label).length * 6);
+    const m = L.marker([s.lat, s.lng], {
+      icon: L.divIcon({
+        html: `<div style="background:#2563eb;color:white;border-radius:12px;height:22px;padding:0 8px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;border:2px solid white;box-shadow:0 1px 3px rgba(0,0,0,0.4);white-space:nowrap;">${escapeHTML(label)}</div>`,
+        className: '',
+        iconSize: [approxWidth, 22],
+        iconAnchor: [-6, 30]
+      }),
+      interactive: false,
+      zIndexOffset: 1000
+    }).addTo(state.map);
+    state.itineraryNumMarkers.push(m);
+  });
+
+  const list = document.getElementById('itinerary-list');
+  list.innerHTML = stops.map((s, i) => `
+    <div class="itinerary-stop" data-stop-idx="${i}">
+      <span class="itinerary-num">${escapeHTML(s.days)}</span>
+      <div class="itinerary-body">
+        <div class="itinerary-name">${escapeHTML(s.name)}</div>
+        ${s.note ? `<div class="itinerary-note">${escapeHTML(s.note)}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+  list.querySelectorAll('[data-stop-idx]').forEach(el => {
+    el.addEventListener('click', () => {
+      const idx = +el.getAttribute('data-stop-idx');
+      const s = stops[idx];
+      state.map.setView([s.lat, s.lng], Math.max(state.map.getZoom(), 8));
+    });
+  });
+
+  document.getElementById('itinerary-header').addEventListener('click', () => {
+    const open = list.classList.toggle('open');
+    document.getElementById('itinerary-toggle').textContent = open ? '▾ hide' : '▸ show';
+  });
+
+  const styles = {
+    road:  { color: '#2563eb', weight: 3.5, opacity: 0.85 },
+    train: { color: '#7c3aed', weight: 3,   opacity: 0.9, dashArray: '10, 6' }
+  };
+
+  if (Array.isArray(window.ROUTE_SEGMENTS) && window.ROUTE_SEGMENTS.length) {
+    state.itineraryLayer = L.layerGroup();
+    window.ROUTE_SEGMENTS.forEach(seg => {
+      if (!seg.coords || seg.coords.length < 2) return;
+      L.polyline(seg.coords, styles[seg.mode] || styles.road).addTo(state.itineraryLayer);
+    });
+    state.itineraryLayer.addTo(state.map);
+  } else {
+    const geom = (it.route || it.stops.map(s => s.id))
+      .map(resolveRoutePoint).filter(Boolean).map(p => [p.lat, p.lng]);
+    state.itineraryLayer = L.polyline(geom, styles.road).addTo(state.map);
+  }
+}
+
+function initMap() {
+  state.map = L.map('map', { zoomControl: true }).setView([41.5, 68], 5);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    maxZoom: 19,
+    subdomains: 'abcd',
+    attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
+  }).addTo(state.map);
+  addLegend();
+}
+
+function addMarkers() {
+  state.cities.forEach(c => {
+    const atts = c.attractions || [];
+    if (atts.length === 0) {
+      const m = L.marker([c.lat, c.lng], { icon: makeIcon(c.rating, 22) });
+      m.bindPopup(popupHTML(c));
+      m.addTo(state.map);
+      state.markers[c.id] = m;
+    } else {
+      atts.forEach(a => {
+        const m = L.marker([a.lat, a.lng], { icon: makeIcon(a.rating) });
+        m.bindPopup(popupHTML(a, c.name));
+        m.addTo(state.map);
+        state.markers[`${c.id}:${a.id}`] = m;
+      });
+    }
+  });
+  state.places.forEach(p => {
+    const m = L.marker([p.lat, p.lng], { icon: makeIcon(p.rating, 20) });
+    m.bindPopup(popupHTML(p));
+    m.addTo(state.map);
+    state.markers[p.id] = m;
+  });
+}
+
+function updateMarkerVisibility(cards) {
+  const visibleCityIds = new Set();
+  const visiblePlaceIds = new Set();
+  cards.forEach(c => {
+    if (c.kind === 'city') visibleCityIds.add(c.data.id);
+    else visiblePlaceIds.add(c.data.id);
+  });
+
+  state.cities.forEach(c => {
+    const atts = c.attractions || [];
+    const show = visibleCityIds.has(c.id);
+    if (atts.length === 0) {
+      toggleMarker(state.markers[c.id], show);
+    } else {
+      atts.forEach(a => toggleMarker(state.markers[`${c.id}:${a.id}`], show));
+    }
+  });
+  state.places.forEach(p => toggleMarker(state.markers[p.id], visiblePlaceIds.has(p.id)));
+}
+
+function toggleMarker(m, show) {
+  if (!m) return;
+  if (show && !state.map.hasLayer(m)) m.addTo(state.map);
+  else if (!show && state.map.hasLayer(m)) state.map.removeLayer(m);
+}
+
+function wireFilters() {
+  ['f-country','f-type','f-rating','f-sort'].forEach(id => {
+    document.getElementById(id).addEventListener('change', renderSidebar);
+  });
+  document.getElementById('f-search').addEventListener('input', renderSidebar);
+}
+
+(function main() {
+  initMap();
+  try {
+    loadData();
+    populateFilterOptions();
+    addMarkers();
+    drawItinerary();
+    wireFilters();
+    renderSidebar();
+  } catch (e) {
+    console.error(e);
+    document.getElementById('card-list').innerHTML = `<div class="error">${escapeHTML(e.message)}</div>`;
+  }
+})();
+</script>
+</body>
+</html>
