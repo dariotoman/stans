@@ -16,8 +16,7 @@ window.ITINERARY = {
     { "id": "bartang",     "days": "12",    "date": "Aug 16",     "note": "Tour D11 · Jizeu hike" },
     { "id": "kalaikhum",   "days": "13",    "date": "Aug 17",     "note": "Tour D12" },
     { "id": "dushanbe",    "days": "14-15", "date": "Aug 18-19",  "note": "Tour D13 + rest day" },
-    { "id": "panjakent",   "days": "16",    "date": "Aug 20",     "note": "via Iskanderkul" },
-    { "id": "samarkand",   "days": "17-18", "date": "Aug 21-22",  "note": "border crossing from Panjakent" },
+    { "id": "samarkand",   "days": "16-18", "date": "Aug 20-22",  "note": "direct taxi transfer from Dushanbe" },
     { "id": "bukhara",     "days": "19-20", "date": "Aug 23-24",  "note": "Afrosiyob from Samarkand" },
     { "id": "tashkent",    "days": "21",    "date": "Aug 25",     "note": "fly out" }
   ],
@@ -48,7 +47,6 @@ window.ITINERARY = {
     "kalaikhum",
     "hulbuk",
     "dushanbe",
-    "iskanderkul",
     "panjakent",
     "samarkand",
     "bukhara",
