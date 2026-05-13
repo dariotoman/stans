@@ -458,7 +458,7 @@ function drawItinerary() {
   const stops = it.stops.map(s => ({ ...s, ...resolveStop(s.id) })).filter(s => s.lat != null);
 
   stops.forEach(s => {
-    const label = `Day ${s.days}`;
+    const label = s.date || `Day ${s.days}`;
     const approxWidth = Math.max(28, 14 + String(label).length * 6);
     const m = L.marker([s.lat, s.lng], {
       icon: L.divIcon({
@@ -476,11 +476,12 @@ function drawItinerary() {
   const list = document.getElementById('itinerary-list');
   list.innerHTML = stops.map((s, i) => `
     <div class="itinerary-stop" data-stop-idx="${i}">
-      <span class="itinerary-num">${escapeHTML(s.days)}</span>
+      <span class="itinerary-num">${escapeHTML(s.date || ('D'+s.days))}</span>
       <div class="itinerary-body">
         <div class="itinerary-name">${escapeHTML(s.name)}</div>
         ${s.note ? `<div class="itinerary-note">${escapeHTML(s.note)}</div>` : ''}
       </div>
+      <span class="itinerary-days">D${escapeHTML(s.days)}</span>
     </div>
   `).join('');
   list.querySelectorAll('[data-stop-idx]').forEach(el => {
