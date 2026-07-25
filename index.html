@@ -181,6 +181,12 @@
   .day-hotel-name { font-weight: 600; color: #0f766e; }
   .day-hotel-meta { color: #64748b; font-size: 12px; margin-top: 3px; }
   .day-show-on-map { display: inline-block; margin-top: 12px; font-size: 12px; color: var(--accent); cursor: pointer; text-decoration: underline; }
+  .day-modal-nav { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--border); background: #fafbfc; }
+  .day-nav-btn { flex: 1; background: white; border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; font-size: 12px; cursor: pointer; color: var(--text); font-weight: 500; display: flex; align-items: center; gap: 6px; min-width: 0; }
+  .day-nav-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+  .day-nav-btn:disabled { color: #cbd5e1; cursor: default; background: #f8fafc; }
+  .day-nav-btn.next { justify-content: flex-end; }
+  .day-nav-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
   @media (max-width: 768px) {
     #day-modal-backdrop { padding: 0; align-items: stretch; }
@@ -747,6 +753,9 @@ function openDayDetail(idx) {
     hotelHtml = `<div class="day-section"><div class="day-section-title">🏨 Accommodation</div><div class="day-hotel-block" style="background:#f8fafc;border-color:#e2e8f0"><div class="day-hotel-name" style="color:#475569">Included in tour</div><div class="day-hotel-meta">Yurt / homestay / guesthouse arranged by Visit Alay</div></div></div>`;
   }
 
+  const prev = currentStops[idx - 1];
+  const next = currentStops[idx + 1];
+
   modal.innerHTML = `
     <div class="day-modal-header">
       <div class="day-modal-header-body">
@@ -765,6 +774,10 @@ function openDayDetail(idx) {
       ${hotelHtml}
       <span class="day-show-on-map" data-idx="${idx}">📍 zoom to on map</span>
     </div>
+    <div class="day-modal-nav">
+      <button class="day-nav-btn prev" ${prev ? '' : 'disabled'}>◀ <span class="day-nav-label">${prev ? escapeHTML((prev.date || 'Day ' + prev.days) + ' · ' + prev.name) : 'Start of trip'}</span></button>
+      <button class="day-nav-btn next" ${next ? '' : 'disabled'}><span class="day-nav-label">${next ? escapeHTML((next.date || 'Day ' + next.days) + ' · ' + next.name) : 'End of trip'}</span> ▶</button>
+    </div>
   `;
 
   const backdrop = document.getElementById('day-modal-backdrop');
@@ -774,6 +787,11 @@ function openDayDetail(idx) {
     closeDayDetail();
     state.map.setView([s.lat, s.lng], Math.max(state.map.getZoom(), 8));
   });
+  const prevBtn = modal.querySelector('.day-nav-btn.prev');
+  const nextBtn = modal.querySelector('.day-nav-btn.next');
+  if (prev) prevBtn.addEventListener('click', () => openDayDetail(idx - 1));
+  if (next) nextBtn.addEventListener('click', () => openDayDetail(idx + 1));
+  modal.querySelector('.day-modal-body').scrollTop = 0;
 }
 
 function closeDayDetail() {
@@ -873,7 +891,12 @@ function wireMobileToggle() {
     if (e.target === backdrop) closeDayDetail();
   });
   document.addEventListener('keydown', e => {
+    if (!document.getElementById('day-modal-backdrop').classList.contains('open')) return;
     if (e.key === 'Escape') closeDayDetail();
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+      const btn = document.querySelector(e.key === 'ArrowLeft' ? '.day-nav-btn.prev' : '.day-nav-btn.next');
+      if (btn && !btn.disabled) btn.click();
+    }
   });
   renderBookings();
   try {
