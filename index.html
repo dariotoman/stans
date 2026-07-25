@@ -492,7 +492,7 @@ function addLegend() {
       <div class="legend-row"><span style="display:inline-block;width:18px;height:0;border-top:3px solid #2563eb"></span>road</div>
       <div class="legend-row"><span style="display:inline-block;width:18px;height:0;border-top:3px dashed #7c3aed"></span>train</div>
       <div style="font-weight:600;margin:6px 0 4px">Day pill</div>
-      <div class="legend-row"><span style="display:inline-block;background:#d97706;color:white;font-size:9px;font-weight:700;border-radius:6px;padding:0 5px">Aug 6</span>tour</div>
+      <div class="legend-row"><span style="display:inline-block;background:#0d9488;color:white;font-size:9px;font-weight:700;border-radius:6px;padding:0 5px">Aug 6</span>tour</div>
       <div class="legend-row"><span style="display:inline-block;background:#2563eb;color:white;font-size:9px;font-weight:700;border-radius:6px;padding:0 5px">Aug 5</span>self</div>
     `;
     return div;
@@ -538,7 +538,7 @@ function drawItinerary() {
 
   stops.forEach(s => {
     const label = s.date || `Day ${s.days}`;
-    const bg = s.tour ? '#d97706' : '#2563eb';
+    const bg = s.tour ? '#0d9488' : '#2563eb';
     const approxWidth = Math.max(28, 14 + String(label).length * 6);
     const m = L.marker([s.lat, s.lng], {
       icon: L.divIcon({
@@ -559,7 +559,7 @@ function drawItinerary() {
   const list = document.getElementById('itinerary-list');
   list.innerHTML = stops.map((s, i) => {
     const h = hotelsById[s.id];
-    const numStyle = s.tour ? 'background:#d97706' : '';
+    const numStyle = s.tour ? 'background:#0d9488' : '';
     return `
       <div class="itinerary-stop" data-stop-idx="${i}">
         <span class="itinerary-num" style="${numStyle}">${escapeHTML(s.date || ('D'+s.days))}</span>
