@@ -2,3 +2,8 @@
 .claude/
 __pycache__/
 *.pyc
+
+# Private trip data — synced via Dropbox but not pushed to public GitHub
+reservations/
+Budget.xlsx
+.Rhistory

@@ -152,6 +152,20 @@
   .itinerary-name { font-weight: 500; color: #1f2430; }
   .itinerary-note { color: var(--muted); font-size: 11px; }
   .itinerary-days { color: #1e40af; font-size: 11px; font-weight: 600; white-space: nowrap; }
+
+  .bookings-box { border-bottom: 1px solid var(--border); background: #f8fafc; }
+  .bookings-header { padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; }
+  .bookings-header h2 { margin: 0; font-size: 13px; font-weight: 600; color: #334155; letter-spacing: 0.3px; }
+  .bookings-header .toggle-line { font-size: 11px; color: #334155; }
+  .bookings-content { display: none; padding: 4px 16px 12px; }
+  .bookings-content.open { display: block; }
+  .bookings-sub { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 8px 0 4px; }
+  .booking-row { padding: 6px 8px; margin-bottom: 4px; background: white; border: 1px solid var(--border); border-radius: 5px; font-size: 12px; display: grid; grid-template-columns: auto 1fr; gap: 8px; align-items: baseline; }
+  .booking-date { font-weight: 600; color: #334155; font-size: 11px; white-space: nowrap; }
+  .booking-body { min-width: 0; }
+  .booking-route { font-weight: 500; color: var(--text); }
+  .booking-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .booking-num { font-family: -apple-system-monospaced, "SF Mono", Menlo, monospace; font-size: 10px; color: #64748b; }
 </style>
 </head>
 <body>
@@ -163,6 +177,13 @@
       <h1>Stans Trip Planner</h1>
       <div class="sub">Click cards to zoom. Click ▸ to expand attractions.</div>
       <div class="stats" id="stats"></div>
+    </div>
+    <div class="bookings-box" id="bookings-box" style="display:none">
+      <div class="bookings-header" id="bookings-header">
+        <h2>Bookings</h2>
+        <span class="toggle-line" id="bookings-toggle">▸ show</span>
+      </div>
+      <div class="bookings-content" id="bookings-content"></div>
     </div>
     <div class="itinerary-box" id="itinerary-box" style="display:none">
       <div class="itinerary-header" id="itinerary-header">
@@ -638,6 +659,50 @@ function wireFilters() {
   document.getElementById('f-search').addEventListener('input', renderSidebar);
 }
 
+function renderBookings() {
+  const b = window.BOOKINGS;
+  if (!b || (!b.flights?.length && !b.trains?.length)) return;
+  const box = document.getElementById('bookings-box');
+  const content = document.getElementById('bookings-content');
+  box.style.display = 'block';
+
+  const flightRow = f => `
+    <div class="booking-row">
+      <span class="booking-date">${escapeHTML(f.date)}</span>
+      <div class="booking-body">
+        <div class="booking-route">${escapeHTML(f.from)} → ${escapeHTML(f.to)}</div>
+        <div class="booking-meta"><span class="booking-num">${escapeHTML(f.num)}</span> · ${escapeHTML(f.depart)} → ${escapeHTML(f.arrive)}${f.aircraft ? ' · ' + escapeHTML(f.aircraft) : ''}</div>
+      </div>
+    </div>
+  `;
+  const trainRow = t => `
+    <div class="booking-row">
+      <span class="booking-date">${escapeHTML(t.date)}</span>
+      <div class="booking-body">
+        <div class="booking-route">${escapeHTML(t.from)} → ${escapeHTML(t.to)}</div>
+        <div class="booking-meta"><span class="booking-num">${escapeHTML(t.num)}</span> · ${escapeHTML(t.depart)} → ${escapeHTML(t.arrive)}${t.operator ? ' · ' + escapeHTML(t.operator) : ''}</div>
+        ${t.seats ? `<div class="booking-meta">${escapeHTML(t.seats)}</div>` : ''}
+      </div>
+    </div>
+  `;
+
+  let html = '';
+  if (b.flights?.length) {
+    html += '<div class="bookings-sub">✈ Flights</div>';
+    html += b.flights.map(flightRow).join('');
+  }
+  if (b.trains?.length) {
+    html += '<div class="bookings-sub">🚆 Trains</div>';
+    html += b.trains.map(trainRow).join('');
+  }
+  content.innerHTML = html;
+
+  document.getElementById('bookings-header').addEventListener('click', () => {
+    const open = content.classList.toggle('open');
+    document.getElementById('bookings-toggle').textContent = open ? '▾ hide' : '▸ show';
+  });
+}
+
 function wireMobileToggle() {
   const sidebar = document.getElementById('sidebar');
   const toggle = document.getElementById('sidebar-toggle');
@@ -668,6 +733,7 @@ function wireMobileToggle() {
 (function main() {
   initMap();
   wireMobileToggle();
+  renderBookings();
   try {
     loadData();
     populateFilterOptions();

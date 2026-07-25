@@ -1,8 +1,21 @@
+window.BOOKINGS = {
+  "flights": [
+    { "date": "Aug 3",  "airline": "Turkish", "num": "TK 18",  "from": "YYZ Toronto",  "to": "IST Istanbul",  "depart": "22:00",     "arrive": "14:50 +1", "aircraft": "B777-300ER" },
+    { "date": "Aug 4",  "airline": "Turkish", "num": "TK 346", "from": "IST Istanbul", "to": "FRU Bishkek",   "depart": "16:50",     "arrive": "01:00 +1", "aircraft": "A321neo" },
+    { "date": "Aug 26", "airline": "Turkish", "num": "TK 369", "from": "TAS Tashkent", "to": "IST Istanbul",  "depart": "09:35",     "arrive": "12:55",    "aircraft": "A330-200" },
+    { "date": "Aug 26", "airline": "Turkish", "num": "TK 17",  "from": "IST Istanbul", "to": "YYZ Toronto",   "depart": "16:40",     "arrive": "20:15",    "aircraft": "B777-300ER" }
+  ],
+  "trains": [
+    { "date": "Aug 22", "operator": "Afrosiyob",      "num": "770ФА", "from": "Samarkand", "to": "Bukhara-1",        "depart": "10:59",     "arrive": "12:36",     "seats": "W9, seats 11 & 12 (1st cl seat)" },
+    { "date": "Aug 25", "operator": "Uzbek Railways", "num": "054ЩА", "from": "Bukhara-1", "to": "Tashkent Janubiy", "depart": "00:02",     "arrive": "07:28",     "seats": "W7, berths 15 & 16 (Lux sleeper)" }
+  ]
+};
+
 window.ITINERARY = {
-  "name": "21-Day Stans Trip (Aug 5-25, 2026)",
+  "name": "22-Day Stans Trip (Aug 5-26, 2026)",
   "startDate": "2026-08-05",
   "stops": [
-    { "id": "bishkek",     "days": "1",     "date": "Aug 5",      "note": "arrival" },
+    { "id": "bishkek",     "days": "1",     "date": "Aug 5",      "note": "arrival 01:00 (TK346)" },
     { "id": "song-kul",    "days": "2",     "date": "Aug 6",      "note": "Tour D1 · via Burana Tower" },
     { "id": "tash-rabat",  "days": "3",     "date": "Aug 7",      "note": "Tour D2 · via Naryn" },
     { "id": "kazarman",    "days": "4",     "date": "Aug 8",      "note": "Tour D3" },
@@ -16,9 +29,9 @@ window.ITINERARY = {
     { "id": "bartang",     "days": "12",    "date": "Aug 16",     "note": "Tour D11 · Jizeu hike" },
     { "id": "kalaikhum",   "days": "13",    "date": "Aug 17",     "note": "Tour D12" },
     { "id": "dushanbe",    "days": "14-15", "date": "Aug 18-19",  "note": "Tour D13 + rest day" },
-    { "id": "samarkand",   "days": "16-18", "date": "Aug 20-22",  "note": "direct taxi transfer from Dushanbe" },
-    { "id": "bukhara",     "days": "19-20", "date": "Aug 23-24",  "note": "Afrosiyob from Samarkand" },
-    { "id": "tashkent",    "days": "21",    "date": "Aug 25",     "note": "fly out" }
+    { "id": "samarkand",   "days": "16-17", "date": "Aug 20-21",  "note": "direct taxi transfer from Dushanbe" },
+    { "id": "bukhara",     "days": "18-20", "date": "Aug 22-24",  "note": "Afrosiyob 10:59 → 12:36" },
+    { "id": "tashkent",    "days": "21-22", "date": "Aug 25-26",  "note": "overnight train + fly out 09:35" }
   ],
   "trainLegs": [
     ["samarkand", "bukhara"],
