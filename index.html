@@ -153,6 +153,37 @@
   .itinerary-note { color: var(--muted); font-size: 11px; }
   .itinerary-days { color: #1e40af; font-size: 11px; font-weight: 600; white-space: nowrap; }
   .itinerary-hotel { font-size: 11px; color: #0f766e; margin-top: 3px; font-weight: 500; }
+  .itinerary-stop { cursor: pointer; }
+
+  #day-modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 24px; }
+  #day-modal-backdrop.open { display: flex; }
+  #day-modal { background: white; border-radius: 12px; max-width: 560px; width: 100%; max-height: 90vh; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
+  .day-modal-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .day-modal-header-body { min-width: 0; }
+  .day-modal-title { font-size: 18px; font-weight: 600; margin: 0; }
+  .day-modal-subtitle { font-size: 13px; color: var(--muted); margin-top: 2px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .day-modal-pill { display: inline-block; background: #2563eb; color: white; border-radius: 12px; padding: 2px 10px; font-size: 12px; font-weight: 700; }
+  .day-modal-pill.tour { background: #0d9488; }
+  .day-modal-close { flex: 0 0 auto; background: none; border: none; font-size: 22px; color: var(--muted); cursor: pointer; padding: 0; line-height: 1; margin-top: 2px; }
+  .day-modal-close:hover { color: var(--text); }
+  .day-modal-body { padding: 12px 20px 20px; overflow-y: auto; }
+  .day-section { margin-top: 16px; }
+  .day-section:first-child { margin-top: 4px; }
+  .day-section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
+  .day-itinerary-list { margin: 0; padding-left: 20px; font-size: 13px; line-height: 1.55; }
+  .day-itinerary-list li { margin-bottom: 4px; }
+  .day-info-grid { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; font-size: 13px; align-items: baseline; }
+  .day-info-label { color: var(--muted); font-weight: 500; white-space: nowrap; }
+  .day-info-value { color: var(--text); }
+  .day-hotel-block { margin-top: 4px; padding: 10px 12px; background: #f0fdfa; border: 1px solid #99f6e4; border-radius: 6px; font-size: 13px; }
+  .day-hotel-name { font-weight: 600; color: #0f766e; }
+  .day-hotel-meta { color: #64748b; font-size: 12px; margin-top: 3px; }
+  .day-show-on-map { display: inline-block; margin-top: 12px; font-size: 12px; color: var(--accent); cursor: pointer; text-decoration: underline; }
+
+  @media (max-width: 768px) {
+    #day-modal-backdrop { padding: 0; align-items: stretch; }
+    #day-modal { max-height: 100vh; border-radius: 0; }
+  }
 
   .bookings-box { border-bottom: 1px solid var(--border); background: #f8fafc; }
   .bookings-header { padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; }
@@ -170,6 +201,9 @@
 </style>
 </head>
 <body>
+<div id="day-modal-backdrop">
+  <div id="day-modal" role="dialog" aria-modal="true"></div>
+</div>
 <div id="app">
   <button id="sidebar-toggle" aria-label="Open menu">☰</button>
   <div id="sidebar-backdrop"></div>
@@ -535,21 +569,22 @@ function drawItinerary() {
   document.getElementById('itinerary-title').textContent = it.name || 'Itinerary';
 
   const stops = it.stops.map(s => ({ ...s, ...resolveStop(s.id) })).filter(s => s.lat != null);
+  currentStops = stops;
 
-  stops.forEach(s => {
+  stops.forEach((s, i) => {
     const label = s.date || `Day ${s.days}`;
     const bg = s.tour ? '#0d9488' : '#2563eb';
     const approxWidth = Math.max(28, 14 + String(label).length * 6);
     const m = L.marker([s.lat, s.lng], {
       icon: L.divIcon({
-        html: `<div style="background:${bg};color:white;border-radius:12px;height:22px;padding:0 8px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;border:2px solid white;box-shadow:0 1px 3px rgba(0,0,0,0.4);white-space:nowrap;">${escapeHTML(label)}</div>`,
+        html: `<div style="background:${bg};color:white;border-radius:12px;height:22px;padding:0 8px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;border:2px solid white;box-shadow:0 1px 3px rgba(0,0,0,0.4);white-space:nowrap;cursor:pointer;">${escapeHTML(label)}</div>`,
         className: '',
         iconSize: [approxWidth, 22],
         iconAnchor: [-6, 30]
       }),
-      interactive: false,
+      interactive: true,
       zIndexOffset: 1000
-    }).addTo(state.map);
+    }).on('click', () => openDayDetail(i)).addTo(state.map);
     state.itineraryNumMarkers.push(m);
   });
 
@@ -573,11 +608,7 @@ function drawItinerary() {
     `;
   }).join('');
   list.querySelectorAll('[data-stop-idx]').forEach(el => {
-    el.addEventListener('click', () => {
-      const idx = +el.getAttribute('data-stop-idx');
-      const s = stops[idx];
-      state.map.setView([s.lat, s.lng], Math.max(state.map.getZoom(), 8));
-    });
+    el.addEventListener('click', () => openDayDetail(+el.getAttribute('data-stop-idx')));
   });
 
   document.getElementById('itinerary-header').addEventListener('click', () => {
@@ -672,6 +703,75 @@ function wireFilters() {
   document.getElementById('f-search').addEventListener('input', renderSidebar);
 }
 
+let currentStops = [];
+
+function openDayDetail(idx) {
+  const s = currentStops[idx];
+  if (!s) return;
+  const d = s.details || {};
+  const h = (window.BOOKINGS?.hotels || []).find(x => x.stopId === s.id);
+  const modal = document.getElementById('day-modal');
+  const bg = s.tour ? 'tour' : '';
+
+  const itineraryHtml = d.itinerary?.length
+    ? `<div class="day-section"><div class="day-section-title">📍 Itinerary</div><ul class="day-itinerary-list">${d.itinerary.map(x => `<li>${escapeHTML(x)}</li>`).join('')}</ul></div>`
+    : '';
+
+  const infoRows = [];
+  if (d.altitude) infoRows.push(['🏔 Altitude', d.altitude]);
+  if (d.weather) infoRows.push(['☁ Weather', d.weather]);
+  if (d.wifi) infoRows.push(['📶 Wi-Fi', d.wifi]);
+  if (d.cell) infoRows.push(['📞 Cell', d.cell]);
+  const infoHtml = infoRows.length
+    ? `<div class="day-section"><div class="day-section-title">Conditions</div><div class="day-info-grid">${infoRows.map(([l, v]) => `<div class="day-info-label">${escapeHTML(l)}</div><div class="day-info-value">${escapeHTML(v)}</div>`).join('')}</div></div>`
+    : '';
+
+  let hotelHtml = '';
+  if (h) {
+    hotelHtml = `<div class="day-section"><div class="day-section-title">🏨 Accommodation</div><div class="day-hotel-block">
+      <div class="day-hotel-name">${escapeHTML(h.name)}</div>
+      <div class="day-hotel-meta">${escapeHTML(h.checkIn)} → ${escapeHTML(h.checkOut)} · ${h.nights} ${h.nights === 1 ? 'night' : 'nights'}${h.room ? ' · ' + escapeHTML(h.room) : ''}</div>
+      ${h.address ? `<div class="day-hotel-meta">${escapeHTML(h.address)}${h.phone ? ' · ' + escapeHTML(h.phone) : ''}</div>` : ''}
+    </div></div>`;
+  } else if (s.id === 'tashkent') {
+    hotelHtml = `<div class="day-section"><div class="day-section-title">🏨 Accommodation</div><div class="day-hotel-block" style="background:#fef3c7;border-color:#fde68a"><div class="day-hotel-name" style="color:#a16207">Not yet booked</div><div class="day-hotel-meta">Book a Tashkent hotel for the night of Aug 25</div></div></div>`;
+  } else if (s.id === 'osh' || (s.tour && s.id !== 'dushanbe')) {
+    hotelHtml = `<div class="day-section"><div class="day-section-title">🏨 Accommodation</div><div class="day-hotel-block" style="background:#f8fafc;border-color:#e2e8f0"><div class="day-hotel-name" style="color:#475569">Included in tour</div><div class="day-hotel-meta">Yurt / homestay / guesthouse arranged by Visit Alay</div></div></div>`;
+  }
+
+  modal.innerHTML = `
+    <div class="day-modal-header">
+      <div class="day-modal-header-body">
+        <h2 class="day-modal-title">${escapeHTML(s.name)}</h2>
+        <div class="day-modal-subtitle">
+          <span class="day-modal-pill ${bg}">${escapeHTML(s.date || 'Day ' + s.days)}</span>
+          <span>Day ${escapeHTML(s.days)}${s.tour ? ' · Tour' : ''}</span>
+          ${s.note ? `<span>· ${escapeHTML(s.note)}</span>` : ''}
+        </div>
+      </div>
+      <button class="day-modal-close" aria-label="Close">×</button>
+    </div>
+    <div class="day-modal-body">
+      ${itineraryHtml}
+      ${infoHtml}
+      ${hotelHtml}
+      <span class="day-show-on-map" data-idx="${idx}">📍 zoom to on map</span>
+    </div>
+  `;
+
+  const backdrop = document.getElementById('day-modal-backdrop');
+  backdrop.classList.add('open');
+  modal.querySelector('.day-modal-close').addEventListener('click', closeDayDetail);
+  modal.querySelector('.day-show-on-map').addEventListener('click', () => {
+    closeDayDetail();
+    state.map.setView([s.lat, s.lng], Math.max(state.map.getZoom(), 8));
+  });
+}
+
+function closeDayDetail() {
+  document.getElementById('day-modal-backdrop').classList.remove('open');
+}
+
 function renderBookings() {
   const b = window.BOOKINGS;
   if (!b || (!b.flights?.length && !b.trains?.length && !b.hotels?.length)) return;
@@ -760,6 +860,13 @@ function wireMobileToggle() {
 (function main() {
   initMap();
   wireMobileToggle();
+  const backdrop = document.getElementById('day-modal-backdrop');
+  backdrop.addEventListener('click', e => {
+    if (e.target === backdrop) closeDayDetail();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeDayDetail();
+  });
   renderBookings();
   try {
     loadData();
