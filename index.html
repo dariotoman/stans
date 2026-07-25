@@ -152,6 +152,7 @@
   .itinerary-name { font-weight: 500; color: #1f2430; }
   .itinerary-note { color: var(--muted); font-size: 11px; }
   .itinerary-days { color: #1e40af; font-size: 11px; font-weight: 600; white-space: nowrap; }
+  .itinerary-hotel { font-size: 11px; color: #0f766e; margin-top: 3px; font-weight: 500; }
 
   .bookings-box { border-bottom: 1px solid var(--border); background: #f8fafc; }
   .bookings-header { padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; }
@@ -548,17 +549,24 @@ function drawItinerary() {
     state.itineraryNumMarkers.push(m);
   });
 
+  const hotelsById = {};
+  (window.BOOKINGS?.hotels || []).forEach(h => { if (h.stopId) hotelsById[h.stopId] = h; });
+
   const list = document.getElementById('itinerary-list');
-  list.innerHTML = stops.map((s, i) => `
-    <div class="itinerary-stop" data-stop-idx="${i}">
-      <span class="itinerary-num">${escapeHTML(s.date || ('D'+s.days))}</span>
-      <div class="itinerary-body">
-        <div class="itinerary-name">${escapeHTML(s.name)}</div>
-        ${s.note ? `<div class="itinerary-note">${escapeHTML(s.note)}</div>` : ''}
+  list.innerHTML = stops.map((s, i) => {
+    const h = hotelsById[s.id];
+    return `
+      <div class="itinerary-stop" data-stop-idx="${i}">
+        <span class="itinerary-num">${escapeHTML(s.date || ('D'+s.days))}</span>
+        <div class="itinerary-body">
+          <div class="itinerary-name">${escapeHTML(s.name)}</div>
+          ${s.note ? `<div class="itinerary-note">${escapeHTML(s.note)}</div>` : ''}
+          ${h ? `<div class="itinerary-hotel">🏨 ${escapeHTML(h.name)}</div>` : ''}
+        </div>
+        <span class="itinerary-days">D${escapeHTML(s.days)}</span>
       </div>
-      <span class="itinerary-days">D${escapeHTML(s.days)}</span>
-    </div>
-  `).join('');
+    `;
+  }).join('');
   list.querySelectorAll('[data-stop-idx]').forEach(el => {
     el.addEventListener('click', () => {
       const idx = +el.getAttribute('data-stop-idx');
@@ -661,7 +669,7 @@ function wireFilters() {
 
 function renderBookings() {
   const b = window.BOOKINGS;
-  if (!b || (!b.flights?.length && !b.trains?.length)) return;
+  if (!b || (!b.flights?.length && !b.trains?.length && !b.hotels?.length)) return;
   const box = document.getElementById('bookings-box');
   const content = document.getElementById('bookings-content');
   box.style.display = 'block';
@@ -685,6 +693,16 @@ function renderBookings() {
       </div>
     </div>
   `;
+  const hotelRow = h => `
+    <div class="booking-row">
+      <span class="booking-date">${escapeHTML(h.checkIn)}–${escapeHTML(h.checkOut.replace(/^Aug\s+/, ''))}</span>
+      <div class="booking-body">
+        <div class="booking-route">${escapeHTML(h.name)}</div>
+        <div class="booking-meta">${escapeHTML(h.nights + (h.nights === 1 ? ' night' : ' nights'))}${h.room ? ' · ' + escapeHTML(h.room) : ''}</div>
+        ${h.address ? `<div class="booking-meta">${escapeHTML(h.address)}</div>` : ''}
+      </div>
+    </div>
+  `;
 
   let html = '';
   if (b.flights?.length) {
@@ -694,6 +712,10 @@ function renderBookings() {
   if (b.trains?.length) {
     html += '<div class="bookings-sub">🚆 Trains</div>';
     html += b.trains.map(trainRow).join('');
+  }
+  if (b.hotels?.length) {
+    html += '<div class="bookings-sub">🏨 Hotels</div>';
+    html += b.hotels.map(hotelRow).join('');
   }
   content.innerHTML = html;
 

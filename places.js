@@ -8,6 +8,12 @@ window.BOOKINGS = {
   "trains": [
     { "date": "Aug 22", "operator": "Afrosiyob",      "num": "770ФА", "from": "Samarkand", "to": "Bukhara-1",        "depart": "10:59",     "arrive": "12:36",     "seats": "W9, seats 11 & 12 (1st cl seat)" },
     { "date": "Aug 25", "operator": "Uzbek Railways", "num": "054ЩА", "from": "Bukhara-1", "to": "Tashkent Janubiy", "depart": "00:02",     "arrive": "07:28",     "seats": "W7, berths 15 & 16 (Lux sleeper)" }
+  ],
+  "hotels": [
+    { "stopId": "bishkek",   "name": "Bishkek Centrum Hotel",       "checkIn": "Aug 4",  "checkOut": "Aug 6",  "nights": 2, "room": "Deluxe Room",       "address": "113 Sultan Ibraimov St, Bishkek", "phone": "+996 770 444 666" },
+    { "stopId": "dushanbe",  "name": "Vatan Hotel",                 "checkIn": "Aug 18", "checkOut": "Aug 19", "nights": 1, "room": "Superior Double",    "address": "Хусейнзода 36а, Dushanbe",        "phone": "+992 94 934 3434", "lat": 38.5710, "lng": 68.7948 },
+    { "stopId": "samarkand", "name": "Hotel Samaria Terrace",       "checkIn": "Aug 19", "checkOut": "Aug 22", "nights": 3, "room": "Standard Double",    "address": "Dahbed yo'li 94, Samarkand",      "phone": "+998 55 705 35 35", "lat": 39.6599, "lng": 66.9705 },
+    { "stopId": "bukhara",   "name": "Komil Bukhara Boutique Hotel","checkIn": "Aug 22", "checkOut": "Aug 24", "nights": 2, "room": "Double or Twin",     "address": "40 Barakiyon, Bukhara",           "phone": "+998 90 715 03 05", "lat": 39.7698, "lng": 64.4200 }
   ]
 };
 
@@ -28,10 +34,10 @@ window.ITINERARY = {
     { "id": "khorog",      "days": "11",    "date": "Aug 15",     "note": "Tour D10 · Yamchun + Bibi Fatima" },
     { "id": "bartang",     "days": "12",    "date": "Aug 16",     "note": "Tour D11 · Jizeu hike" },
     { "id": "kalaikhum",   "days": "13",    "date": "Aug 17",     "note": "Tour D12" },
-    { "id": "dushanbe",    "days": "14-15", "date": "Aug 18-19",  "note": "Tour D13 + rest day" },
-    { "id": "samarkand",   "days": "16-17", "date": "Aug 20-21",  "note": "direct taxi transfer from Dushanbe" },
-    { "id": "bukhara",     "days": "18-20", "date": "Aug 22-24",  "note": "Afrosiyob 10:59 → 12:36" },
-    { "id": "tashkent",    "days": "21-22", "date": "Aug 25-26",  "note": "overnight train + fly out 09:35" }
+    { "id": "dushanbe",    "days": "14",    "date": "Aug 18",     "note": "Tour D13 · Vatan Hotel 1 night" },
+    { "id": "samarkand",   "days": "15-17", "date": "Aug 19-21",  "note": "taxi transfer from Dushanbe on Aug 19" },
+    { "id": "bukhara",     "days": "18-20", "date": "Aug 22-24",  "note": "Afrosiyob 10:59 → 12:36 · checkout noon Aug 24" },
+    { "id": "tashkent",    "days": "21-22", "date": "Aug 25-26",  "note": "overnight train arrives 07:28 · fly out 09:35 Aug 26" }
   ],
   "trainLegs": [
     ["samarkand", "bukhara"],
