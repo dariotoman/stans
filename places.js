@@ -13,7 +13,8 @@ window.BOOKINGS = {
     { "stopId": "bishkek",   "name": "Bishkek Centrum Hotel",       "checkIn": "Aug 4",  "checkOut": "Aug 6",  "nights": 2, "room": "Deluxe Room",       "address": "113 Sultan Ibraimov St, Bishkek", "phone": "+996 770 444 666" },
     { "stopId": "dushanbe",  "name": "Vatan Hotel",                 "checkIn": "Aug 18", "checkOut": "Aug 19", "nights": 1, "room": "Superior Double",    "address": "Хусейнзода 36а, Dushanbe",        "phone": "+992 94 934 3434", "lat": 38.5710, "lng": 68.7948 },
     { "stopId": "samarkand", "name": "Hotel Samaria Terrace",       "checkIn": "Aug 19", "checkOut": "Aug 22", "nights": 3, "room": "Standard Double",    "address": "Dahbed yo'li 94, Samarkand",      "phone": "+998 55 705 35 35", "lat": 39.6599, "lng": 66.9705 },
-    { "stopId": "bukhara",   "name": "Komil Bukhara Boutique Hotel","checkIn": "Aug 22", "checkOut": "Aug 24", "nights": 2, "room": "Double or Twin",     "address": "40 Barakiyon, Bukhara",           "phone": "+998 90 715 03 05", "lat": 39.7698, "lng": 64.4200 }
+    { "stopId": "bukhara",   "name": "Komil Bukhara Boutique Hotel","checkIn": "Aug 22", "checkOut": "Aug 24", "nights": 2, "room": "Double or Twin",     "address": "40 Barakiyon, Bukhara",           "phone": "+998 90 715 03 05", "lat": 39.7698, "lng": 64.4200 },
+    { "stopId": "tashkent",  "name": "Hotel Marwa Tashkent Pool&Spa","checkIn": "Aug 25","checkOut": "Aug 26", "nights": 1, "room": "Double with Balcony","address": "8 Лянгар кўчаси, Tashkent",       "phone": "+998 55 520 77 77", "lat": 41.3272, "lng": 69.2289, "note": "$50 USD cash damage deposit on arrival" }
   ]
 };
 
@@ -294,7 +295,7 @@ window.ITINERARY = {
       "details": {
         "itinerary": [
           "Aug 25 07:28 — Arrive Tashkent Janubiy station",
-          { "sug": "Aug 25 — Check into hotel (⚠ NOT YET BOOKED)" },
+          "Aug 25 — Check into Hotel Marwa Tashkent Pool&Spa (asked for 07:00-08:00 arrival; airport shuttle inquired)",
           { "sug": "Aug 25 — Chorsu Bazaar in the morning" },
           { "sug": "Aug 25 — Soviet-era metro station tour" },
           { "sug": "Aug 25 — Rest before early flight" },
