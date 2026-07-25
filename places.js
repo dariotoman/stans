@@ -27,8 +27,8 @@ window.ITINERARY = {
         "itinerary": [
           "Arrive FRU Manas Intl at 01:00 (TK 346 from Istanbul)",
           "Taxi to Bishkek Centrum Hotel",
-          "Rest, sleep off the jet lag",
-          "Explore Ala-Too Square + downtown"
+          { "sug": "Rest, sleep off the jet lag" },
+          { "sug": "Explore Ala-Too Square + downtown" }
         ],
         "altitude": "800 m",
         "weather": "Hot & dry — highs ~30°C, lows ~17°C, minimal rain",
@@ -90,7 +90,7 @@ window.ITINERARY = {
           "Cross Kaldama Pass — day's highlight, panoramic ranges",
           "Descend through dense bush country",
           "Arrive Osh, check into hotel",
-          "Optional: Sulaiman-Too climb, Jayma Bazaar"
+          { "sug": "Optional: Sulaiman-Too climb, Jayma Bazaar" }
         ],
         "altitude": "963 m",
         "weather": "Hot Fergana Valley — highs 33°C, lows 20°C, dry",
@@ -251,9 +251,15 @@ window.ITINERARY = {
       "id": "samarkand", "days": "15-17", "date": "Aug 19-21", "note": "taxi transfer from Dushanbe on Aug 19",
       "details": {
         "itinerary": [
-          "Aug 19: Checkout Vatan by 12:00; taxi transfer Dushanbe → Samarkand (5-6 hr via Anzob Tunnel + Panjakent/Sarazm border); arrive evening, check into Samaria Terrace",
-          "Aug 20: Registan (morning + sunset), Shah-i-Zinda early, Bibi-Khanym + Siab bazaar",
-          "Aug 21: Gur-e-Amir, Ulugh Beg Observatory, evening at Registan light show"
+          "Aug 19 — Checkout Vatan Hotel by 12:00",
+          "Aug 19 — Taxi transfer Dushanbe → Samarkand (5-6 hr via Anzob Tunnel + Panjakent/Sarazm border)",
+          "Aug 19 — Check into Samaria Terrace (evening)",
+          { "sug": "Aug 20 — Registan (morning + sunset light show)" },
+          { "sug": "Aug 20 — Shah-i-Zinda (best early morning)" },
+          { "sug": "Aug 20 — Bibi-Khanym Mosque + Siab bazaar" },
+          { "sug": "Aug 21 — Gur-e-Amir (Timur's tomb)" },
+          { "sug": "Aug 21 — Ulugh Beg Observatory" },
+          { "sug": "Aug 21 — Evening walk at Registan" }
         ],
         "altitude": "700 m",
         "weather": "Hot summer — 33-38°C day, 20°C night, dry",
@@ -265,9 +271,17 @@ window.ITINERARY = {
       "id": "bukhara", "days": "18-20", "date": "Aug 22-24", "note": "Afrosiyob 10:59 → 12:36 · checkout noon Aug 24",
       "details": {
         "itinerary": [
-          "Aug 22: Morning in Samarkand; Afrosiyob 10:59 → 12:36; check into Komil Boutique; Poi Kalyan at golden hour",
-          "Aug 23: Ark of Bukhara morning; old town wander; siesta in the heat; Lyabi-Hauz evening",
-          "Aug 24: Checkout 12:00; luggage at hotel; evening dinner; catch overnight train 054ЩА at 00:02 (technically Aug 25)"
+          { "sug": "Aug 22 — Last morning in Samarkand" },
+          "Aug 22 — Afrosiyob 10:59 → 12:36 to Bukhara",
+          "Aug 22 — Check into Komil Boutique",
+          { "sug": "Aug 22 — Poi Kalyan at golden hour" },
+          { "sug": "Aug 23 — Ark of Bukhara (morning, before the heat)" },
+          { "sug": "Aug 23 — Old town wander" },
+          { "sug": "Aug 23 — Siesta during hot afternoon" },
+          { "sug": "Aug 23 — Lyabi-Hauz teahouses in the evening" },
+          "Aug 24 — Checkout Komil by 12:00 (bags stay at hotel)",
+          { "sug": "Aug 24 — Last exploration, dinner" },
+          "Aug 25 00:02 — Board overnight train 054ЩА to Tashkent"
         ],
         "altitude": "225 m",
         "weather": "Very hot desert — 35-40°C day, 22°C night",
@@ -279,8 +293,14 @@ window.ITINERARY = {
       "id": "tashkent", "days": "21-22", "date": "Aug 25-26", "note": "overnight train arrives 07:28 · fly out 09:35 Aug 26",
       "details": {
         "itinerary": [
-          "Aug 25: Arrive Tashkent Janubiy 07:28; check into hotel (⚠ NOT YET BOOKED); Chorsu Bazaar morning; Soviet metro tour; rest before flight",
-          "Aug 26: Early transfer to Tashkent Intl; TK 369 09:35 → IST 12:55; TK 17 16:40 → YYZ 20:15"
+          "Aug 25 07:28 — Arrive Tashkent Janubiy station",
+          { "sug": "Aug 25 — Check into hotel (⚠ NOT YET BOOKED)" },
+          { "sug": "Aug 25 — Chorsu Bazaar in the morning" },
+          { "sug": "Aug 25 — Soviet-era metro station tour" },
+          { "sug": "Aug 25 — Rest before early flight" },
+          { "sug": "Aug 26 — Early transfer to Tashkent Intl" },
+          "Aug 26 09:35 — TK 369 depart TAS → IST 12:55",
+          "Aug 26 16:40 — TK 17 depart IST → YYZ 20:15"
         ],
         "altitude": "455 m",
         "weather": "Hot — 33-37°C day, 20°C night",

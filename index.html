@@ -172,6 +172,12 @@
   .day-section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
   .day-itinerary-list { margin: 0; padding-left: 20px; font-size: 13px; line-height: 1.55; }
   .day-itinerary-list li { margin-bottom: 4px; }
+  .day-itinerary-list li.sug { color: #64748b; font-style: italic; list-style-type: circle; }
+  .day-itinerary-list li.tour { color: var(--text); }
+  .day-source-legend { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--muted); font-size: 11px; margin-left: 10px; }
+  .day-source-legend .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin: 0 3px 0 8px; vertical-align: 1px; }
+  .day-source-legend .dot.tour { background: #0f766e; }
+  .day-source-legend .dot.sug { border: 1px solid #94a3b8; }
   .day-info-grid { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; font-size: 13px; align-items: baseline; }
   .day-info-label { color: var(--muted); font-weight: 500; white-space: nowrap; }
   .day-info-value { color: var(--text); }
@@ -714,7 +720,11 @@ function openDayDetail(idx) {
   const bg = s.tour ? 'tour' : '';
 
   const itineraryHtml = d.itinerary?.length
-    ? `<div class="day-section"><div class="day-section-title">📍 Itinerary</div><ul class="day-itinerary-list">${d.itinerary.map(x => `<li>${escapeHTML(x)}</li>`).join('')}</ul></div>`
+    ? `<div class="day-section"><div class="day-section-title">📍 Itinerary<span class="day-source-legend"><span class="dot tour"></span>from tour<span class="dot sug"></span>suggestion</span></div><ul class="day-itinerary-list">${d.itinerary.map(x => {
+        const isSug = typeof x === 'object' && x !== null && x.sug !== undefined;
+        const text = isSug ? x.sug : x;
+        return `<li class="${isSug ? 'sug' : 'tour'}">${escapeHTML(text)}</li>`;
+      }).join('')}</ul></div>`
     : '';
 
   const infoRows = [];
