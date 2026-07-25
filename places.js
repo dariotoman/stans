@@ -163,17 +163,6 @@ window.PLACES = {
       ]
     },
     {
-      "id": "khiva",
-      "name": "Khiva",
-      "country": "Uzbekistan",
-      "lat": 41.3784,
-      "lng": 60.3633,
-      "rating": 4,
-      "notes": "Walled inner city (Itchan Kala) feels like an open-air museum. 1 night enough.",
-      "image": "images/khiva.jpg",
-      "attractions": []
-    },
-    {
       "id": "tashkent",
       "name": "Tashkent",
       "country": "Uzbekistan",
@@ -255,48 +244,6 @@ window.PLACES = {
       ]
     },
     {
-      "id": "kokand",
-      "name": "Kokand",
-      "country": "Uzbekistan",
-      "lat": 40.5392,
-      "lng": 70.9425,
-      "rating": 3,
-      "notes": "Historic Fergana Valley khanate capital. Half-day stop en route.",
-      "image": "images/kokand.jpg",
-      "attractions": [
-        {
-          "id": "khudayar-khan-palace",
-          "name": "Khudayar Khan Palace",
-          "lat": 40.5386,
-          "lng": 70.9378,
-          "rating": 4,
-          "notes": "Ornately tiled 19th-century palace of the last khan of Kokand.",
-          "image": "images/khudayar-khan-palace.jpg"
-        }
-      ]
-    },
-    {
-      "id": "khujand",
-      "name": "Khujand",
-      "country": "Tajikistan",
-      "lat": 40.2794,
-      "lng": 69.6319,
-      "rating": 3,
-      "notes": "Tajikistan's 2nd city, on the Syr Darya. Panjshanbe Bazaar is the highlight.",
-      "image": "images/khujand.jpg",
-      "attractions": [
-        {
-          "id": "khujand-jami",
-          "name": "Masjidi Jami (Panjshanbe)",
-          "lat": 40.2833,
-          "lng": 69.6222,
-          "rating": 3,
-          "notes": "Sheikh Massal ad-Din mosque complex next to Panjshanbe Bazaar.",
-          "image": "images/khujand-jami.jpg"
-        }
-      ]
-    },
-    {
       "id": "panjakent",
       "name": "Panjakent",
       "country": "Tajikistan",
@@ -308,56 +255,6 @@ window.PLACES = {
       "attractions": []
     },
     {
-      "id": "almaty",
-      "name": "Almaty",
-      "country": "Kazakhstan",
-      "lat": 43.2389,
-      "lng": 76.8897,
-      "rating": 4,
-      "notes": "Mountain-backdrop city, good cafes and a cable-car up to Shymbulak. 2 nights.",
-      "image": "images/almaty.jpg",
-      "attractions": [
-        {
-          "id": "medeu",
-          "name": "Medeu Ice Rink",
-          "lat": 43.1594,
-          "lng": 77.0556,
-          "rating": 3,
-          "notes": "High-altitude skating rink, jumping-off point for Shymbulak cable car.",
-          "image": "images/medeu.jpg"
-        },
-        {
-          "id": "shymbulak",
-          "name": "Shymbulak",
-          "lat": 43.1289,
-          "lng": 77.0789,
-          "rating": 4,
-          "notes": "Ski resort at 2,260m. Summer hiking, winter skiing.",
-          "image": "images/shymbulak.jpg"
-        },
-        {
-          "id": "kok-tobe",
-          "name": "Kok-Tobe Hill",
-          "lat": 43.2336,
-          "lng": 76.9769,
-          "rating": 3,
-          "notes": "City viewpoint, cable car from downtown.",
-          "image": "images/kok-tobe.jpg"
-        }
-      ]
-    },
-    {
-      "id": "astana",
-      "name": "Astana (Nur-Sultan)",
-      "country": "Kazakhstan",
-      "lat": 51.1694,
-      "lng": 71.4491,
-      "rating": 2,
-      "notes": "Futuristic capital, long way north. Skip unless flying through.",
-      "image": "images/astana.jpg",
-      "attractions": []
-    },
-    {
       "id": "dushanbe",
       "name": "Dushanbe",
       "country": "Tajikistan",
@@ -366,17 +263,6 @@ window.PLACES = {
       "rating": 3,
       "notes": "Capital, start/end of the Pamir Highway. 1 night.",
       "image": "images/dushanbe.jpg",
-      "attractions": []
-    },
-    {
-      "id": "ashgabat",
-      "name": "Ashgabat",
-      "country": "Turkmenistan",
-      "lat": 37.9601,
-      "lng": 58.3261,
-      "rating": 3,
-      "notes": "White-marble capital, strict visa regime. Worth a day.",
-      "image": "images/ashgabat.jpg",
       "attractions": []
     },
     {
@@ -459,28 +345,6 @@ window.PLACES = {
       "image": "images/burana-tower.jpg"
     },
     {
-      "id": "issyk-kul",
-      "name": "Issyk-Kul Lake",
-      "country": "Kyrgyzstan",
-      "category": "nature",
-      "lat": 42.4167,
-      "lng": 77.2500,
-      "rating": 4,
-      "notes": "10th-largest lake in the world, warm & salty, never freezes. Multi-day loop.",
-      "image": "images/issyk-kul.jpg"
-    },
-    {
-      "id": "marquzor-lakes",
-      "name": "Marquzor (Seven) Lakes",
-      "country": "Tajikistan",
-      "category": "nature",
-      "lat": 39.1500,
-      "lng": 68.1000,
-      "rating": 4,
-      "notes": "Haft Kul — chain of seven turquoise alpine lakes in the Fann Mountains, accessed from Panjakent.",
-      "image": "images/marquzor-lakes.jpg"
-    },
-    {
       "id": "song-kul",
       "name": "Song-Kul Lake",
       "country": "Kyrgyzstan",
@@ -490,61 +354,6 @@ window.PLACES = {
       "rating": 5,
       "notes": "High-altitude alpine lake, yurt stays with nomad families. 1-2 nights.",
       "image": "images/song-kul.jpg"
-    },
-    {
-      "id": "ala-archa",
-      "name": "Ala-Archa National Park",
-      "country": "Kyrgyzstan",
-      "category": "nature",
-      "lat": 42.5667,
-      "lng": 74.4833,
-      "rating": 4,
-      "notes": "Day-hike from Bishkek, glacier views.",
-      "image": "images/ala-archa.jpg"
-    },
-    {
-      "id": "charyn-canyon",
-      "name": "Charyn Canyon",
-      "country": "Kazakhstan",
-      "category": "nature",
-      "lat": 43.3550,
-      "lng": 79.0750,
-      "rating": 4,
-      "notes": "Mini Grand Canyon, day trip from Almaty.",
-      "image": "images/charyn-canyon.jpg"
-    },
-    {
-      "id": "pamir-highway",
-      "name": "Pamir Highway (M41)",
-      "country": "Tajikistan",
-      "category": "route",
-      "lat": 38.5000,
-      "lng": 73.0000,
-      "rating": 5,
-      "notes": "Epic high-altitude road trip, Khorog to Osh. 7-10 days + 4WD.",
-      "image": "images/pamir-highway.jpg"
-    },
-    {
-      "id": "iskanderkul",
-      "name": "Iskanderkul Lake",
-      "country": "Tajikistan",
-      "category": "nature",
-      "lat": 39.0781,
-      "lng": 68.3722,
-      "rating": 4,
-      "notes": "Turquoise mountain lake, named after Alexander the Great.",
-      "image": "images/iskanderkul.jpg"
-    },
-    {
-      "id": "darvaza",
-      "name": "Darvaza Gas Crater",
-      "country": "Turkmenistan",
-      "category": "nature",
-      "lat": 40.2525,
-      "lng": 58.4394,
-      "rating": 4,
-      "notes": "'Door to Hell' — burning gas crater in the desert. Overnight camp.",
-      "image": "images/darvaza.jpg"
     },
     {
       "id": "tash-rabat",

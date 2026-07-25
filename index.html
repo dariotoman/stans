@@ -266,9 +266,9 @@ function imageStyle(image) {
   return '';
 }
 
-function makeIcon(rating, size = 18) {
+function makeIcon(rating, size = 10) {
   const color = RATING_COLORS[rating || 0];
-  const html = `<div style="background:${color};width:${size}px;height:${size}px;border-radius:50%;border:2px solid white;box-shadow:0 0 0 1px rgba(0,0,0,0.3);"></div>`;
+  const html = `<div style="background:${color};width:${size}px;height:${size}px;border-radius:50%;border:1.5px solid white;box-shadow:0 0 0 0.5px rgba(0,0,0,0.35);"></div>`;
   return L.divIcon({ html, className: '', iconSize: [size, size], iconAnchor: [size/2, size/2] });
 }
 
@@ -613,13 +613,13 @@ function addMarkers() {
   state.cities.forEach(c => {
     const atts = c.attractions || [];
     if (atts.length === 0) {
-      const m = L.marker([c.lat, c.lng], { icon: makeIcon(c.rating, 22) });
+      const m = L.marker([c.lat, c.lng], { icon: makeIcon(c.rating, 14) });
       m.bindPopup(popupHTML(c));
       m.addTo(state.map);
       state.markers[c.id] = m;
     } else {
       atts.forEach(a => {
-        const m = L.marker([a.lat, a.lng], { icon: makeIcon(a.rating) });
+        const m = L.marker([a.lat, a.lng], { icon: makeIcon(a.rating, 8) });
         m.bindPopup(popupHTML(a, c.name));
         m.addTo(state.map);
         state.markers[`${c.id}:${a.id}`] = m;
@@ -627,7 +627,7 @@ function addMarkers() {
     }
   });
   state.places.forEach(p => {
-    const m = L.marker([p.lat, p.lng], { icon: makeIcon(p.rating, 20) });
+    const m = L.marker([p.lat, p.lng], { icon: makeIcon(p.rating, 12) });
     m.bindPopup(popupHTML(p));
     m.addTo(state.map);
     state.markers[p.id] = m;
