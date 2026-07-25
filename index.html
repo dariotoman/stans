@@ -163,7 +163,7 @@
   .day-modal-title { font-size: 18px; font-weight: 600; margin: 0; }
   .day-modal-subtitle { font-size: 13px; color: var(--muted); margin-top: 2px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
   .day-modal-pill { display: inline-block; background: #2563eb; color: white; border-radius: 12px; padding: 2px 10px; font-size: 12px; font-weight: 700; }
-  .day-modal-pill.tour { background: #0d9488; }
+  .day-modal-pill.tour { background: #60a5fa; }
   .day-modal-close { flex: 0 0 auto; background: none; border: none; font-size: 22px; color: var(--muted); cursor: pointer; padding: 0; line-height: 1; margin-top: 2px; }
   .day-modal-close:hover { color: var(--text); }
   .day-modal-body { padding: 12px 20px 20px; overflow-y: auto; }
@@ -172,12 +172,8 @@
   .day-section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
   .day-itinerary-list { margin: 0; padding-left: 20px; font-size: 13px; line-height: 1.55; }
   .day-itinerary-list li { margin-bottom: 4px; }
-  .day-itinerary-list li.sug { color: #64748b; font-style: italic; list-style-type: circle; }
-  .day-itinerary-list li.tour { color: var(--text); }
-  .day-source-legend { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--muted); font-size: 11px; margin-left: 10px; }
-  .day-source-legend .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin: 0 3px 0 8px; vertical-align: 1px; }
-  .day-source-legend .dot.tour { background: #0f766e; }
-  .day-source-legend .dot.sug { border: 1px solid #94a3b8; }
+  .day-itinerary-list.sug li { color: #64748b; }
+  .day-sug-header { margin-top: 10px; font-size: 12px; font-weight: 600; color: var(--muted); }
   .day-info-grid { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; font-size: 13px; align-items: baseline; }
   .day-info-label { color: var(--muted); font-weight: 500; white-space: nowrap; }
   .day-info-value { color: var(--text); }
@@ -532,7 +528,7 @@ function addLegend() {
       <div class="legend-row"><span style="display:inline-block;width:18px;height:0;border-top:3px solid #2563eb"></span>road</div>
       <div class="legend-row"><span style="display:inline-block;width:18px;height:0;border-top:3px dashed #7c3aed"></span>train</div>
       <div style="font-weight:600;margin:6px 0 4px">Day pill</div>
-      <div class="legend-row"><span style="display:inline-block;background:#0d9488;color:white;font-size:9px;font-weight:700;border-radius:6px;padding:0 5px">Aug 6</span>tour</div>
+      <div class="legend-row"><span style="display:inline-block;background:#60a5fa;color:white;font-size:9px;font-weight:700;border-radius:6px;padding:0 5px">Aug 6</span>tour</div>
       <div class="legend-row"><span style="display:inline-block;background:#2563eb;color:white;font-size:9px;font-weight:700;border-radius:6px;padding:0 5px">Aug 5</span>self</div>
     `;
     return div;
@@ -579,7 +575,7 @@ function drawItinerary() {
 
   stops.forEach((s, i) => {
     const label = s.date || `Day ${s.days}`;
-    const bg = s.tour ? '#0d9488' : '#2563eb';
+    const bg = s.tour ? '#60a5fa' : '#2563eb';
     const approxWidth = Math.max(28, 14 + String(label).length * 6);
     const m = L.marker([s.lat, s.lng], {
       icon: L.divIcon({
@@ -600,7 +596,7 @@ function drawItinerary() {
   const list = document.getElementById('itinerary-list');
   list.innerHTML = stops.map((s, i) => {
     const h = hotelsById[s.id];
-    const numStyle = s.tour ? 'background:#0d9488' : '';
+    const numStyle = s.tour ? 'background:#60a5fa' : '';
     return `
       <div class="itinerary-stop" data-stop-idx="${i}">
         <span class="itinerary-num" style="${numStyle}">${escapeHTML(s.date || ('D'+s.days))}</span>
@@ -719,13 +715,15 @@ function openDayDetail(idx) {
   const modal = document.getElementById('day-modal');
   const bg = s.tour ? 'tour' : '';
 
-  const itineraryHtml = d.itinerary?.length
-    ? `<div class="day-section"><div class="day-section-title">📍 Itinerary<span class="day-source-legend"><span class="dot tour"></span>from tour<span class="dot sug"></span>suggestion</span></div><ul class="day-itinerary-list">${d.itinerary.map(x => {
-        const isSug = typeof x === 'object' && x !== null && x.sug !== undefined;
-        const text = isSug ? x.sug : x;
-        return `<li class="${isSug ? 'sug' : 'tour'}">${escapeHTML(text)}</li>`;
-      }).join('')}</ul></div>`
-    : '';
+  let itineraryHtml = '';
+  if (d.itinerary?.length) {
+    const tourItems = d.itinerary.filter(x => typeof x === 'string');
+    const sugItems = d.itinerary.filter(x => typeof x === 'object' && x !== null && x.sug !== undefined).map(x => x.sug);
+    let listHtml = '';
+    if (tourItems.length) listHtml += `<ul class="day-itinerary-list">${tourItems.map(x => `<li>${escapeHTML(x)}</li>`).join('')}</ul>`;
+    if (sugItems.length) listHtml += `<div class="day-sug-header">Suggestions:</div><ul class="day-itinerary-list sug">${sugItems.map(x => `<li>${escapeHTML(x)}</li>`).join('')}</ul>`;
+    itineraryHtml = `<div class="day-section"><div class="day-section-title">📍 Itinerary</div>${listHtml}</div>`;
+  }
 
   const infoRows = [];
   if (d.altitude) infoRows.push(['🏔 Altitude', d.altitude]);
