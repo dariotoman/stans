@@ -10,7 +10,7 @@ window.BOOKINGS = {
     { "date": "Aug 25", "operator": "Uzbek Railways", "num": "054ЩА", "from": "Bukhara-1", "to": "Tashkent Janubiy", "depart": "00:02",     "arrive": "07:28",     "seats": "W7, berths 15 & 16 (Lux sleeper)" }
   ],
   "hotels": [
-    { "stopId": "bishkek",   "name": "Bishkek Centrum Hotel",       "checkIn": "Aug 4",  "checkOut": "Aug 6",  "nights": 2, "room": "Deluxe Room",       "address": "113 Sultan Ibraimov St, Bishkek", "phone": "+996 770 444 666" },
+    { "stopId": "bishkek",   "name": "My Hotel Bishkek",            "checkIn": "Aug 4",  "checkOut": "Aug 6",  "nights": 2, "room": "Large Double Room", "address": "121 Chuy Avenue, Bishkek",        "phone": "+996 706 900 477" },
     { "stopId": "dushanbe",  "name": "Vatan Hotel",                 "checkIn": "Aug 18", "checkOut": "Aug 19", "nights": 1, "room": "Superior Double",    "address": "Хусейнзода 36а, Dushanbe",        "phone": "+992 94 934 3434", "lat": 38.5710, "lng": 68.7948 },
     { "stopId": "samarkand", "name": "Hotel Samaria Terrace",       "checkIn": "Aug 19", "checkOut": "Aug 22", "nights": 3, "room": "Standard Double",    "address": "Dahbed yo'li 94, Samarkand",      "phone": "+998 55 705 35 35", "lat": 39.6599, "lng": 66.9705 },
     { "stopId": "bukhara",   "name": "Komil Bukhara Boutique Hotel","checkIn": "Aug 22", "checkOut": "Aug 24", "nights": 2, "room": "Double or Twin",     "address": "40 Barakiyon, Bukhara",           "phone": "+998 90 715 03 05", "lat": 39.7698, "lng": 64.4200 },
