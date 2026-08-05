@@ -24,6 +24,7 @@ window.ITINERARY = {
   "stops": [
     {
       "id": "bishkek", "days": "1", "date": "Aug 5", "note": "arrival 01:00 (TK346)",
+      "walkingTour": { "href": "bishkek-tour.html", "label": "Bishkek Soviet-Era Walking Tour" },
       "details": {
         "itinerary": [
           "Arrive FRU Manas Intl at 01:00 (TK 346 from Istanbul)",
@@ -86,6 +87,7 @@ window.ITINERARY = {
     },
     {
       "id": "osh", "days": "5", "date": "Aug 9", "note": "Tour D4 · via Kaldama Pass", "tour": true,
+      "walkingTour": { "href": "osh-tour.html", "label": "Osh City Centre Walk" },
       "details": {
         "itinerary": [
           "Cross Kaldama Pass — day's highlight, panoramic ranges",
@@ -233,6 +235,7 @@ window.ITINERARY = {
     },
     {
       "id": "dushanbe", "days": "14", "date": "Aug 18", "note": "Tour D13 · Vatan Hotel 1 night", "tour": true,
+      "walkingTour": { "href": "dushanbe-tour.html", "label": "Dushanbe: Rudaki Avenue & Park" },
       "details": {
         "itinerary": [
           "Drive along the Panj (spectacular villages + gorges)",

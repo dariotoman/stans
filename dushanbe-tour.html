@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#DFE0D9">
+<title>Dushanbe — Rudaki Avenue &amp; Park</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --plaster:#DFE0D9;
+    --plaster-2:#EBECE4;
+    --ink:#1C1D1A;
+    --ink-soft:#565849;
+    --lapis:#24457C;
+    --verdigris:#3D6B63;
+    --gold:#8A6A12;
+    --rule:#C2C3B6;
+    --shadow:rgba(28,29,26,.10);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--plaster);color:var(--ink);
+    font-family:"Newsreader",Georgia,serif;font-size:17px;line-height:1.55;padding-bottom:64px;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 16px}
+
+  .mast{padding:34px 0 22px;border-bottom:3px solid var(--ink)}
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--lapis);margin:0 0 10px
+  }
+  h1{
+    font-family:"Archivo Black",Impact,sans-serif;font-size:clamp(34px,10vw,52px);
+    line-height:.92;letter-spacing:-.02em;margin:0;text-transform:uppercase;
+  }
+  h1 span{display:block;color:var(--gold)}
+  .standfirst{margin:16px 0 0;font-size:17px;color:var(--ink-soft)}
+  .facts{display:flex;margin:20px 0 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+  .fact{flex:1;padding:10px 0}
+  .fact + .fact{border-left:1px solid var(--rule);padding-left:12px}
+  .fact dt{
+    font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--ink-soft);margin:0 0 3px
+  }
+  .fact dd{margin:0;font-weight:500;font-size:15px}
+  .maproute{
+    display:inline-block;margin:18px 8px 0 0;padding:11px 15px;background:var(--ink);color:var(--plaster);
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none
+  }
+  .maproute.alt{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+  .maproute:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+  .primer{padding:26px 0 8px}
+  .primer h2,.practical h2,.glossary h2{
+    font-family:"Archivo Black",sans-serif;text-transform:uppercase;font-size:15px;letter-spacing:.02em;margin:0 0 12px
+  }
+  .primer p{margin:0 0 14px}
+  .era{
+    display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:18px 0 0;padding:16px;
+    background:var(--plaster-2);border-left:4px solid var(--gold)
+  }
+  .era b{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;white-space:nowrap;color:var(--lapis);
+    align-self:start;padding-top:3px
+  }
+  .era span{font-size:15px;line-height:1.45}
+  .careful{margin:18px 0 0;padding:16px;background:var(--plaster-2);border-left:4px solid var(--verdigris)}
+  .careful b{
+    display:block;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--verdigris);margin:0 0 8px
+  }
+  .careful p{margin:0 0 10px;font-size:15.5px}
+  .careful p:last-child{margin-bottom:0}
+
+  .route{position:relative;padding:28px 0 10px}
+  .route::before{
+    content:"";position:absolute;left:17px;top:44px;bottom:34px;width:0;
+    border-left:3px dotted var(--verdigris);opacity:.6
+  }
+  .routehead{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--ink-soft);margin:0 0 14px;padding-left:52px
+  }
+  .terminus{display:flex;align-items:center;gap:14px;position:relative;z-index:2;margin:0 0 6px}
+  .terminus .dot{
+    width:36px;height:36px;flex:0 0 36px;border-radius:50%;background:var(--plaster);
+    border:3px solid var(--verdigris);display:grid;place-items:center
+  }
+  .terminus .dot i{width:10px;height:10px;border-radius:50%;background:var(--verdigris);display:block}
+  .terminus b{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+  .terminus em{font-style:normal;color:var(--ink-soft);font-size:15px}
+  .terminus a{
+    font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--lapis);margin-left:auto;white-space:nowrap
+  }
+
+  .divider{
+    position:relative;z-index:2;margin:26px 0 22px 0;padding:14px 16px;background:var(--ink);color:var(--plaster)
+  }
+  .divider b{
+    display:block;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;color:#C9A94A;margin:0 0 6px
+  }
+  .divider p{margin:0;font-size:15px;line-height:1.5}
+
+  .stop{position:relative;margin:14px 0;padding-left:52px}
+  .chip{
+    position:absolute;left:0;top:2px;width:36px;height:36px;border-radius:50%;background:var(--lapis);
+    color:#fff;z-index:2;font-family:"Archivo Black",sans-serif;font-size:15px;display:grid;place-items:center;
+    border:3px solid var(--plaster);transition:background .18s ease
+  }
+  .stop.extra .chip{background:var(--gold)}
+  .stop.seen .chip{background:var(--verdigris)}
+  .card{
+    width:100%;text-align:left;background:var(--plaster-2);border:1px solid var(--rule);
+    border-left:4px solid var(--lapis);padding:13px 15px;font:inherit;color:inherit;cursor:pointer;
+    display:block;box-shadow:0 1px 0 var(--shadow);transition:opacity .18s ease
+  }
+  .stop.extra .card,.stop.extra .more{border-left-color:var(--gold)}
+  .stop.seen .card{border-left-color:var(--verdigris);opacity:.72}
+  .stop.seen .more{border-left-color:var(--verdigris)}
+  .card:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  .name{
+    font-family:"Archivo Black",sans-serif;font-size:17px;line-height:1.15;text-transform:uppercase;
+    letter-spacing:-.01em;margin:0
+  }
+  .native{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);margin:5px 0 0}
+  .gist{margin:8px 0 0;font-size:15.5px;color:var(--ink-soft)}
+  .more{
+    display:none;padding:2px 15px 16px;background:var(--plaster-2);border:1px solid var(--rule);
+    border-top:0;border-left:4px solid var(--lapis)
+  }
+  .stop.open .more{display:block}
+  .more p{margin:12px 0 0;font-size:16px}
+  .more h4{
+    font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--lapis);margin:18px 0 0;padding-top:12px;border-top:1px solid var(--rule)
+  }
+  .stop.extra .more h4{color:var(--gold)}
+  .more h4 + p{margin-top:6px}
+  .note{font-size:14px;color:var(--ink-soft);margin-top:10px}
+  .actions{display:flex;gap:10px;margin:18px 0 0;flex-wrap:wrap}
+  .btn{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    padding:9px 13px;border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer
+  }
+  .btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  .btn.on{background:var(--verdigris);border-color:var(--verdigris);color:#fff}
+  a.btn{text-decoration:none;background:var(--lapis);border-color:var(--lapis);color:#fff}
+  a.btn::before{content:"\27A4";margin-right:7px;font-size:10px}
+  a.btn.approx{background:transparent;color:var(--lapis)}
+
+  .aside{margin:16px 0 16px 52px;padding:14px 16px;border:1px dashed var(--gold)}
+  .aside b{
+    display:block;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--gold);margin:0 0 6px
+  }
+  .aside p{margin:0;font-size:15.5px}
+
+  .practical,.glossary{padding:26px 0;border-top:3px solid var(--ink);margin-top:26px}
+  .practical ul{margin:0;padding:0;list-style:none}
+  .practical li{padding:10px 0;border-bottom:1px solid var(--rule);font-size:16px}
+  .practical li:last-child{border-bottom:0}
+  .practical li b{font-weight:500;color:var(--lapis)}
+  .glossary dt{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;color:var(--verdigris);
+    margin:14px 0 2px;letter-spacing:.04em
+  }
+  .glossary dd{margin:0;font-size:15.5px;color:var(--ink-soft)}
+  footer{
+    padding:24px 0 8px;font-family:"IBM Plex Mono",monospace;font-size:11px;line-height:1.7;
+    color:var(--ink-soft);border-top:1px solid var(--rule);margin-top:26px
+  }
+  .bar{
+    position:fixed;left:0;right:0;bottom:0;background:var(--ink);color:var(--plaster);
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:11px 16px calc(11px + env(safe-area-inset-bottom));z-index:20
+  }
+  .bar span{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+  .bar button{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    background:transparent;color:var(--plaster);border:1px solid rgba(223,224,217,.5);padding:7px 11px;cursor:pointer
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <p class="eyebrow">Field guide · Душанбе · Rudaki Avenue</p>
+    <h1>The City<span>Called Monday</span></h1>
+    <p class="standfirst">Twenty stops up the spine of the youngest capital in Central Asia — sixteen from the guidebook, four added past the finish line. Tap any stop to open it.</p>
+    <dl class="facts">
+      <div class="fact"><dt>Start</dt><dd>Train Station</dd></div>
+      <div class="fact"><dt>End</dt><dd>East Gate</dd></div>
+      <div class="fact"><dt>Length</dt><dd>≈7 km · 3–4 hrs</dd></div>
+    </dl>
+    <a class="maproute" target="_blank" rel="noopener"
+       href="https://www.google.com/maps/dir/?api=1&amp;travelmode=walking&amp;origin=38.55696,68.79952&amp;destination=38.5912747,68.781429&amp;waypoints=38.5665633,68.7905717%7C38.5739527,68.7853072%7C38.5790036,68.7801111%7C38.5822326,68.7795424%7C38.5837604,68.7839178">Whole route in Maps</a>
+    <a class="maproute alt" target="_blank" rel="noopener"
+       href="https://www.google.com/maps/dir/?api=1&amp;travelmode=walking&amp;origin=38.55696,68.79952&amp;destination=38.5822326,68.7795424&amp;waypoints=38.5665633,68.7905717%7C38.5686530,68.7949403%7C38.5739527,68.7853072%7C38.5762565,68.7836305%7C38.5790036,68.7801111">Guidebook route only</a>
+  </header>
+
+  <section class="primer">
+    <h2>Before you start walking</h2>
+    <p><b>Dushanbe</b> means Monday. That is not a poetic flourish — it was a village with a Monday market, a few thousand people, no significance whatever, until the Soviets picked it in 1924 as the administrative centre for the new Tajik republic. Between 1929 and 1961 it was called Stalinabad. Everything you are about to walk through was built after that decision: the avenue, the plane trees, the ministries, the opera house, the parks. This is the youngest capital in Central Asia and it was assembled, deliberately, from almost nothing.</p>
+    <p>The people it was built for are the region's odd one out. Tajiks are Persian-speaking — Tajik is Persian written in Cyrillic — in a neighbourhood of Turkic-speaking nations. Their cultural claim runs back through the Samanids to the Sogdians and Bactrians who were here before the Turkic migrations, and it is a strong claim.</p>
+    <p>But when the Soviets drew the republican borders in the 1920s, the two great cities of Persian culture in Central Asia — <b>Samarkand and Bukhara</b>, both then heavily Tajik-speaking — ended up inside Uzbekistan. Tajikistan got the mountains and a Monday market town. That loss is the single most useful thing to understand here. It explains why a capital this new spends so much on monuments to antiquity: the nation's actual ancient cities are across a border, so the symbols of ancientness have to be built here instead. Almost every stop on this walk is a version of that argument.</p>
+
+    <div class="era">
+      <b>pre-1920s</b><span>A village. A Monday market. Fewer than ten thousand people.</span>
+      <b>1924–29</b><span>Chosen as capital of the new Tajik republic. Renamed Stalinabad in 1929.</span>
+      <b>1930s–50s</b><span>The city as you see it in the first half of this walk: Rudaki Avenue, plane trees, neoclassical civic buildings. <em>Stops 3–8.</em></span>
+      <b>1961</b><span>De-Stalinised. The name Dushanbe returns.</span>
+      <b>1992–97</b><span>Civil war. See the note below.</span>
+      <b>2010–2024</b><span>An extraordinary wave of state building: flagpole, museum, parliament, palace, towers — much of it on ground cleared of Soviet-era buildings. <em>Stops 9–20.</em></span>
+    </div>
+
+    <div class="careful">
+      <b>Two things worth knowing</b>
+      <p><b>The civil war.</b> Within months of independence Tajikistan collapsed into a war fought largely along regional and factional lines. It ran from 1992 to a UN-brokered peace in 1997. Estimates of the dead range widely, commonly cited at tens of thousands; over a million people were displaced. Emomali Rahmon came to power during it and has led the country ever since, now formally titled Leader of the Nation. The stability that followed is the central claim of the state you are walking through, and the monument-building programme is inseparable from it.</p>
+      <p><b>Photography and politics.</b> Tajikistan is genuinely authoritarian and the centre of Dushanbe is full of working government buildings. Do not photograph the Palace of the Nation gates, parliament entrances, guards, police or checkpoints. Guards will move you on, and they are within their rights to. Shoot from the park side, keep walking, put the phone away the moment anyone gestures. Likewise, let Tajiks lead any conversation about politics and don't press it.</p>
+    </div>
+  </section>
+
+  <section class="route">
+    <p class="routehead">The route · north up Rudaki, then into the parks</p>
+
+    <div class="terminus"><span class="dot"><i></i></span><b>Start</b> &nbsp;<em>Dushanbe Train Station</em><a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=38.55696,68.79952&amp;query_place_id=ChIJI667UzfRtTgRJxrrkUwAUPA">Maps &rsaquo;</a></div>
+
+    <!-- 1 -->
+    <div class="stop" data-n="1" data-map="38.55696,68.79952" data-pid="ChIJI667UzfRtTgRJxrrkUwAUPA">
+      <div class="chip">1</div>
+      <button class="card">
+        <p class="name">Dushanbe Train Station</p>
+        <p class="native">Vokzal · little used</p>
+        <p class="gist">A capital whose railway mostly leads out through a neighbour.</p>
+      </button>
+      <div class="more">
+        <p>Start at the quietest railway station of any capital city you're likely to visit. The reason is geography plus politics: Tajikistan's rail lines have to run out through Uzbekistan, and for roughly two decades after independence relations between the two governments were frozen — borders mined, flights suspended, the direct Dushanbe–Tashkent service cut. It only resumed in the late 2010s, after the change of government in Tashkent.</p>
+        <p>So a country that is 93% mountains has a national rail network that is short, low-lying, and dependent on a neighbour it spent twenty years not speaking to. Almost everything moves by road, over passes, or by air.</p>
+        <h4>Why the city is here at all</h4>
+        <p>The railway arrived in the 1920s, and it is a large part of why this particular village became the capital rather than Khujand or Kulob. That, and the fact that <b>dushanbe</b> means "Monday" — this was the Monday market for the surrounding valley, a crossroads with a reason for people to turn up.</p>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="stop" data-n="2" data-map="38.5624573,68.7991638" data-pid="ChIJRSfeBkjRtTgRTAZfC24353g">
+      <div class="chip">2</div>
+      <button class="card">
+        <p class="name">Statue of Ayni</p>
+        <p class="native">Sadriddin Ayni · 1878–1954</p>
+        <p class="gist">The writer who supplied the argument that Tajikistan exists.</p>
+      </button>
+      <div class="more">
+        <p>Your guidebook's note is the important one: Ayni was, as local guides put it, the man who <em>proved</em> that Tajiks are one of Central Asia's oldest nations. That deserves unpacking, because it's the intellectual foundation of the entire country.</p>
+        <p>Ayni was born near Bukhara in 1878, educated in its madrasas, and became a <b>jadid</b> — one of the Muslim modernist reformers pushing for new-method schools and a critical press. The Emir of Bukhara had him arrested and flogged; his brother was executed. He came out of it a revolutionary, and became the founding figure of modern Tajik prose.</p>
+        <h4>The argument</h4>
+        <p>Soviet nationality policy required each nation to demonstrate a distinct history, language and territory in order to get a republic. Pan-Turkist intellectuals of the era argued that the Persian-speakers of Central Asia were simply Turks who had lost their language. Ayni argued the reverse and with far better evidence: that the Tajiks were the settled, Persian-speaking population of the region — heirs of the Sogdians and Bactrians — present long before the Turkic migrations, with an unbroken literary tradition to prove it.</p>
+        <p>He won the argument. Tajikistan got a republic. That is why a writer, rather than a general or a khan, stands at the gateway to the capital's main avenue.</p>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="stop" data-n="3" data-map="38.5636,68.7986">
+      <div class="chip">3</div>
+      <button class="card">
+        <p class="name">Former National Museum</p>
+        <p class="native">Clock-fronted · Stalin era</p>
+        <p class="gist">A museum that moved out, in a building that stayed put.</p>
+      </button>
+      <div class="more">
+        <p>The clock front is the giveaway: this is the civic architecture of the Stalinabad decades, when the new capital was being given the standard kit of a Soviet republican centre — a museum, a theatre, a hotel, a cinema, all in a restrained classicism, all facing a wide avenue lined with plane trees.</p>
+        <p>The national collection moved out to the vast new building at Stop 16 in 2011. What's left behind is a good example of a pattern you'll see repeatedly today: the post-2010 state building programme has consistently built <em>new</em> rather than adapting, leaving the Soviet originals standing but demoted.</p>
+        <h4>Note</h4>
+        <p class="note">Map pin is approximate — it's on the square, a moment from the Ayni statue. Follow the guidebook map.</p>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="stop" data-n="4" data-map="38.5622167,68.7981107" data-pid="ChIJrwDSjEfRtTgRTR30iFjNdRU">
+      <div class="chip">4</div>
+      <button class="card">
+        <p class="name">Hotel Dushanbe</p>
+        <p class="native">Rudaki Ave 7 · Soviet time capsule</p>
+        <p class="gist">Wrinkled carpets, horror-film lifts, entirely unrenovated.</p>
+      </button>
+      <div class="more">
+        <p>Go into the lobby. This is one of the last genuinely unreconstructed Soviet interiors on the avenue — the carpets, the reception desk, the lifts, the whole atmosphere of a state hotel that stopped being updated around 1979 and simply carried on.</p>
+        <p>Worth understanding what it was for. Soviet republican capitals had a standard hotel typology: a state-run establishment near the main square, built for delegations, visiting officials and Intourist groups, with a restaurant, a service desk on each floor, and a hierarchy of room grades. Almost all of them have now been gutted, rebranded or demolished. This one hasn't.</p>
+        <h4>Manners</h4>
+        <p class="note">It's a working hotel and staff have been reported as unhappy about photography inside. Walk through, look, don't set up a shoot. There's a public pool, if you want an unusual excuse to linger.</p>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="stop" data-n="5" data-map="38.5638869,68.7966323" data-pid="ChIJo1k8rEfRtTgRL_74EFYSg1g">
+      <div class="chip">5</div>
+      <button class="card">
+        <p class="name">Vatan Cinema</p>
+        <p class="native">Ватан · 1950s</p>
+        <p class="gist">"Homeland." Once queues round the block for Bollywood.</p>
+      </button>
+      <div class="more">
+        <p><em>Vatan</em> means homeland. The building is 1950s, from the era when cinema was the Soviet Union's mass medium and every republican capital and provincial town got a purpose-built hall — a portico, a wide foyer, one large auditorium, a poster board on the street.</p>
+        <h4>The Indian films</h4>
+        <p>Ask anyone over fifty about this place and the answer is likely to involve Indian cinema. Bollywood was colossally popular across the USSR from the 1950s onward — melodrama, music, moral clarity, and no ideological problem for the censors. Raj Kapoor was a genuine Soviet superstar. In Persian-speaking Tajikistan the affinity was even stronger.</p>
+        <p>Now it survives, thinly, against multiplexes and streaming. There's a flower stall alongside doing brisk trade, which tells you something about the relative economics.</p>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="stop" data-n="6" data-map="38.5647474,68.7955151" data-pid="ChIJ26Ti80bRtTgRyYFziksk8AA">
+      <div class="chip">6</div>
+      <button class="card">
+        <p class="name">Turkish Embassy</p>
+        <p class="native">Rudaki Ave 17 · 1950s building</p>
+        <p class="gist">Independence-era diplomacy inside a Stalin-era shell.</p>
+      </button>
+      <div class="more">
+        <p>Another 1950s classic, and a neat illustration of what happened after 1991. A brand-new country suddenly needed to host several dozen embassies, and the available high-quality building stock was Soviet. So the diplomatic quarter of Dushanbe is largely mid-century Soviet architecture with new flags on it.</p>
+        <p>Turkey's presence here is worth a thought. Ankara pursued the Turkic republics of Central Asia energetically after 1991 on grounds of shared language and kinship — but Tajikistan is precisely the one that isn't Turkic. The relationship here has had to be built on trade, construction contracts and education instead, which is a different and in some ways more durable thing.</p>
+        <h4>Please note</h4>
+        <p class="note">It's a working embassy. Look, keep moving, don't photograph the entrance or the guards.</p>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="stop" data-n="7" data-map="38.5665633,68.7905717" data-pid="ChIJXe8byUPRtTgRbf4ur8czZJc">
+      <div class="chip">7</div>
+      <button class="card">
+        <p class="name">Museum of Antiquities</p>
+        <p class="native">National Museum of Antiquities</p>
+        <p class="gist">The best thing on this walk. There is a 13-metre Buddha inside.</p>
+      </button>
+      <div class="more">
+        <p>If you do one indoor thing in Dushanbe, do this. It's modest, underfunded and slightly faded, and its collection is genuinely world class.</p>
+        <h4>The Buddha</h4>
+        <p>The centrepiece is the reclining Buddha from <b>Ajina-Teppa</b>, a Buddhist monastery in southern Tajikistan: roughly thirteen metres of unfired clay, made in the seventh or eighth century, excavated in the 1960s in dozens of fragments and painstakingly reassembled. It is the largest surviving Buddha figure in Central Asia.</p>
+        <p>Sit with what that means. Before Islam arrived, this region was Buddhist, Zoroastrian, Manichaean and in places Nestorian Christian — a genuine crossroads where all of those coexisted along the trade routes. The Buddha is not an exotic import; it's local.</p>
+        <h4>Also here</h4>
+        <p>Greco-Bactrian material from the kingdom Alexander's successors ran in these valleys for two centuries — including a portrait head of Alexander thought to date from his own lifetime. And finds from <b>Sarazm</b>, a settlement near Panjakent occupied from the fourth millennium BCE and now a UNESCO site.</p>
+        <h4>Practical</h4>
+        <p class="note">Labels are in three languages and unusually well written. Entry has recently been around 50 somoni for foreigners. Hours are roughly 9:00–17:00 but noticeably shorter on Sundays and Mondays — check before you commit. A guide, if one is offered, is worth taking.</p>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="stop" data-n="8" data-map="38.5686530,68.7949403" data-pid="ChIJaZqKWETRtTgRyhiRAt25WLs">
+      <div class="chip">8</div>
+      <button class="card">
+        <p class="name">Ayni Opera &amp; Ballet</p>
+        <p class="native">Опера ва балет · 1940s</p>
+        <p class="gist">A temple front with Persian ornament, and $5 tickets.</p>
+      </button>
+      <div class="more">
+        <p>Completed in the mid-1940s and the handsomest building on the avenue: a full classical portico, but look closely at the capitals, the friezes and the interior plasterwork and you'll find Persian-Tajik ornament worked through the classical grammar. That hybrid is the signature of the period.</p>
+        <h4>Why it exists</h4>
+        <p>Same programme that built the opera houses of Bishkek, Tashkent and Almaty. Moscow's cultural line was "national in form, socialist in content," and it required every republic to acquire an opera company, a national ballet, a symphony orchestra and a canon of national classics on a European template — regardless of whether such traditions had existed locally. In Tajikistan the raw material was a deep tradition of classical Persian sung poetry, the <em>shashmaqom</em>, which got fed into orchestral arrangement.</p>
+        <h4>Do this</h4>
+        <p>If anything is on, go — tickets have been running around five dollars, the interior is majestic, and the experience of a half-empty gilded 1940s house is worth it on its own. Daytime entry to look around has been possible for a small fee. The garden cafés ringing the building are the right place to stop for tea and reset your legs.</p>
+      </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="stop" data-n="9" data-map="38.5739527,68.7853072" data-pid="ChIJu6pRT2fRtTgRpTT7R7iNVDM">
+      <div class="chip">9</div>
+      <button class="card">
+        <p class="name">Statue of Ismoil Somoni</p>
+        <p class="native">Исмоили Сомонӣ · gilded arch and crown</p>
+        <p class="gist">The founding father the country chose in 1991. He ruled from Bukhara.</p>
+      </button>
+      <div class="more">
+        <p>Ismail Samani, who died in 907, was the emir under whom the Samanid dynasty consolidated its rule over Transoxiana and Khorasan. His court presided over the revival of Persian as a written literary language after two centuries of Arabic dominance — the moment that produced Rudaki, and led on to Ferdowsi's <em>Shahnameh</em>. For Persian culture it is the founding renaissance.</p>
+        <h4>The choice</h4>
+        <p>After 1991 Tajikistan needed a national founder who was pre-Soviet, non-Turkic and unambiguously Persian, and it picked him comprehensively. The currency is the <b>somoni</b>. The highest mountain in the former USSR — called Stalin Peak, then Communism Peak — is now Ismoil Somoni Peak. And here he is under a gilded arch with a gold crown above him, at the head of Rudaki Park.</p>
+        <p>Now the awkward part, and it is the key to the whole city: the Samanid capital was <b>Bukhara</b>, and Bukhara is in Uzbekistan. Ismail Samani is buried there, in a tenth-century mausoleum that is one of the masterpieces of Islamic architecture. Tajikistan has the emir's name on its money and its highest peak; Uzbekistan has his tomb.</p>
+        <h4>Watch out for</h4>
+        <p class="note">Freelance photographers work this square and will offer to shoot you for a dollar a picture. Reviews are consistently unenthusiastic about the results. Best at night, when the whole thing is lit.</p>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="stop" data-n="10" data-map="38.5732015,68.7834430" data-pid="ChIJy8Gl3mbRtTgRXYCysKddRJw">
+      <div class="chip">10</div>
+      <button class="card">
+        <p class="name">National Library</p>
+        <p class="native">2012 · nine floors</p>
+        <p class="gist">Vast, new, and you can't just wander in.</p>
+      </button>
+      <div class="more">
+        <p>Opened in 2012, nine floors, reportedly built to hold around ten million volumes — one of the largest library buildings in Central Asia, and part of the same wave as the museum, the flagpole and the palace. There are dedicated collections in Persian, a large children's library, and a braille section.</p>
+        <h4>Getting in</h4>
+        <p>Not straightforward for foreigners. Independent wandering generally isn't allowed; if you go in you'll likely be assigned a guide and walked round on a semi-official tour of twenty minutes or so. Traveller reports on what that costs vary widely — some describe it as free, others have been asked for around 100 somoni at the end, apparently depending on who's on duty and where you're from.</p>
+        <p class="note">If you want to go in, decide your position on payment before you start, and settle it politely at the door rather than at the end.</p>
+      </div>
+    </div>
+
+    <!-- 11 -->
+    <div class="stop" data-n="11" data-map="38.5739378,68.7800564" data-pid="ChIJN_vj8GPRtTgRCB9V7XgyBtk">
+      <div class="chip">11</div>
+      <button class="card">
+        <p class="name">Parchan</p>
+        <p class="native">Independence memorial</p>
+        <p class="gist">A 21st-century building doing an impression of Imperial Rome.</p>
+      </button>
+      <div class="more">
+        <p>Your guidebook's description is exactly right and worth taking seriously as an observation rather than a joke. Colonnades, symmetry, a monumental stepped approach, landscaped water — the visual vocabulary is imperial classicism, and the date is recent.</p>
+        <h4>Why Rome</h4>
+        <p>Every new state has to choose a language for its public architecture, and the shortlist is short: revive something local, import something international, or borrow the grammar of empire. Post-Soviet Central Asia has leaned consistently toward the third, often blended with national ornament. It reads as permanence, which is precisely the quality a thirty-year-old state most wants to project.</p>
+        <p>It's easy to be sniffy about this. It's more interesting to compare it directly with Stop 8, four hundred metres back — a 1940s building doing the same thing with the same classical kit, for a different empire, and now regarded as heritage.</p>
+      </div>
+    </div>
+
+    <!-- 12 -->
+    <div class="stop" data-n="12" data-map="38.5762565,68.7836305" data-pid="ChIJi4k5nmHRtTgRLzczT7E1iRg">
+      <div class="chip">12</div>
+      <button class="card">
+        <p class="name">Rudaki Statue</p>
+        <p class="native">Rudaki Park · beneath a mosaic of stars</p>
+        <p class="gist">The father of Persian poetry, standing where Lenin used to.</p>
+      </button>
+      <div class="more">
+        <p>Abu Abdullah Rudaki, born around 858 in a village near Panjakent in what is now Tajikistan, is the first major poet of New Persian — the language that emerged after the Arab conquest, written in Arabic script, and which became the literary language of half of Asia. He is called the father of Persian poetry, and the claim is more or less literal. Of a reputed enormous output, only a small fraction survives.</p>
+        <p>He worked at the Samanid court, was showered with wealth, and — according to tradition — fell from favour and died poor and blind. The most famous surviving poem is a lyric about the smell of the Amu Darya's sands drawing the emir home, which is said to have made the court pack up and ride for Bukhara.</p>
+        <h4>The park</h4>
+        <p>This was <b>Lenin Park</b>, laid out in the 1930s by architects from Leningrad. In 2007–08 it was comprehensively rebuilt: Lenin came down, Rudaki went up under a canopy of mosaic stars, and the whole thing was reopened for the poet's 1,150th anniversary in formal marble-paved geometry.</p>
+        <p>Note the substitution precisely. Not the removal of a monument, but the replacement of one universal claim with another — and the poet is a stronger card for Tajikistan than the revolutionary ever was, because he is the one thing Uzbekistan cannot claim.</p>
+      </div>
+    </div>
+
+    <!-- 13 -->
+    <div class="stop" data-n="13" data-map="38.5739711,68.7876481" data-pid="ChIJc3Yl8l3RtTgR39HO_TtXF_w">
+      <div class="chip">13</div>
+      <button class="card">
+        <p class="name">Parliament</p>
+        <p class="native">Majlisi Oli · 2024</p>
+        <p class="gist">Brand new, palatial, and built where older Dushanbe stood.</p>
+      </button>
+      <div class="more">
+        <p>The newest of the great set-pieces, finished in 2024, and unambiguously palatial: a domed and colonnaded government building at a scale that would suit a country many times the size.</p>
+        <h4>What it replaced</h4>
+        <p>This is the sharp end of the redevelopment. Central Dushanbe's Soviet-era fabric — the old parliament building, theatres, ministries, low-rise housing, some of it architecturally significant — has been progressively cleared since the early 2010s to make room for the new ensemble. Heritage advocates, architects and a good many residents have objected, sometimes publicly, sometimes not. Chinese and Turkish contractors have built much of what replaced it.</p>
+        <p>You are, on this walk, looking at both the before and the after within a few hundred metres of each other, which is a rare thing. Stops 3 to 8 are the city that is going. Stops 11 to 16 are the city that is arriving.</p>
+        <h4>Please note</h4>
+        <p class="note">Working government building. Photograph the exterior from a distance, never the entrances or the guards, and don't linger by the fence.</p>
+      </div>
+    </div>
+
+    <!-- 14 -->
+    <div class="stop" data-n="14" data-map="38.5761296,68.7788930" data-pid="ChIJw7zYivjRtTgRpivPRDJkaq4">
+      <div class="chip">14</div>
+      <button class="card">
+        <p class="name">Palace of the Nation</p>
+        <p class="native">Қасри миллат · presidential office</p>
+        <p class="gist">Not open, not approachable, and impossible to miss.</p>
+      </button>
+      <div class="more">
+        <p>The president's office: white, domed, gold-trimmed, set back behind an enormous forecourt. Sometimes called the White House locally. It is closed to the public and always will be.</p>
+        <p>Read it as architecture doing a specific job. Setback, elevation, a long axial approach and a screen of landscaping are all devices for making a building visible but unreachable — you are meant to see it from a distance and understand that the distance is the message. Compare the Soviet buildings behind you, which for all their monumentality generally sat directly on the street.</p>
+        <h4>Seriously, though</h4>
+        <p class="note">Do not cross the road toward the gates to get a better picture. Visitors who have tried report being whistled at and moved on immediately. From the park side, pointing at the building rather than the guards, is fine and gets you the shot anyway.</p>
+      </div>
+    </div>
+
+    <!-- 15 -->
+    <div class="stop" data-n="15" data-map="38.5790036,68.7801111" data-pid="ChIJB4H4pNjTtTgR3fX8J_6S-kE">
+      <div class="chip">15</div>
+      <button class="card">
+        <p class="name">The Giant Flagpole</p>
+        <p class="native">165 m · 2011</p>
+        <p class="gist">World's tallest for three years. Usually hanging limp.</p>
+      </button>
+      <div class="more">
+        <p>Erected for the twentieth anniversary of independence in 2011, at 165 metres, and it held the world record until Jeddah took it in 2014. The flag itself is around thirty by sixty metres.</p>
+        <h4>The record thing</h4>
+        <p>It's easy to mock, and worth resisting the urge for a moment. Superlative-chasing — tallest flagpole, largest teahouse, biggest library — is a recognisable strategy for small states with limited soft power: a record is cheap relative to a navy, legible internationally, and unarguable. Tajikistan has pursued several. Whether it works is a fair question; that it is a deliberate strategy rather than mere vanity is not really in doubt.</p>
+        <h4>Expectation management</h4>
+        <p class="note">A flag that size needs serious wind to fly, so most visitors photograph a very tall pole with a large cloth hanging off it. Occasionally it isn't flying at all. The setting — artificial lake, park, the museum behind — is genuinely lovely at sunset regardless.</p>
+      </div>
+    </div>
+
+    <!-- 16 -->
+    <div class="stop" data-n="16" data-map="38.5822326,68.7795424" data-pid="ChIJA_8WE9nTtTgRbkmdo9GPS-8">
+      <div class="chip">16</div>
+      <button class="card">
+        <p class="name">National Museum</p>
+        <p class="native">Opened 2011 · three floors</p>
+        <p class="gist">Enormous, air-conditioned, and the guidebook walk ends here.</p>
+      </button>
+      <div class="more">
+        <p>The 2011 replacement for the old museum you passed at Stop 3, and a good example of the new building programme at its most functional. Three floors covering history, natural history, fine art and state gifts, with the giant national crest visible from inside as well as out.</p>
+        <p>The natural-history section — constructed habitats for the country's ecological zones, from the Pamir high desert to the southern lowlands — is unexpectedly good, and gives you a sense of the actual country beyond the capital. There's a replica of the Ajina-Teppa Buddha; the original is back at Stop 7.</p>
+        <h4>Practical</h4>
+        <p class="note">Entry recently around 35 somoni. Open daily, roughly 8:00–18:00. Bag checks at the door and photography restricted in some rooms — signage on this is inconsistent, so ask. Blessedly cool in August.</p>
+        <h4>Decision point</h4>
+        <p>This is where the guidebook's 4.8 km walk finishes. Everything below is the extension — another two-plus kilometres north. If the heat has won, stop here and pick the rest up in the evening.</p>
+      </div>
+    </div>
+
+    <div class="divider">
+      <b>Beyond the guidebook · four added stops</b>
+      <p>These are numbers 17, 10, 1 and 5 from the city map legend, resequenced into walking order. Roughly 2 km more, all northward. The through-line is worth holding on to: each one is a very new thing making a claim to be a very old thing.</p>
+    </div>
+
+    <!-- 17 -->
+    <div class="stop extra" data-n="17" data-map="38.5837604,68.7839178" data-pid="ChIJAQCwh97TtTgRE1Xj0rfackM">
+      <div class="chip">17</div>
+      <button class="card">
+        <p class="name">Writers' Union</p>
+        <p class="native">Дом писателей · map legend 17</p>
+        <p class="gist">A facade of stone poets. The best building in the city.</p>
+      </button>
+      <div class="more">
+        <p>Do not walk past this one. Set along the front of the Writers' Union building is a row of sculpted figures of the giants of Persian literature — Rudaki, Ferdowsi, Khayyam, Saadi, Hafez, Rumi, Jami and others — seated and standing, at scale, looking out over the street.</p>
+        <h4>Why it's the key building</h4>
+        <p>It is the clearest single statement of the Tajik national argument anywhere in Dushanbe, and far more eloquent than the marble monuments. The claim it makes is not "we are a Central Asian country with an interesting local culture." It is: <em>this entire literary tradition, the one that runs from Bukhara to Shiraz to Delhi, is ours — we are its direct descendants and we speak its language.</em></p>
+        <p>And it's a Soviet-era building. That's the genuinely interesting part. Soviet nationality policy didn't just permit each republic to assemble a classical canon; it encouraged it, funded the scholarship, commissioned the sculpture. What looks today like a nationalist monument was built inside a system that is usually remembered for suppressing exactly that.</p>
+        <h4>Look for</h4>
+        <p>Who's included, and notice how many of them were born in places that are now Iran, Afghanistan or Uzbekistan. The canon is transnational; the claim on it is national. That tension is the whole story.</p>
+      </div>
+    </div>
+
+    <!-- 18 -->
+    <div class="stop extra" data-n="18" data-map="38.5872,68.7802">
+      <div class="chip">18</div>
+      <button class="card">
+        <p class="name">New Avenue</p>
+        <p class="native">Map legend 10 · recent build</p>
+        <p class="gist">The commercial version of everything you've just walked past.</p>
+      </button>
+      <div class="more">
+        <p>Towers, marble cladding, plate glass, wide new carriageways. Almost all of it is from the last decade, and much of it stands on ground cleared of Soviet-era housing and older low-rise blocks.</p>
+        <h4>What to actually look at</h4>
+        <p>Occupancy, and street life. New central districts of this kind across the region have a habit of looking finished and being half empty — apartments bought as stores of value rather than homes, ground-floor retail units papered over. Whether that's true here on the day you visit is worth ten minutes of just watching.</p>
+        <p>Then compare it with Rudaki Avenue an hour ago: continuous plane-tree shade, buildings meeting the pavement, cafés spilling out, people walking because walking is pleasant. Mid-century Soviet planners, for all their faults, understood shade in a 40-degree city. That is a real and testable difference, and by this point in the day your own body has the data.</p>
+        <h4>Note</h4>
+        <p class="note">Map pin is approximate — this is a district rather than a point. It's the built-up stretch between the Writers' Union and Istiqlol Tower.</p>
+      </div>
+    </div>
+
+    <!-- 19 -->
+    <div class="stop extra" data-n="19" data-map="38.5912747,68.7814290" data-pid="ChIJp6LIGgDTtTgRkZojuhTMxQA">
+      <div class="chip">19</div>
+      <button class="card">
+        <p class="name">Istiqlol Tower</p>
+        <p class="native">Истиқлол · independence · map legend 1</p>
+        <p class="gist">Go up. Go at dusk. Bring cash.</p>
+      </button>
+      <div class="more">
+        <p><em>Istiqlol</em> means independence. The tower is an octagonal shaft rising from a stepped base, topped with a metal crown that catches the sun — the same crown motif you saw over Ismoil Somoni's head at Stop 9, which is not a coincidence but a deliberate visual rhyme running through the state's whole monument programme.</p>
+        <p>Inside, the lower floors hold an ethnographic and historical exhibition, usually walked through with a guide, and the upper floors are viewing levels.</p>
+        <h4>Do it properly</h4>
+        <p>This is the single best reason to have extended the walk. Arrive twenty to thirty minutes before sunset. You get the city in daylight, then the light going, then — around twenty minutes after dusk — the whole illuminated set-piece switching on across the centre: the flagpole, the palace, the museum, the arch. You will be looking down at almost every stop on this walk at once, which is a genuinely good way to end it.</p>
+        <h4>Practical</h4>
+        <p class="note">Recently around 70 somoni, <b>cash only</b> — no cards, no QR. Opening has been reported from around midday until 22:00, so it suits an evening visit. No café inside. The air over Dushanbe is often hazy, so don't count on seeing the mountains.</p>
+      </div>
+    </div>
+
+    <!-- 20 -->
+    <div class="stop extra" data-n="20" data-map="38.5910,68.7848">
+      <div class="chip">20</div>
+      <button class="card">
+        <p class="name">East Gate</p>
+        <p class="native">Darvozai Sharq · map legend 5</p>
+        <p class="gist">A brand-new city gate. Which is the entire point.</p>
+      </button>
+      <div class="more">
+        <p>A monumental gateway marking the approach to the centre, and the right place to finish, because it makes the argument of the whole day explicit.</p>
+        <h4>Think about what a city gate is</h4>
+        <p>Gates are the oldest urban architecture there is, and in the Persian and Central Asian world they carried real weight: a walled city's gates were its identity, its defence, its customs points, its named districts. Bukhara had eleven. Samarkand, Herat, Merv, Balkh — all defined by their gates.</p>
+        <p>Dushanbe never had walls. It was a Monday market that became a capital by administrative decision in 1924. It has no gates to restore, so it has built one — and the gesture is entirely legible: a young city equipping itself with the furniture of an ancient one, in a country whose ancient cities ended up on the other side of a border drawn a century ago.</p>
+        <p>You can read that as insecurity or as nation-building, and honestly it's both. But after twenty stops it should no longer look arbitrary. Every marble monument on this walk is doing the same work as this gate.</p>
+        <h4>Note</h4>
+        <p class="note">Map pin is approximate — it's on Rudaki, a short walk from the tower. Ask for <em>Darvozai Sharq</em>.</p>
+      </div>
+    </div>
+
+    <div class="aside">
+      <b>Worth the detour · Kokhi Navruz</b>
+      <p>West of the route on Ismoil Somoni Avenue, and not on your walk, but arguably the most extraordinary building in the country. It started as a plan for a teahouse and became the largest teahouse in the world: twelve halls of hand-carved walnut, painted ceilings, mosaic and plasterwork, reportedly the work of thousands of artisans over years. It's a genuine showcase of living Tajik craft rather than imported marble. Take a taxi; it's too far to add on foot after this walk.</p>
+    </div>
+
+    <div class="terminus"><span class="dot"><i></i></span><b>End</b> &nbsp;<em>East Gate, Rudaki</em><a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=38.5910,68.7848">Maps &rsaquo;</a></div>
+  </section>
+
+  <section class="practical">
+    <h2>Walking it today</h2>
+    <ul>
+      <li><b>Heat.</b> August in Dushanbe runs to the high thirties and beyond. The plane trees along Rudaki are the only reason this walk is possible in summer — stay under them. Best plan: Stops 1–8 before 11:00, break through the worst of the afternoon, then 9–20 from about 17:00, arriving at Istiqlol Tower for sunset.</li>
+      <li><b>Photography.</b> The most important rule of the day. No photographs of the Palace of the Nation gates, parliament entrances, guards, police, military or checkpoints. Shoot from the park side, don't set up a tripod, and put the phone away the instant anyone gestures.</li>
+      <li><b>Politics.</b> Let Tajiks raise it if they want to. Don't press, and don't criticise the leadership in public. This isn't nervousness — it's the normal courtesy of not creating risk for someone else.</li>
+      <li><b>Cash.</b> Somoni, in small notes. Istiqlol Tower is cash only. Cards work in good hotels and restaurants and almost nowhere else.</li>
+      <li><b>Museums.</b> Hours are short and vary by day — the Museum of Antiquities closes early on Sundays and Mondays. The National Museum is open daily and air-conditioned.</li>
+      <li><b>Registration.</b> If you're in the country beyond about ten days, check the current OVIR registration requirement — rules have changed more than once.</li>
+      <li><b>Getting back.</b> Ride-hailing works in Dushanbe and is cheap. From East Gate to the south end of Rudaki is a few minutes by car and a long walk on tired legs.</li>
+      <li><b>Eat.</b> <em>Qurutob</em> is the national dish and the one to have: torn flatbread soaked in a sauce of qurut (dried yoghurt), with oil, onions and herbs, eaten by hand from a shared platter, traditionally at lunch. Also osh (plov), sambusa from a tandoor, and excellent Iranian food in the centre.</li>
+    </ul>
+  </section>
+
+  <section class="glossary">
+    <h2>Words worth knowing</h2>
+    <dl>
+      <dt>dushanbe</dt><dd>Literally "Monday" — the market day the city grew from. <em>Salom</em> is hello.</dd>
+      <dt>istiqlol</dt><dd>Independence. On the tower, on streets, on institutions.</dd>
+      <dt>kokhi / qasr</dt><dd>Palace. Kokhi Millat = Palace of the Nation; Kokhi Navruz = Navruz Palace.</dd>
+      <dt>darvoza</dt><dd>Gate. Darvozai Sharq = East Gate.</dd>
+      <dt>somoni</dt><dd>The currency, named for Ismail Samani.</dd>
+      <dt>qurutob</dt><dd>The national dish. Flatbread, dried-yoghurt sauce, oil, onion, herbs.</dd>
+      <dt>chinor</dt><dd>The oriental plane tree. The shade over Rudaki Avenue, and a sacred tree in Persian tradition.</dd>
+      <dt>jadid</dt><dd>The Muslim modernist reformers of the early 1900s. Ayni was one.</dd>
+      <dt>Sogdian</dt><dd>The Iranian-speaking people of pre-Islamic Central Asia, claimed as Tajik ancestors.</dd>
+      <dt>Samanid</dt><dd>The 9th–10th century dynasty, ruling from Bukhara, under which literary Persian was reborn.</dd>
+      <dt>shashmaqom</dt><dd>The classical sung-poetry tradition of Bukhara and Samarkand, shared with Uzbekistan.</dd>
+    </dl>
+  </section>
+
+  <footer>
+    Third in the series, after Bishkek and Osh. Gold-numbered stops (17–20) are the additions beyond the guidebook route.<br><br>
+    Where a stop has no reliable map pin — the former museum, New Avenue, East Gate — the button is outlined rather than filled and lands you in the right block. Follow the guidebook map for those.<br><br>
+    Prices, opening hours and building uses in central Dushanbe change fast, and casualty figures for the civil war are contested. Treat the numbers here as recent rather than current, and check at the door.
+  </footer>
+</div>
+
+<div class="bar">
+  <span id="count">0 of 20 seen</span>
+  <button id="reset" type="button">Reset</button>
+</div>
+
+<script>
+(function(){
+  var stops = Array.prototype.slice.call(document.querySelectorAll('.stop'));
+  var countEl = document.getElementById('count');
+  var seen = {};
+
+  function save(){
+    try { window.storage && window.storage.set('dushanbe-seen', JSON.stringify(seen)); } catch(e){}
+  }
+  function render(){
+    var n = 0;
+    stops.forEach(function(s){
+      var k = s.dataset.n;
+      if(seen[k]){ s.classList.add('seen'); n++; } else { s.classList.remove('seen'); }
+      var b = s.querySelector('.btn.mark');
+      if(b){ b.classList.toggle('on', !!seen[k]); b.textContent = seen[k] ? 'Seen \u2713' : 'Mark as seen'; }
+    });
+    countEl.textContent = n + ' of ' + stops.length + ' seen';
+  }
+
+  stops.forEach(function(s){
+    var card = s.querySelector('.card');
+    var more = s.querySelector('.more');
+
+    var actions = document.createElement('div');
+    actions.className = 'actions';
+
+    if(s.dataset.map){
+      var link = document.createElement('a');
+      link.className = 'btn' + (s.dataset.pid ? '' : ' approx');
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.href = 'https://www.google.com/maps/search/?api=1&query=' + s.dataset.map +
+                  (s.dataset.pid ? '&query_place_id=' + s.dataset.pid : '');
+      link.textContent = s.dataset.pid ? 'Open in Maps' : 'Approx. spot in Maps';
+      link.addEventListener('click', function(e){ e.stopPropagation(); });
+      actions.appendChild(link);
+    }
+
+    var mark = document.createElement('button');
+    mark.type = 'button';
+    mark.className = 'btn mark';
+    mark.textContent = 'Mark as seen';
+    mark.addEventListener('click', function(){
+      seen[s.dataset.n] = !seen[s.dataset.n];
+      render(); save();
+    });
+    var close = document.createElement('button');
+    close.type = 'button';
+    close.className = 'btn';
+    close.textContent = 'Close';
+    close.addEventListener('click', function(){
+      s.classList.remove('open');
+      card.scrollIntoView({block:'center', behavior:'smooth'});
+    });
+    actions.appendChild(mark);
+    actions.appendChild(close);
+    more.appendChild(actions);
+
+    card.setAttribute('aria-expanded','false');
+    card.addEventListener('click', function(){
+      var open = s.classList.toggle('open');
+      card.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+
+  document.getElementById('reset').addEventListener('click', function(){
+    seen = {}; render(); save();
+  });
+
+  (async function(){
+    try {
+      var r = window.storage && await window.storage.get('dushanbe-seen');
+      if(r && r.value) seen = JSON.parse(r.value);
+    } catch(e){}
+    render();
+  })();
+})();
+</script>
+</body>
+</html>

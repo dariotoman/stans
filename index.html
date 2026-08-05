@@ -190,6 +190,8 @@
   .day-hotel-name { font-weight: 600; color: #0f766e; }
   .day-hotel-meta { color: #64748b; font-size: 12px; margin-top: 3px; }
   .day-show-on-map { display: inline-block; margin-top: 12px; font-size: 12px; color: var(--accent); cursor: pointer; text-decoration: underline; }
+  .day-walk-link { display: inline-block; padding: 8px 12px; background: #f0fdfa; border: 1px solid #99f6e4; border-radius: 6px; font-size: 13px; font-weight: 500; color: #0f766e; text-decoration: none; }
+  .day-walk-link:hover { background: #ccfbf1; }
   .day-modal-nav { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--border); background: #fafbfc; }
   .day-nav-btn { flex: 1; background: white; border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; font-size: 12px; cursor: pointer; color: var(--text); font-weight: 500; display: flex; align-items: center; gap: 6px; min-width: 0; }
   .day-nav-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
@@ -724,6 +726,10 @@ function openDayDetail(idx) {
     hotelHtml = `<div class="day-section"><div class="day-section-title">🏨 Accommodation</div><div class="day-hotel-block" style="background:#f8fafc;border-color:#e2e8f0"><div class="day-hotel-name" style="color:#475569">Included in tour</div><div class="day-hotel-meta">Yurt / homestay / guesthouse arranged by Visit Alay</div></div></div>`;
   }
 
+  const walkHtml = s.walkingTour
+    ? `<div class="day-section"><div class="day-section-title">🚶 Self-guided walk</div><a class="day-walk-link" href="${escapeHTML(s.walkingTour.href)}" target="_blank" rel="noopener">${escapeHTML(s.walkingTour.label)} →</a></div>`
+    : '';
+
   const prev = currentStops[idx - 1];
   const next = currentStops[idx + 1];
 
@@ -743,6 +749,7 @@ function openDayDetail(idx) {
       ${itineraryHtml}
       ${infoHtml}
       ${hotelHtml}
+      ${walkHtml}
       <span class="day-show-on-map" data-idx="${idx}">📍 zoom to on map</span>
     </div>
     <div class="day-modal-nav">

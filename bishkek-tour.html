@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#DEDCD2">
+<title>Bishkek — Soviet-Era Walking Tour</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --plaster:#DEDCD2;
+    --plaster-2:#EAE8DF;
+    --ink:#211E1A;
+    --ink-soft:#5A554C;
+    --smalti-red:#B03227;
+    --smalti-teal:#2C6462;
+    --smalti-ochre:#BE8524;
+    --rule:#C3BEAF;
+    --shadow:rgba(33,30,26,.10);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--plaster);
+    color:var(--ink);
+    font-family:"Newsreader",Georgia,serif;
+    font-size:17px;
+    line-height:1.55;
+    padding-bottom:64px;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 16px}
+
+  /* ---------- masthead ---------- */
+  .mast{padding:34px 0 22px;border-bottom:3px solid var(--ink)}
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--smalti-red);margin:0 0 10px
+  }
+  h1{
+    font-family:"Archivo Black",Impact,sans-serif;
+    font-size:clamp(34px,10vw,52px);line-height:.92;letter-spacing:-.02em;
+    margin:0;text-transform:uppercase;
+  }
+  h1 span{display:block;color:var(--smalti-teal)}
+  .standfirst{margin:16px 0 0;font-size:17px;color:var(--ink-soft)}
+  .facts{
+    display:flex;gap:0;margin:20px 0 0;border-top:1px solid var(--rule);
+    border-bottom:1px solid var(--rule)
+  }
+  .fact{flex:1;padding:10px 0}
+  .fact + .fact{border-left:1px solid var(--rule);padding-left:12px}
+  .fact dt{
+    font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--ink-soft);margin:0 0 3px
+  }
+  .fact dd{margin:0;font-weight:500;font-size:15px}
+
+  /* ---------- primer ---------- */
+  .primer{padding:26px 0 8px}
+  .primer h2, .practical h2, .glossary h2{
+    font-family:"Archivo Black",sans-serif;text-transform:uppercase;
+    font-size:15px;letter-spacing:.02em;margin:0 0 12px
+  }
+  .primer p{margin:0 0 14px}
+  .era{
+    display:grid;grid-template-columns:auto 1fr;gap:6px 14px;
+    margin:18px 0 0;padding:16px;background:var(--plaster-2);
+    border-left:4px solid var(--smalti-ochre)
+  }
+  .era b{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;white-space:nowrap;
+    color:var(--smalti-red);align-self:start;padding-top:3px
+  }
+  .era span{font-size:15px;line-height:1.45}
+
+  /* ---------- route spine ---------- */
+  .route{position:relative;padding:28px 0 10px}
+  .route::before{
+    content:"";position:absolute;left:17px;top:44px;bottom:34px;width:0;
+    border-left:3px dotted var(--smalti-teal);opacity:.65
+  }
+  .routehead{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--ink-soft);margin:0 0 14px;padding-left:52px
+  }
+  .terminus{
+    display:flex;align-items:center;gap:14px;position:relative;z-index:2;margin:0 0 6px
+  }
+  .terminus .dot{
+    width:36px;height:36px;flex:0 0 36px;border-radius:50%;
+    background:var(--plaster);border:3px solid var(--smalti-teal);
+    display:grid;place-items:center
+  }
+  .terminus .dot i{width:10px;height:10px;border-radius:50%;background:var(--smalti-teal);display:block}
+  .terminus b{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase
+  }
+  .terminus em{font-style:normal;color:var(--ink-soft);font-size:15px;font-family:"Newsreader",serif;letter-spacing:0;text-transform:none}
+
+  /* ---------- stop cards ---------- */
+  .stop{position:relative;margin:14px 0;padding-left:52px}
+  .chip{
+    position:absolute;left:0;top:2px;width:36px;height:36px;border-radius:50%;
+    background:var(--smalti-red);color:#fff;z-index:2;
+    font-family:"Archivo Black",sans-serif;font-size:16px;
+    display:grid;place-items:center;
+    border:3px solid var(--plaster);
+    transition:background .18s ease, transform .18s ease
+  }
+  .stop.seen .chip{background:var(--smalti-teal)}
+  .stop.seen .card{opacity:.72}
+  .card{
+    width:100%;text-align:left;background:var(--plaster-2);border:1px solid var(--rule);
+    border-left:4px solid var(--smalti-red);
+    padding:13px 15px;font:inherit;color:inherit;cursor:pointer;display:block;
+    box-shadow:0 1px 0 var(--shadow);transition:opacity .18s ease
+  }
+  .stop.seen .card{border-left-color:var(--smalti-teal)}
+  .card:focus-visible{outline:3px solid var(--smalti-ochre);outline-offset:2px}
+  .name{
+    font-family:"Archivo Black",sans-serif;font-size:17px;line-height:1.15;
+    text-transform:uppercase;letter-spacing:-.01em;margin:0
+  }
+  .native{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);
+    margin:5px 0 0;letter-spacing:.02em
+  }
+  .gist{margin:8px 0 0;font-size:15.5px;color:var(--ink-soft)}
+  .more{
+    display:none;padding:2px 15px 16px;background:var(--plaster-2);
+    border:1px solid var(--rule);border-top:0;border-left:4px solid var(--smalti-red)
+  }
+  .stop.open .more{display:block}
+  .stop.seen .more{border-left-color:var(--smalti-teal)}
+  .more p{margin:12px 0 0;font-size:16px}
+  .more h4{
+    font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--smalti-red);margin:18px 0 0;
+    padding-top:12px;border-top:1px solid var(--rule)
+  }
+  .more h4 + p{margin-top:6px}
+  .actions{display:flex;gap:10px;margin:18px 0 0;flex-wrap:wrap}
+  .btn{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;
+    text-transform:uppercase;padding:9px 13px;border:1px solid var(--ink);
+    background:transparent;color:var(--ink);cursor:pointer
+  }
+  .btn:focus-visible{outline:3px solid var(--smalti-ochre);outline-offset:2px}
+  .btn.on{background:var(--smalti-teal);border-color:var(--smalti-teal);color:#fff}
+  a.btn{text-decoration:none;background:var(--smalti-red);border-color:var(--smalti-red);color:#fff}
+  a.btn::before{content:"\27A4";margin-right:7px;font-size:10px}
+  .maproute{
+    display:inline-block;margin:18px 0 0;padding:11px 15px;background:var(--ink);color:var(--plaster);
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    text-decoration:none
+  }
+  .maproute:focus-visible{outline:3px solid var(--smalti-ochre);outline-offset:2px}
+  .aside a{color:var(--smalti-red);font-family:"IBM Plex Mono",monospace;font-size:11px;
+    letter-spacing:.1em;text-transform:uppercase;display:inline-block;margin-top:9px}
+  .terminus a{
+    font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--smalti-red);margin-left:auto;white-space:nowrap
+  }
+
+  .aside{
+    margin:16px 0 16px 52px;padding:14px 16px;background:transparent;
+    border:1px dashed var(--smalti-ochre)
+  }
+  .aside b{
+    display:block;font-family:"IBM Plex Mono",monospace;font-size:10px;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--smalti-ochre);margin:0 0 6px
+  }
+  .aside p{margin:0;font-size:15.5px}
+
+  /* ---------- tail sections ---------- */
+  .practical,.glossary{padding:26px 0;border-top:3px solid var(--ink);margin-top:26px}
+  .practical ul{margin:0;padding:0;list-style:none}
+  .practical li{padding:10px 0;border-bottom:1px solid var(--rule);font-size:16px}
+  .practical li:last-child{border-bottom:0}
+  .practical li b{font-weight:500;color:var(--smalti-red)}
+  .glossary dl{margin:0}
+  .glossary dt{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;
+    color:var(--smalti-teal);margin:14px 0 2px;letter-spacing:.04em
+  }
+  .glossary dd{margin:0;font-size:15.5px;color:var(--ink-soft)}
+  footer{
+    padding:24px 0 8px;font-family:"IBM Plex Mono",monospace;font-size:11px;
+    line-height:1.7;color:var(--ink-soft);border-top:1px solid var(--rule);margin-top:26px
+  }
+
+  /* ---------- sticky progress ---------- */
+  .bar{
+    position:fixed;left:0;right:0;bottom:0;background:var(--ink);color:var(--plaster);
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:11px 16px calc(11px + env(safe-area-inset-bottom));z-index:20
+  }
+  .bar span{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+  .bar button{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;
+    text-transform:uppercase;background:transparent;color:var(--plaster);
+    border:1px solid rgba(222,220,210,.5);padding:7px 11px;cursor:pointer
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <p class="eyebrow">Field guide · Frunze / Бишкек</p>
+    <h1>Concrete<span>&amp; Oaks</span></h1>
+    <p class="standfirst">Sixteen stops through the city the Soviet Union built on a tsarist garrison town — and through what Kyrgyzstan has done with it since. Tap any stop to open it.</p>
+    <dl class="facts">
+      <div class="fact"><dt>Start</dt><dd>Victory Square</dd></div>
+      <div class="fact"><dt>End</dt><dd>Osh Bazaar</dd></div>
+      <div class="fact"><dt>Length</dt><dd>5 km · 2–4 hrs</dd></div>
+    </dl>
+    <a class="maproute" target="_blank" rel="noopener"
+       href="https://www.google.com/maps/dir/?api=1&amp;travelmode=walking&amp;origin=42.8793443,74.6161017&amp;destination=42.874967,74.570242&amp;waypoints=42.8779685,74.6071023%7C42.8757128,74.6036696%7C42.8796914,74.6001474%7C42.8780643,74.587572">Open whole route in Maps</a>
+  </header>
+
+  <section class="primer">
+    <h2>Before you start walking</h2>
+    <p>This city has had three names in 150 years. The Russian Empire built a fort here in 1868 on the site of a Kokandi mud-brick fortress called <b>Pishpek</b>, destroyed a few years earlier. The garrison town that grew around it was laid out as a grid, threaded with <b>aryks</b> — open irrigation channels — and planted with tens of thousands of trees, which is why you are about to walk one of the greenest capitals in Asia.</p>
+    <p>In 1926 it became <b>Frunze</b>, after Mikhail Frunze, the Bolshevik commander born here in 1885. For 65 years that was the name. Almost every building on this walk was designed for a city called Frunze, by architects trained in Moscow and Leningrad, for a republic that no longer exists. The name changed back — to <b>Bishkek</b> — in 1991. The buildings mostly didn't.</p>
+    <p>So the real subject of this walk isn't just architecture. It's a set of decisions about what to keep. Lenin was moved rather than removed. The Lenin Museum became the National Historical Museum. The square built for the 60th anniversary of Soviet Kyrgyzstan is now where the flag is raised and where two governments have been overthrown.</p>
+
+    <div class="era">
+      <b>1868–1917</b><span>Tsarist garrison town. Low brick and adobe, the street grid, the aryks, the oaks.</span>
+      <b>1930s–1955</b><span>Stalinist neoclassicism. Columns, pediments, symmetry — empire clothing on socialist institutions. <em>Stop 5.</em></span>
+      <b>1956–1970s</b><span>Khrushchev's turn against "excess." Stripped concrete, glass, prefab housing, standard-issue civic types repeated across the USSR. <em>Stops 2, 3.</em></span>
+      <b>1975–1991</b><span>Late-Soviet monumentalism, with a licensed dose of national identity: yurt geometry, Kyrgyz ornament, huge mosaics. Almost everything else here. Watch for the 1984–85 cluster — a wave of building for the republic's 60th anniversary and the 40th anniversary of victory in the war.</span>
+    </div>
+  </section>
+
+  <section class="route">
+    <p class="routehead">The route · south side of Chuy, then back west</p>
+
+    <div class="terminus"><span class="dot"><i></i></span><b>Start</b> &nbsp;<em>Victory Square</em><a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=42.8793443,74.6161017&amp;query_place_id=ChIJd9PGcMC3njgRaiGgP2Ng8jw">Maps &rsaquo;</a></div>
+
+    <!-- 1 -->
+    <div class="stop" data-n="1" data-map="42.8793443,74.6161017" data-pid="ChIJd9PGcMC3njgRaiGgP2Ng8jw">
+      <div class="chip">1</div>
+      <button class="card">
+        <p class="name">Victory Square</p>
+        <p class="native">Жеңиш аянты · 1984–85</p>
+        <p class="gist">Three red granite arcs that are secretly a yurt.</p>
+      </button>
+      <div class="more">
+        <p>Walk inside the monument before you look at it from outside. The three curved granite ribs are the frame of a <b>boz üy</b>, a Kyrgyz felt yurt, and the opening they leave overhead is its <b>tunduk</b> — the wooden crown that sits at the top of every yurt and appears at the centre of the Kyrgyz flag. Under it burns the eternal flame, and beside it stands a bronze woman with a bowl, waiting at the hearth for a man who is not coming back.</p>
+        <p>That reading matters. This was built in 1984–85 for the 40th anniversary of the end of the war, at the height of Soviet monumental building — but the architects were allowed to say it in Kyrgyz. Late-Soviet Central Asian architecture is full of this: state message, local grammar.</p>
+        <h4>The history under it</h4>
+        <p>Kyrgyzstan sent something on the order of 360,000 people to the front from a population of roughly a million and a half. Perhaps a third never returned. There is essentially no family here without a name in this war. The scale of that loss is the reason a monument this large sits in a city this size.</p>
+        <h4>Look for</h4>
+        <p>Wedding parties. Laying flowers at the flame is still a normal part of a Bishkek wedding day, so on a summer Saturday you may see three or four convoys arrive in an hour — brides in white against red granite, which is the single most photographable collision in the city.</p>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="stop" data-n="2" data-map="42.8814439,74.6141195" data-pid="ChIJaWrEAgC3njgRVrBZ4T6XeA4">
+      <div class="chip">2</div>
+      <button class="card">
+        <p class="name">Kyrgyz State Circus</p>
+        <p class="native">Кыргыз мамлекеттик циркі · opened 1976</p>
+        <p class="gist">A concrete flying saucer, and there are siblings across the ex-USSR.</p>
+      </button>
+      <div class="more">
+        <p>The disc-on-a-drum shape is not a local invention — it's a Soviet building <em>type</em>. From the 1960s the state rolled out permanent circus buildings to republican capitals using a shared structural idea: a round arena under a suspended or ribbed roof, seating in a bowl, no columns in the way. You can find close cousins in Almaty, Kazan, Voronezh, Kishinev. Spotting the family resemblance is one of the pleasures of travelling this part of the world.</p>
+        <h4>Why a circus, of all things</h4>
+        <p>In the USSR circus was not a children's diversion, it was a state art form with conservatories, touring companies, ranks and honours, and a genuine mass audience — cheap, wordless, exportable, and ideologically safe in a way theatre never was. A capital without a proper circus building was a capital that hadn't arrived.</p>
+        <h4>Reality check</h4>
+        <p>The building has had a long, difficult maintenance history. Performances do run — most often on weekend afternoons — but the schedule is irregular, so treat it as an exterior stop unless you can confirm a show. If the doors are open, staff have been known to let curious visitors look in.</p>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="stop" data-n="3" data-map="42.8826651,74.6124763" data-pid="ChIJSXnbS-q3njgR9xG9ivKOTrU">
+      <div class="chip">3</div>
+      <button class="card">
+        <p class="name">Wedding Palace</p>
+        <p class="native">Дворец бракосочетаний · opened 1987</p>
+        <p class="gist">The state's answer to the mosque and the church.</p>
+      </button>
+      <div class="more">
+        <p>When religious ceremony was pushed out of public life, something had to fill the gap — people still wanted the day to feel enormous. The Soviet solution was to design new secular rituals and then build architecture worthy of them. Hence the Palace of Weddings: a civil registry office given a grand stair, a ceremonial hall, music, and a facade meant to make a Tuesday morning signature feel like a rite.</p>
+        <p>Look at how the decoration works. The massing is standard modernist, but the screens, grilles and panels carry Kyrgyz ornament — the same repertoire you'd see on a felt shyrdak carpet or a carved yurt door, flattened into concrete and metal.</p>
+        <h4>Best time</h4>
+        <p>Tens of thousands of couples have been registered here since it opened. Saturday morning is the moment to see it working: when the cars arrive with ribbons on the bonnets and a klaxon convoy behind. This is one of the few Soviet building types still doing exactly the job it was designed for.</p>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="stop" data-n="4" data-map="42.8814002,74.6109834" data-pid="ChIJ7-zLH-q3njgRh_ySQr_qqng">
+      <div class="chip">4</div>
+      <button class="card">
+        <p class="name">National Library</p>
+        <p class="native">Улуттук китепкана · 1984</p>
+        <p class="gist">A temple of knowledge, with the stairs to prove it.</p>
+      </button>
+      <div class="more">
+        <p>The formula is instantly legible: raise the box on a podium, run a wide flight of steps up to it, clad it in pale stone, keep the windows narrow and vertical so the wall reads as solid. It's classicism with the ornament stripped off — the columns become piers, the pediment disappears, the monumentality stays.</p>
+        <p>Soviet library-building was serious business: mass literacy was one of the system's proudest and most genuinely transformative claims, and in Central Asia the transformation was real and fast. A building like this is an argument in stone about what the state had delivered.</p>
+        <h4>Look for</h4>
+        <p>The proportion of blank wall to window. Late-Soviet civic buildings in hot, high-glare climates like this one often turn deliberately inward — cool, dim, heavy — the opposite instinct to the glass boxes going up in the same decade in the West.</p>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="stop" data-n="5" data-map="42.8781341,74.6122802" data-pid="ChIJPalICMG3njgRlXVusP6djBc">
+      <div class="chip">5</div>
+      <button class="card">
+        <p class="name">Opera &amp; Ballet Theatre</p>
+        <p class="native">Maldybaev Theatre · 1955</p>
+        <p class="gist">The oldest style on this walk — and the story of an invented tradition.</p>
+      </button>
+      <div class="more">
+        <p>Columns, symmetry, a pale classical front: this is Stalinist neoclassicism, finished in 1955 just as Khrushchev was about to outlaw the style as decorative waste. Compare it to the library four stops back. Thirty years apart, both monumental, and you can read the entire political history of Soviet taste in the difference.</p>
+        <h4>Abdylas Maldybaev</h4>
+        <p>The theatre carries the name of the singer and composer who co-wrote the first Kyrgyz operas in the late 1930s — works that set Kyrgyz stories and melodic material, drawn from the <b>komuz</b> and the epic-singing tradition, into a European orchestral and operatic form. He also co-composed the music used for the republic's anthem.</p>
+        <p>This was policy, not accident. Moscow's cultural line was "national in form, socialist in content": every republic was to acquire an opera house, a national ballet, a symphony orchestra and a canon of national classics, on a Russian-European template. Kyrgyz musical culture before this was overwhelmingly oral, improvised and solo. What you're looking at is the building where a tradition was deliberately manufactured — and then genuinely, durably adopted.</p>
+        <h4>Worth doing</h4>
+        <p>If anything is playing tonight, go. Ticket prices here are a fraction of European equivalents and the interior is worth the price alone.</p>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="stop" data-n="6" data-map="42.8779685,74.6071023" data-pid="ChIJqSje8cK3njgRKe3ugzlgOrk">
+      <div class="chip">6</div>
+      <button class="card">
+        <p class="name">Oak Park</p>
+        <p class="native">Дубовый парк · now also Chingiz Aitmatov Park</p>
+        <p class="gist">Older than almost everything else here. Thank a forester.</p>
+      </button>
+      <div class="more">
+        <p>The oldest surviving green space in the city, and the reason Bishkek feels the way it does. In the late 19th century the tsarist administration ran a forestry nursery here under <b>Alexei Fetisov</b>, who trialled and distributed species across the new town. Combined with the aryk network — the open channels still running along many streets — it turned a dusty garrison on a semi-arid plain into a city under a canopy.</p>
+        <p>On an August afternoon this is not trivia, it's survival strategy. Plan the rest of the walk to stay in tree shade wherever the route allows.</p>
+        <h4>Look for</h4>
+        <p>Sculpture scattered among the trees. An open-air sculpture collection accumulated here from the mid-1980s, when sculptors were invited to work on site and leave the results — so the park doubles as a gallery you walk through rather than around. Also: chess players, and a lot of very committed shade-sitting.</p>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="stop" data-n="7" data-map="42.8773036,74.6070787" data-pid="ChIJ34ZJHcO3njgRzNnOQOhFBn0">
+      <div class="chip">7</div>
+      <button class="card">
+        <p class="name">Kurmanjan Datka</p>
+        <p class="native">Курманжан Датка · 1811–1907</p>
+        <p class="gist">The Queen of Alai. She let her son hang to prevent a war.</p>
+      </button>
+      <div class="more">
+        <p>Of all the figures on this walk, she is the one to know. Born in the Alai mountains in the far south, she refused the husband her family chose — already extraordinary — and married the local ruler Alymbek Datka. When he was killed, she took over his authority, and was confirmed with the title <b>datka</b>, a rank no other Kyrgyz woman held. She led the Alai Kyrgyz through the collapse of the Kokand Khanate and the arrival of Russian imperial power, negotiating terms rather than being conquered outright.</p>
+        <h4>1895</h4>
+        <p>Her son Kamchybek was condemned to death by the Russian authorities. She was present, and she did not raise her people to stop it — the account that has come down is that armed resistance would have meant the destruction of the Alai Kyrgyz, and she chose the survival of the many over her own son. Whatever the exact historical detail, that is the story Kyrgyzstan tells about her, and it explains the reverence.</p>
+        <h4>Look for</h4>
+        <p>Her face on the 50 som note in your wallet. She is one of the very few pre-Soviet Kyrgyz figures embraced equally by the Soviet and post-independence states — which is why her statue can stand a few hundred metres from Lenin's without contradiction.</p>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="stop" data-n="8" data-map="42.8779685,74.6071023" data-pid="ChIJqSje8cK3njgRKe3ugzlgOrk">
+      <div class="chip">8</div>
+      <button class="card">
+        <p class="name">Open-air art gallery</p>
+        <p class="native">Oak Park, along the paths</p>
+        <p class="gist">Painters selling their own work, no middleman.</p>
+      </button>
+      <div class="more">
+        <p>An informal artists' market that sets up along the park paths — landscapes of the Tien Shan and Song-Kul, portraits, felt work, Soviet-era prints and the occasional genuinely good canvas. You are usually buying from the person who made it.</p>
+        <h4>Buying</h4>
+        <p>Cash in som, small notes. Gentle bargaining is expected and should stay good-humoured; this is not a hard-sell bazaar. Ask before photographing someone's stall — it's their inventory on display. If you want something rolled for a suitcase, say so, most will do it.</p>
+      </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="stop" data-n="9" data-map="42.8785619,74.6039076" data-pid="ChIJNU1eRN23njgRJFcsFDXdaL0">
+      <div class="chip">9</div>
+      <button class="card">
+        <p class="name">Lenin Statue</p>
+        <p class="native">Ленин · 1984, moved 2003</p>
+        <p class="gist">Not torn down. Just walked around the back.</p>
+      </button>
+      <div class="more">
+        <p>This is one of the most quietly telling objects in Central Asia. The statue went up in 1984 facing Ala-Too Square, the ceremonial heart of the republic, arm outstretched over parades. In 2003 it was taken down and re-erected behind the museum, where it now gestures over a much smaller plaza with its back to the main square.</p>
+        <p>It was not destroyed. It was not melted, exiled, or put in a sculpture graveyard the way Lenins were in Lithuania or Ukraine. It was relocated, respectfully, and it remains one of the largest Lenin statues still standing anywhere in the region.</p>
+        <h4>Why that matters</h4>
+        <p>Kyrgyzstan never carried out a hard reckoning with the Soviet period, and public opinion here has stayed genuinely mixed. The USSR brought mass literacy, health care, industry and the very idea of a Kyrgyz republic with borders and a written language — alongside the destruction of the nomadic economy, the catastrophic collectivisation years, and the purges that killed a generation of the Kyrgyz intelligentsia in 1937–38. Moving the statue instead of removing it is about as precise a physical expression of that ambivalence as you could design.</p>
+        <h4>Look for</h4>
+        <p>What he is pointing at now, and what he used to point at. Stand where the arm aims, then turn 180° toward the square.</p>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="stop" data-n="10" data-map="42.8776859,74.6037608" data-pid="ChIJQ5yLO923njgRVZX9QPbQkms">
+      <div class="chip">10</div>
+      <button class="card">
+        <p class="name">National Historical Museum</p>
+        <p class="native">Built 1984 as the Lenin Museum</p>
+        <p class="gist">Go in for the ceilings. Reagan is up there riding a missile.</p>
+      </button>
+      <div class="more">
+        <p>Built as the republic's Lenin Museum and converted after independence. The reason to go inside is not primarily the artefacts — it's the interior itself, which is one of the great surviving ensembles of late-Soviet political art: monumental ceiling and wall compositions in bronze relief and paint, laying out the whole cosmology of the system.</p>
+        <h4>The famous panel</h4>
+        <p>The Cold War imagery is startlingly direct. The best-known section shows the horsemen of the apocalypse over a devastated world, one of them a skeletal Ronald Reagan astride a nuclear missile in a cowboy hat. It is agitprop of a confidence and quality you simply cannot see in situ in many places any more.</p>
+        <h4>Before you climb the steps</h4>
+        <p>The museum closed in 2016 for a renovation that ran years over and drew heavy public criticism — including over the treatment of the original Soviet interiors — before reopening in 2021. It is <b>closed on Mondays</b> and otherwise runs roughly 10:00–20:00, but confirm before building the day around it, and expect a separate small fee for photography. Signage is patchy in English; the building rewards a slow look more than a fast read.</p>
+      </div>
+    </div>
+
+    <!-- 11 -->
+    <div class="stop" data-n="11" data-map="42.8757128,74.6036696" data-pid="ChIJe_isvdy3njgRSPOIuWpoffw">
+      <div class="chip">11</div>
+      <button class="card">
+        <p class="name">Ala-Too Square</p>
+        <p class="native">Ала-Тоо аянты · 1984</p>
+        <p class="gist">Where two governments fell, on a plaza built for anniversaries.</p>
+      </button>
+      <div class="more">
+        <p>Laid out in 1984 for the 60th anniversary of Soviet Kyrgyzstan: an enormous hard-surfaced parade ground, sized for columns of marchers and a reviewing stand. Since 1991 it has been doing something its designers never intended.</p>
+        <h4>Who stands here</h4>
+        <p>Three occupants in thirty years. Lenin until 2003. Then <b>Erkindik</b> — Freedom — a winged female figure, which was itself controversial and was removed. Since 2011, <b>Manas</b> on his horse Ak-Kula. Each swap is a public argument about what the country is descended from: the revolution, an abstract liberal idea, or the epic.</p>
+        <h4>What happened here</h4>
+        <p>In March 2005 the protests that became the <b>Tulip Revolution</b> ended the Akayev presidency. In April 2010 a second uprising unseated Bakiyev — this time with lethal force used against the crowd nearby. Kyrgyzstan is the only country in Central Asia to have repeatedly changed its government from the street, and this pavement is where it happened.</p>
+        <h4>Look for</h4>
+        <p>The honour guard at the flagpole. There's a changing-of-the-guard ceremony on the hour, brisk and worth the two minutes. On 21 March the whole square becomes the centre of <b>Nooruz</b>, the Persian-Turkic new year — yurts, sumolok cooking in giant cauldrons, horse games.</p>
+      </div>
+    </div>
+
+    <!-- 12 -->
+    <div class="stop" data-n="12" data-map="42.8770594,74.6001073" data-pid="ChIJK_m2xt23njgRUOmKcw5b3ic">
+      <div class="chip">12</div>
+      <button class="card">
+        <p class="name">The White House</p>
+        <p class="native">Ак Үй · 1985 · now the Jogorku Kenesh</p>
+        <p class="gist">Seven storeys of white marble, and the hardest place on this walk.</p>
+      </button>
+      <div class="more">
+        <p>Built as the headquarters of the Central Committee of the Communist Party of the Kyrgyz SSR: a marble-clad slab behind a fence and a colonnade, deliberately raised, deliberately unapproachable. After 1991 it became the seat of the presidency, and the architecture of Party power transferred to a new occupant without alteration — which is a large part of the point.</p>
+        <h4>April 2010</h4>
+        <p>During the uprising that overthrew President Bakiyev, crowds pushed toward this building and security forces fired on them. Around eighty-seven people were killed. There is a memorial to the dead of that day nearby, and the events are recent enough that many people you meet remember them directly.</p>
+        <h4>Please note</h4>
+        <p>Government functions have shifted around in recent years — the building now houses the <b>Jogorku Kenesh</b>, Kyrgyzstan's parliament, which is how it may be signed and how it appears in Maps. It remains a guarded state site. Photograph the architecture, not the guards, gates or vehicles, and don't linger against the fence. Take the cue from what locals around you are doing.</p>
+      </div>
+    </div>
+
+    <!-- 13 -->
+    <div class="stop" data-n="13" data-map="42.8796914,74.6001474" data-pid="ChIJpbeXRue3njgRLodOwCnZJbY">
+      <div class="chip">13</div>
+      <button class="card">
+        <p class="name">Panfilov Park</p>
+        <p class="native">Панфилов паркы · fairground</p>
+        <p class="gist">Original Soviet funfair machinery, still turning.</p>
+      </button>
+      <div class="more">
+        <p>Named for <b>Ivan Panfilov</b>, the general who commanded the 316th Rifle Division — a unit raised largely from Kyrgyzstan and Kazakhstan — in the defence of Moscow in late 1941, where he was killed. The division's stand became one of the most heavily mythologised episodes of the Soviet war, above all the story of the "28 Panfilovtsy" who supposedly destroyed a column of tanks; historians have long since shown the specific tale was embroidered by wartime journalists, but the division's real losses and the pride attached to them were not.</p>
+        <h4>The rides</h4>
+        <p>The attraction now is a working Soviet-era amusement park — entry to the park is free and you pay per ride: a Ferris wheel and a set of carousels and machines that in many cases are the original hardware, painted and repainted for decades. Riding the wheel is genuinely the cheapest good view of the city and the Ala-Too range behind it.</p>
+        <h4>Best light</h4>
+        <p>Late afternoon into dusk, when the wheel lights come on and the mountains go pink. Pay in small som notes at the individual ride booths.</p>
+      </div>
+    </div>
+
+    <!-- 14 -->
+    <div class="stop" data-n="14" data-map="42.8783193,74.5951845" data-pid="ChIJX_nVdOC3njgRvhyosZ99j54">
+      <div class="chip">14</div>
+      <button class="card">
+        <p class="name">Sports Palace</p>
+        <p class="native">Kojomkul Sports Palace</p>
+        <p class="gist">Named for a man who reportedly carried a horse.</p>
+      </button>
+      <div class="more">
+        <p>The statue in front is <b>Kaba uulu Kojomkul</b> (1888–1955), a herdsman from the Suusamyr valley of legendary size and strength, and the folk hero of Kyrgyz wrestling. The stories are the good kind: that he carried a horse across a river to save it, that he lifted a boulder no group of men could shift. A stone weighing several hundred kilos that he is said to have moved marks his grave in Suusamyr, and people still go and try.</p>
+        <p>He is a bridge figure — a genuinely pre-modern strongman of the nomadic world who lived long enough to be recruited as a Soviet sporting hero, complete with official honours.</p>
+        <h4>The building</h4>
+        <p>A late-Soviet indoor sports hall: big clear span, blank flanking walls, entrance under a deep concrete canopy. Purpose-built for wrestling, boxing and volleyball, all sports the USSR invested in ferociously and Kyrgyzstan still performs well in.</p>
+      </div>
+    </div>
+
+    <!-- 15 -->
+    <div class="stop" data-n="15" data-map="42.8780643,74.5875720" data-pid="ChIJpzAKSh_InjgR5AlnNWVI7es">
+      <div class="chip">15</div>
+      <button class="card">
+        <p class="name">Philharmonia</p>
+        <p class="native">Toktogul Satylganov Philharmonic · 1980</p>
+        <p class="gist">Manas out front, and a poet the tsar exiled to Siberia.</p>
+      </button>
+      <div class="more">
+        <p>A late-Soviet concert hall — heavy horizontal massing, deep shaded loggia, a big blank frontage sized for crowds — named for <b>Toktogul Satylganov</b> (1864–1933). Toktogul was an <b>akyn</b>: an improvising poet-singer who composed in performance, accompanying himself on the three-stringed <b>komuz</b>. Convicted after unrest against the colonial administration, he was exiled to Siberia and, remarkably, made his way home years later. The Soviet state then adopted him as the model people's poet — an oral artist of the poor, conveniently anti-tsarist — and named a region, a reservoir and this building after him.</p>
+        <h4>The monument outside</h4>
+        <p>The complex in front is dedicated to <b>Manas</b>, the epic that is the central artefact of Kyrgyz culture: an oral poem of extraordinary length — the fullest recorded versions run to hundreds of thousands of lines — performed from memory by specialists called <b>manaschi</b>, who traditionally described receiving it in a dream. It's one of the longest epic poems known anywhere. The horseman is Manas; the surrounding figures are drawn from the epic's cast, including his wife Kanykei and the sage Bakai.</p>
+        <h4>If there's a concert</h4>
+        <p>Programmes here mix orchestral repertoire with komuz and folk ensembles. An evening of live komuz is one of the best things you can do in this country indoors.</p>
+      </div>
+    </div>
+
+    <!-- 16 -->
+    <div class="stop" data-n="16" data-map="42.8774126,74.5854586" data-pid="ChIJo1z8mRjInjgRkDfwS3lHD-A">
+      <div class="chip">16</div>
+      <button class="card">
+        <p class="name">International University of Kyrgyzstan</p>
+        <p class="native">Chuy prospektisi · founded 1993</p>
+        <p class="gist">A Soviet building given a post-Soviet job.</p>
+      </button>
+      <div class="more">
+        <p>A useful last stop precisely because it isn't a monument. The university was founded in 1993, in the first rush of independence, teaching in English and Russian and orienting itself outward — and it did what nearly every new institution here did, which was move into an existing Soviet-era structure and adapt it.</p>
+        <p>Bishkek has since become an unlikely regional education hub, drawing large numbers of international students, particularly to its medical faculties. Walk past at the end of a class hour and the pavement tells you more about the city's present than any of the granite behind you.</p>
+        <h4>Then</h4>
+        <p>Continue west to <b>Osh Bazaar</b>, and the tour ends by dropping you out of the planned, ceremonial, monumental city straight into the loud one — spice mountains, felt kalpaks, dried fruit, butchery, and the best cheap lunch on the route.</p>
+      </div>
+    </div>
+
+    <div class="aside">
+      <b>Detour · Students' Alley</b>
+      <p>Toward Ryskulov St, the monumental mosaic known as <em>Enlightenment</em>. Get close enough to see the individual tesserae: Soviet monumental mosaic used <b>smalti</b>, hand-cut coloured glass, set at slight angles so the wall glitters as you move past. These murals were the propaganda medium of choice across Central Asia because they survive sun and heat — and because they let architects smuggle in national ornament and folk motif under the cover of a socialist subject.</p>
+      <a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Students+Alley+mosaic+Ryskulov+Bishkek">Find on Maps &rsaquo;</a>
+      <p style="margin-top:8px;font-size:14px;color:#5A554C">This one isn't a reliable map pin — follow the guidebook map and look up at the end wall. Bishkek has other surviving mosaics too; the large panel on Toktogul St, further southwest, is the best-known.</p>
+    </div>
+
+    <div class="aside">
+      <b>Detour · The Juice &amp; Sparkling Water Pavilion</b>
+      <p>Built in 1952 to a design by the architect Alexander Albansky, on a site that had sold mineral water from the nearby Ak-Suu spring since the 1930s. This is <em>gazirovka</em> architecture: the Soviet street kiosk that dispensed carbonated water and fruit syrup — reportedly sixteen machines and a single cashier here — often into a shared glass rinsed at a little fountain. Almost none survive anywhere. Look up for the figure of a girl carrying a tray of fruit above the centre.</p>
+      <p style="margin-top:8px">Good news since the guidebook went to press: it appears to have been restored and now operates as a café, so you can drink something inside it rather than just photograph it.</p>
+      <a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=42.8765634,74.6074324&amp;query_place_id=ChIJTWkJgLO3njgR1KG3aoow6Rc">Open in Maps &rsaquo;</a>
+    </div>
+
+    <div class="terminus"><span class="dot"><i></i></span><b>End</b> &nbsp;<em>Osh Bazaar — go eat</em><a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=42.874967,74.570242&amp;query_place_id=ChIJdX_AuGrInjgR0U-WJWbNUrw">Maps &rsaquo;</a></div>
+  </section>
+
+  <section class="practical">
+    <h2>Walking it today</h2>
+    <ul>
+      <li><b>Heat.</b> August in the Chuy valley is hot and the light is hard. Start before 10, or start at 16:00 and finish in the golden hour at Panfilov. Route yourself through Oak Park and along tree-lined stretches wherever there's a choice.</li>
+      <li><b>Water.</b> Carry more than you think. Small shops and street kiosks are everywhere along Chuy; bottled water costs very little.</li>
+      <li><b>Cash.</b> Som, in small notes, for the park, the art stalls, ride booths and the bazaar. Cards work in cafés and malls, nowhere else on this list.</li>
+      <li><b>Photography.</b> Free rein on architecture. Do not photograph guards, gates, police, or military at the White House and other state sites. Ask before photographing individuals, stallholders included.</li>
+      <li><b>Taxis.</b> Ride-hailing apps are the norm and are cheap; hailing on the street means negotiating. If you're flagging, agree the price before getting in.</li>
+      <li><b>Osh Bazaar.</b> Roughly 9:00–17:00 and closed Mondays, so don't leave it too late. Busy and crowded. Bag in front, phone away, and go hungry — this is where the walk pays you back.</li>
+      <li><b>Opening hours.</b> The museum is the only stop where a closed door ruins the visit. Check it before you build the day around it.</li>
+    </ul>
+  </section>
+
+  <section class="glossary">
+    <h2>Words worth knowing</h2>
+    <dl>
+      <dt>tunduk / түндүк</dt><dd>The wooden crown at the top of a yurt. It's on the flag, and it's the shape framed overhead at Stop 1.</dd>
+      <dt>boz üy</dt><dd>Literally "grey house" — the Kyrgyz yurt.</dd>
+      <dt>akyn</dt><dd>An improvising poet-singer who composes live, often in competitive duels.</dd>
+      <dt>komuz</dt><dd>Three-stringed fretless lute, the national instrument.</dd>
+      <dt>manaschi</dt><dd>A performer of the Manas epic, reciting from memory for hours.</dd>
+      <dt>datka</dt><dd>A rank of regional ruler; Kurmanjan was the only Kyrgyz woman to hold it.</dd>
+      <dt>aryk</dt><dd>The open irrigation channel running beside the streets. It waters the trees you're walking under.</dd>
+      <dt>kalpak</dt><dd>The tall white felt hat with black brim. Older men wear it daily; there's a national day for it.</dd>
+      <dt>smalti</dt><dd>Hand-cut coloured glass used in monumental mosaic.</dd>
+      <dt>Frunze</dt><dd>The city's name from 1926 to 1991. Older residents still use it.</dd>
+    </dl>
+  </section>
+
+  <footer>
+    Written as background reading, not as a substitute for the map in your hand — follow the guidebook route and use this for what you're looking at.<br><br>
+    Dates and attributions for late-Soviet buildings vary between sources, and a few of the stories here (Kojomkul's horse, Kurmanjan's silence, the 28 Panfilovtsy) are national legend rather than documented fact — which is exactly why they're worth knowing.
+  </footer>
+</div>
+
+<div class="bar">
+  <span id="count">0 of 16 seen</span>
+  <button id="reset" type="button">Reset</button>
+</div>
+
+<script>
+(function(){
+  var stops = Array.prototype.slice.call(document.querySelectorAll('.stop'));
+  var countEl = document.getElementById('count');
+  var seen = {};
+
+  function save(){
+    try { window.storage && window.storage.set('bishkek-seen', JSON.stringify(seen)); } catch(e){}
+  }
+  function render(){
+    var n = 0;
+    stops.forEach(function(s){
+      var k = s.dataset.n;
+      if(seen[k]){ s.classList.add('seen'); n++; } else { s.classList.remove('seen'); }
+      var b = s.querySelector('.btn.mark');
+      if(b){ b.classList.toggle('on', !!seen[k]); b.textContent = seen[k] ? 'Seen ✓' : 'Mark as seen'; }
+    });
+    countEl.textContent = n + ' of ' + stops.length + ' seen';
+  }
+
+  stops.forEach(function(s){
+    var card = s.querySelector('.card');
+    var more = s.querySelector('.more');
+
+    var actions = document.createElement('div');
+    actions.className = 'actions';
+
+    if(s.dataset.map){
+      var link = document.createElement('a');
+      link.className = 'btn';
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.href = 'https://www.google.com/maps/search/?api=1&query=' + s.dataset.map +
+                  (s.dataset.pid ? '&query_place_id=' + s.dataset.pid : '');
+      link.textContent = 'Open in Maps';
+      link.addEventListener('click', function(e){ e.stopPropagation(); });
+      actions.appendChild(link);
+    }
+    var mark = document.createElement('button');
+    mark.type = 'button';
+    mark.className = 'btn mark';
+    mark.textContent = 'Mark as seen';
+    mark.addEventListener('click', function(){
+      var k = s.dataset.n;
+      seen[k] = !seen[k];
+      render(); save();
+    });
+    var close = document.createElement('button');
+    close.type = 'button';
+    close.className = 'btn';
+    close.textContent = 'Close';
+    close.addEventListener('click', function(){
+      s.classList.remove('open');
+      card.scrollIntoView({block:'center', behavior:'smooth'});
+    });
+    actions.appendChild(mark);
+    actions.appendChild(close);
+    more.appendChild(actions);
+
+    card.setAttribute('aria-expanded','false');
+    card.addEventListener('click', function(){
+      var open = s.classList.toggle('open');
+      card.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+
+  document.getElementById('reset').addEventListener('click', function(){
+    seen = {}; render(); save();
+  });
+
+  (async function(){
+    try {
+      var r = window.storage && await window.storage.get('bishkek-seen');
+      if(r && r.value) seen = JSON.parse(r.value);
+    } catch(e){}
+    render();
+  })();
+})();
+</script>
+</body>
+</html>

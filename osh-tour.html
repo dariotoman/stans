@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#E2DCCE">
+<title>Osh — City Centre Walk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --plaster:#E2DCCE;
+    --plaster-2:#EDE8DC;
+    --ink:#1F1B18;
+    --ink-soft:#5C5449;
+    --pomegranate:#9C2B3E;
+    --tile:#1E7A87;
+    --ochre:#B8871F;
+    --rule:#C7BFAB;
+    --shadow:rgba(31,27,24,.10);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--plaster);color:var(--ink);
+    font-family:"Newsreader",Georgia,serif;font-size:17px;line-height:1.55;padding-bottom:64px;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 16px}
+
+  .mast{padding:34px 0 22px;border-bottom:3px solid var(--ink)}
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--pomegranate);margin:0 0 10px
+  }
+  h1{
+    font-family:"Archivo Black",Impact,sans-serif;
+    font-size:clamp(34px,10vw,52px);line-height:.92;letter-spacing:-.02em;
+    margin:0;text-transform:uppercase;
+  }
+  h1 span{display:block;color:var(--tile)}
+  .standfirst{margin:16px 0 0;font-size:17px;color:var(--ink-soft)}
+  .facts{display:flex;margin:20px 0 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+  .fact{flex:1;padding:10px 0}
+  .fact + .fact{border-left:1px solid var(--rule);padding-left:12px}
+  .fact dt{
+    font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--ink-soft);margin:0 0 3px
+  }
+  .fact dd{margin:0;font-weight:500;font-size:15px}
+  .maproute{
+    display:inline-block;margin:18px 0 0;padding:11px 15px;background:var(--ink);color:var(--plaster);
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    text-decoration:none
+  }
+  .maproute:focus-visible{outline:3px solid var(--ochre);outline-offset:2px}
+
+  .primer{padding:26px 0 8px}
+  .primer h2,.practical h2,.glossary h2{
+    font-family:"Archivo Black",sans-serif;text-transform:uppercase;
+    font-size:15px;letter-spacing:.02em;margin:0 0 12px
+  }
+  .primer p{margin:0 0 14px}
+  .era{
+    display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:18px 0 0;padding:16px;
+    background:var(--plaster-2);border-left:4px solid var(--ochre)
+  }
+  .era b{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;white-space:nowrap;
+    color:var(--pomegranate);align-self:start;padding-top:3px
+  }
+  .era span{font-size:15px;line-height:1.45}
+  .careful{
+    margin:18px 0 0;padding:16px;background:var(--plaster-2);border-left:4px solid var(--tile)
+  }
+  .careful b{
+    display:block;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--tile);margin:0 0 8px
+  }
+  .careful p{margin:0 0 10px;font-size:15.5px}
+  .careful p:last-child{margin-bottom:0}
+
+  .route{position:relative;padding:28px 0 10px}
+  .route::before{
+    content:"";position:absolute;left:17px;top:44px;bottom:34px;width:0;
+    border-left:3px dotted var(--tile);opacity:.6
+  }
+  .routehead{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--ink-soft);margin:0 0 14px;padding-left:52px
+  }
+  .terminus{display:flex;align-items:center;gap:14px;position:relative;z-index:2;margin:0 0 6px}
+  .terminus .dot{
+    width:36px;height:36px;flex:0 0 36px;border-radius:50%;background:var(--plaster);
+    border:3px solid var(--tile);display:grid;place-items:center
+  }
+  .terminus .dot i{width:10px;height:10px;border-radius:50%;background:var(--tile);display:block}
+  .terminus b{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+  .terminus em{font-style:normal;color:var(--ink-soft);font-size:15px}
+  .terminus a{
+    font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--pomegranate);margin-left:auto;white-space:nowrap
+  }
+
+  .stop{position:relative;margin:14px 0;padding-left:52px}
+  .chip{
+    position:absolute;left:0;top:2px;width:36px;height:36px;border-radius:50%;
+    background:var(--pomegranate);color:#fff;z-index:2;
+    font-family:"Archivo Black",sans-serif;font-size:16px;display:grid;place-items:center;
+    border:3px solid var(--plaster);transition:background .18s ease
+  }
+  .stop.seen .chip{background:var(--tile)}
+  .card{
+    width:100%;text-align:left;background:var(--plaster-2);border:1px solid var(--rule);
+    border-left:4px solid var(--pomegranate);padding:13px 15px;font:inherit;color:inherit;
+    cursor:pointer;display:block;box-shadow:0 1px 0 var(--shadow);transition:opacity .18s ease
+  }
+  .stop.seen .card{border-left-color:var(--tile);opacity:.72}
+  .card:focus-visible{outline:3px solid var(--ochre);outline-offset:2px}
+  .name{
+    font-family:"Archivo Black",sans-serif;font-size:17px;line-height:1.15;
+    text-transform:uppercase;letter-spacing:-.01em;margin:0
+  }
+  .native{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);margin:5px 0 0}
+  .gist{margin:8px 0 0;font-size:15.5px;color:var(--ink-soft)}
+  .more{
+    display:none;padding:2px 15px 16px;background:var(--plaster-2);
+    border:1px solid var(--rule);border-top:0;border-left:4px solid var(--pomegranate)
+  }
+  .stop.open .more{display:block}
+  .stop.seen .more{border-left-color:var(--tile)}
+  .more p{margin:12px 0 0;font-size:16px}
+  .more h4{
+    font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--pomegranate);margin:18px 0 0;padding-top:12px;border-top:1px solid var(--rule)
+  }
+  .more h4 + p{margin-top:6px}
+  .note{font-size:14px;color:var(--ink-soft);margin-top:10px}
+  .actions{display:flex;gap:10px;margin:18px 0 0;flex-wrap:wrap}
+  .btn{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    padding:9px 13px;border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer
+  }
+  .btn:focus-visible{outline:3px solid var(--ochre);outline-offset:2px}
+  .btn.on{background:var(--tile);border-color:var(--tile);color:#fff}
+  a.btn{text-decoration:none;background:var(--pomegranate);border-color:var(--pomegranate);color:#fff}
+  a.btn::before{content:"\27A4";margin-right:7px;font-size:10px}
+  a.btn.approx{background:transparent;color:var(--pomegranate)}
+
+  .aside{margin:16px 0 16px 52px;padding:14px 16px;border:1px dashed var(--ochre)}
+  .aside b{
+    display:block;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--ochre);margin:0 0 6px
+  }
+  .aside p{margin:0;font-size:15.5px}
+
+  .practical,.glossary{padding:26px 0;border-top:3px solid var(--ink);margin-top:26px}
+  .practical ul{margin:0;padding:0;list-style:none}
+  .practical li{padding:10px 0;border-bottom:1px solid var(--rule);font-size:16px}
+  .practical li:last-child{border-bottom:0}
+  .practical li b{font-weight:500;color:var(--pomegranate)}
+  .glossary dt{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;color:var(--tile);
+    margin:14px 0 2px;letter-spacing:.04em
+  }
+  .glossary dd{margin:0;font-size:15.5px;color:var(--ink-soft)}
+  footer{
+    padding:24px 0 8px;font-family:"IBM Plex Mono",monospace;font-size:11px;line-height:1.7;
+    color:var(--ink-soft);border-top:1px solid var(--rule);margin-top:26px
+  }
+  .bar{
+    position:fixed;left:0;right:0;bottom:0;background:var(--ink);color:var(--plaster);
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:11px 16px calc(11px + env(safe-area-inset-bottom));z-index:20
+  }
+  .bar span{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+  .bar button{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    background:transparent;color:var(--plaster);border:1px solid rgba(226,220,206,.5);padding:7px 11px;cursor:pointer
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <p class="eyebrow">Field guide · Ош · Fergana Valley</p>
+    <h1>Three Thousand<span>Years</span></h1>
+    <p class="standfirst">Thirteen stops from a Russian church to a sacred mountain, through the oldest and most complicated city in Kyrgyzstan. Tap any stop to open it.</p>
+    <dl class="facts">
+      <div class="fact"><dt>Start</dt><dd>St Michael's Church</dd></div>
+      <div class="fact"><dt>End</dt><dd>Sulaiman-Too exit</dd></div>
+      <div class="fact"><dt>Length</dt><dd>5 km · 2–4 hrs</dd></div>
+    </dl>
+    <a class="maproute" target="_blank" rel="noopener"
+       href="https://www.google.com/maps/dir/?api=1&amp;travelmode=walking&amp;origin=40.5154875,72.8057635&amp;destination=40.5288521,72.7837115&amp;waypoints=40.5176163,72.8057957%7C40.5200896,72.8014766%7C40.5320972,72.7977923%7C40.531937,72.791698%7C40.5304447,72.7902925">Open whole route in Maps</a>
+  </header>
+
+  <section class="primer">
+    <h2>Before you start walking</h2>
+    <p>Osh claims three thousand years, and celebrated that anniversary in 2000. The claim is generous but the idea behind it is sound: this is one of the oldest continuously inhabited places in Central Asia, and the reason is standing in the middle of it. <b>Sulaiman-Too</b> is a limestone ridge rising straight out of the city, a landmark visible from every direction, sacred long before anyone here was Muslim, and a reliable water source at the point where the Ak-Buura river comes down out of the Alay mountains into the Fergana Valley.</p>
+    <p>That put Osh on a junction. The Silk Road branch coming over the high passes from Kashgar dropped into the valley here. Everything that moved along it — goods, but more importantly Buddhism, then Islam, then Turkic languages — came through this bowl.</p>
+    <p>The Fergana Valley is a single geographic unit: one flat, fertile, densely populated basin ringed by mountains. In the 1920s and 30s Soviet national delimitation cut it into three republics. The borders were drawn through villages, fields and irrigation systems, and they left large populations on what became, after 1991, the wrong side of an international line. Osh ended up in Kyrgyzstan with a very large Uzbek population and the Uzbekistan border a short drive away. Almost everything distinctive about this city — the food, the courtyard houses, the bazaar, the mosques, and the violence of 1990 and 2010 — runs back to that fact.</p>
+
+    <div class="era">
+      <b>c.1000 BCE</b><span>Petroglyphs and ritual use on Sulaiman-Too. Bronze Age settlement at its foot.</span>
+      <b>10th–12th c.</b><span>Karakhanid Osh: a substantial Islamic town. The bathhouse ruins at <em>Stop 10</em> date from this period.</span>
+      <b>1497</b><span>A fourteen-year-old ruler of Fergana builds a retreat on the ridge. He will end up founding the Mughal Empire. <em>Stop 11.</em></span>
+      <b>1876</b><span>Russian conquest of the Kokand Khanate. A garrison, settlers, and a grid laid out east of the old town. <em>Stops 1–2.</em></span>
+      <b>1924–36</b><span>Soviet delimitation of Central Asia. Osh becomes a Kyrgyz city with an Uzbek majority in its old quarters.</span>
+      <b>1990 · 2010</b><span>Two episodes of severe interethnic violence, the second within living memory of everyone you will meet.</span>
+    </div>
+
+    <div class="careful">
+      <b>One thing to hold in mind</b>
+      <p>In June 2010, following the overthrow of the government in Bishkek, several days of violence between Kyrgyz and Uzbek communities took place in Osh and Jalal-Abad. Official counts put the dead at roughly 400; other estimates run considerably higher. Hundreds of thousands were displaced and much of the Uzbek mahalla was burned. The 1990 Osh riots, over land allocation, were smaller but not by much.</p>
+      <p>You will walk past a memorial to this in the first five minutes, and through the neighbourhoods it happened in around Stop 9. Osh today is calm, welcoming and easy to travel in, and people are not walking around thinking about it. The useful posture is simply to know, to read the monuments carefully, and not to ask strangers to narrate it for you. If someone raises it, listen.</p>
+    </div>
+  </section>
+
+  <section class="route">
+    <p class="routehead">The route · north up Lenin, then west to the mountain</p>
+
+    <div class="terminus"><span class="dot"><i></i></span><b>Start</b> &nbsp;<em>St Michael's Church</em><a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=40.5154875,72.8057635&amp;query_place_id=ChIJg4upop2uvTgRuK_FG0Qhx4I">Maps &rsaquo;</a></div>
+
+    <!-- 1 -->
+    <div class="stop" data-n="1" data-map="40.5154875,72.8057635" data-pid="ChIJg4upop2uvTgRuK_FG0Qhx4I">
+      <div class="chip">1</div>
+      <button class="card">
+        <p class="name">St Michael's Church</p>
+        <p class="native">Russian Orthodox · 1909</p>
+        <p class="gist">And behind it, three monuments to three completely different catastrophes.</p>
+      </button>
+      <div class="more">
+        <p>Osh fell to the Russian Empire in 1876, with the conquest of the Kokand Khanate. What followed was the standard imperial pattern: a garrison, a settler population, a new grid of streets laid out beside the old town rather than through it, and eventually a church. This one went up in 1909, for soldiers and Russian migrants — a small wooden-and-masonry Orthodox building in a city that was already overwhelmingly Muslim and had been for eight centuries.</p>
+        <h4>The three monuments behind it</h4>
+        <p>Take your time here, because the yard behind the church is the densest thing on this walk. <b>Mother's Tears</b> commemorates those killed in the June 2010 interethnic clashes. A second monument is for the <b>Chernobyl liquidators</b> — the Soviet Union conscripted clean-up workers from every republic, and several thousand went from Kyrgyzstan; many came home ill. The <b>Grieving Mother</b> is for the dead of the Second World War.</p>
+        <p>Three griefs, one small yard, and only one of them is about a war this city fought in. An empire's war in Europe, a reactor failure three thousand kilometres away, and a week of violence in these streets sixteen years ago — all commemorated in the same idiom, all with the mother as the figure who carries it.</p>
+        <h4>Note</h4>
+        <p class="note">The church has been undergoing repair work recently and may be partly scaffolded or the interior closed. The monuments are outside and always accessible.</p>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="stop" data-n="2" data-map="40.5176163,72.8057957" data-pid="ChIJQzO3dJ6uvTgR0x7r_uqAa8w">
+      <div class="chip">2</div>
+      <button class="card">
+        <p class="name">Lenin Statue</p>
+        <p class="native">Ленин · Central Asia's largest</p>
+        <p class="gist">Still on the main square. Nobody moved him.</p>
+      </button>
+      <div class="more">
+        <p>Reportedly the largest Lenin statue in Central Asia, and — the part that matters — it is still standing exactly where it was built, on the central square, at full ceremonial scale. Compare Bishkek, where in 2003 the Lenin was quietly walked round to the back of the museum. In Osh he never moved.</p>
+        <h4>Why that's not just inertia</h4>
+        <p>Southern Kyrgyzstan's relationship with the Soviet period is warmer than the north's, and older residents of both communities will tell you that the USSR was the era when Kyrgyz and Uzbeks in this valley did not kill each other. Whether that memory is accurate in every respect is arguable; the fact that it is widely held is not. A monument left in place is a statement about the present, not the past.</p>
+        <h4>Look for</h4>
+        <p>What surrounds him now. Soviet ceremonial squares were designed for parades toward a single focal point; watch how the space is actually used on a summer evening, and by whom.</p>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="stop" data-n="3" data-map="40.5177,72.8049">
+      <div class="chip">3</div>
+      <button class="card">
+        <p class="name">Horsepower Mosaic</p>
+        <p class="native">Far corner of the square</p>
+        <p class="gist">Women, horses, and a state making a claim about both.</p>
+      </button>
+      <div class="more">
+        <p>Soviet monumental mosaic did a specific job: put the message on the largest available wall, in a medium that survives sun, and let the local visual repertoire in through the back door. Get close enough to see the individual tiles — <b>smalti</b>, hand-cut coloured glass, set at slight angles so the whole surface shifts as you walk past it.</p>
+        <h4>The two subjects</h4>
+        <p>The <b>horse</b> is the easy one: the foundation of Kyrgyz nomadic life, transport, wealth, food, sport and metaphor all at once. Even in a mosaic about industrial modernity it stays.</p>
+        <p>The <b>women</b> are the harder one. Female emancipation was one of the Soviet state's loudest claims in Central Asia, and it was pushed hard from the 1920s — unveiling campaigns, literacy drives, women into paid work and public office. Some of it was genuinely transformative and is remembered that way by the women who benefited. It was also coercive, deeply resented in places, and in the early years got women killed by their own communities. A mosaic like this shows you the triumphant version. It's worth knowing there was another.</p>
+        <h4>Note</h4>
+        <p class="note">Exact map pins for the mosaics are unreliable — the link gets you to the right corner of the square. Look up at building end-walls.</p>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="stop" data-n="4" data-map="40.5200896,72.8014766" data-pid="ChIJq6rqTCCsvTgRLClJ1gdhoNI">
+      <div class="chip">4</div>
+      <button class="card">
+        <p class="name">Drama Theatre Mosaic</p>
+        <p class="native">Lenin Ave · Osh Drama Theatre</p>
+        <p class="gist">An entire facade given over to one image.</p>
+      </button>
+      <div class="more">
+        <p>The second and larger of the two mosaics, wrapping the theatre. This was standard practice for late-Soviet cultural buildings: rather than ornament the facade, replace it — one continuous composition at the scale of the whole wall, legible from across a road.</p>
+        <p>Theatre mattered enormously in the Soviet cultural programme in Central Asia, for the same reason opera did in Bishkek. Regional drama theatres were built everywhere, staffed by graduates of Moscow and Tashkent institutes, performing translated Russian and European classics alongside newly commissioned national repertoire. In Osh that repertoire runs in Kyrgyz and Uzbek.</p>
+        <h4>Look for</h4>
+        <p>How the figures are arranged — Soviet monumental art has a consistent grammar of gesture: the raised arm, the forward gaze, the group in profile advancing left to right. Once you see it you cannot unsee it, and you will spot it again on the mountain museum.</p>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="stop" data-n="5" data-map="40.5254,72.7975">
+      <div class="chip">5</div>
+      <button class="card">
+        <p class="name">Silk Road Caravan</p>
+        <p class="native">Near Abdykadyrov, by the river</p>
+        <p class="gist">A camel sculpture doing a lot of historical work.</p>
+      </button>
+      <div class="more">
+        <p>The sculpture marks the thing that made Osh: its position at the western end of the passes from Kashgar. Caravans coming out of the Tarim Basin over the Terek and Irkeshtam routes came down into the Fergana Valley, and Osh was the first substantial place to stop, water, trade and rest.</p>
+        <h4>What actually moved</h4>
+        <p>Less silk than the name implies. The traffic was horses (the Fergana Valley's famous "heavenly horses" were an object of Chinese imperial desire), slaves, metals, paper, jade, textiles and fruit. And relays of ideas: Buddhism moved east along these roads, Islam moved east behind it, and Turkic languages spread west. Very few merchants travelled the whole length; goods changed hands at towns like this one, dozens of times.</p>
+        <h4>Note</h4>
+        <p class="note">Map pin is approximate — follow the guidebook route down Abdykadyrov toward the river and you will not miss it.</p>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="stop" data-n="6" data-map="40.5320972,72.7977923" data-pid="ChIJ8UvxogSsvTgR8enAZP8abXM">
+      <div class="chip">6</div>
+      <button class="card">
+        <p class="name">Navoi Park</p>
+        <p class="native">Alisher Navoi Park · Ak-Buura river</p>
+        <p class="gist">The best people-watching in the city, and a pointed choice of name.</p>
+      </button>
+      <div class="more">
+        <p>Green, shaded, running alongside the <b>Ak-Buura</b> — "white camel" — with a fairground, ice cream sellers and the whole city out walking in the evening. Take the guidebook's advice literally: get an ice cream and sit for twenty minutes. This is the sociable heart of Osh.</p>
+        <h4>The name</h4>
+        <p><b>Alisher Navoi</b> (1441–1501) was a poet and statesman at the Timurid court in Herat, and the figure who made <b>Chagatai</b> — the Turkic literary language ancestral to modern Uzbek — a serious vehicle for high literature, arguing in print that it could do everything Persian could. He is the foundational figure of the Uzbek literary canon, and Uzbekistan claims him accordingly.</p>
+        <p>So a large central park in a Kyrgyz city named after him is not a neutral piece of municipal naming. It's an acknowledgement of the depth of Uzbek cultural presence in Osh — which predates the border and is a permanent feature of the place.</p>
+        <h4>Practical</h4>
+        <p class="note">The fairground has its own hours and may not run every day. Entry to the park is free.</p>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="stop" data-n="7" data-map="40.540440,72.7957356" data-pid="ChIJ35r7kvirvTgRLM8_YrNIuGM">
+      <div class="chip">7</div>
+      <button class="card">
+        <p class="name">Jayma Bazaar</p>
+        <p class="native">Джайма базары · relocated 2025</p>
+        <p class="gist">Two thousand years of trading, in new premises.</p>
+      </button>
+      <div class="more">
+        <p>The bazaar is the oldest institution in Osh and arguably the only one that has run continuously since antiquity — a long ribbon of trade strung out along the Ak-Buura, doing exactly what it did when the caravans came over the passes. Your guidebook notes it was relocated in 2025 after flood damage, so what you find may be newer than the history suggests. Ask a local where it's currently trading; the answer may differ from the map.</p>
+        <h4>What to look for</h4>
+        <p><b>Osh knives</b> (<em>pichok</em>) are the city's signature craft — hand-forged blades with bone or horn handles, made in workshops in the mahalla and sold here. Also: dried apricots and raisins from the valley, spice pyramids, tandyr-baked <b>non</b> bread stamped with a patterned seal, felt <em>kalpaks</em>, and cradles.</p>
+        <h4>How to do it</h4>
+        <p class="note">Cash in small som notes; money changers work the roadside. Bargaining is normal and should stay friendly. Ask before photographing stallholders — a nod usually does it. Go hungry: samsa straight out of a clay oven is the best thing you will eat today.</p>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="stop" data-n="8" data-map="40.531937,72.791698" data-pid="ChIJAVyxmg-svTgR18vmykh5snQ">
+      <div class="chip">8</div>
+      <button class="card">
+        <p class="name">The Old Mosque</p>
+        <p class="native">16th century · west end of the park</p>
+        <p class="gist">The oldest surviving mosque in Osh. Look at the doors.</p>
+      </button>
+      <div class="more">
+        <p>Small, low, and easy to underrate. This is a Khanate-period building from the 1500s, which makes it the oldest mosque still standing in the city — four centuries of continuous prayer in one room. The highlight is the carved wooden doorway; the interior was whitewashed in a later restoration and lost much of its original surface, which locals will tell you about with some feeling.</p>
+        <p>Note the type. This is not the domed, tiled, monumental mosque of Samarkand or Bukhara. It's the Fergana Valley vernacular: timber columns, a deep shaded verandah, human scale, built for a neighbourhood rather than a dynasty.</p>
+        <h4>Visiting</h4>
+        <p>Shoulders and knees covered; women should carry a scarf for the head. Shoes off at the threshold. Avoid arriving at prayer times, especially Friday around midday. Ask before entering and before photographing, and never photograph people praying. If the main hall is locked, the courtyard is usually still worth the stop.</p>
+        <h4>Note on the name</h4>
+        <p class="note">Guidebooks vary here. The 16th-century mosque at the foot of the mountain is generally called Rabat Abdulkhan (Ravvat Abdullakhan), while the mosque named for Muhammad Yusuf Baykhoji ogly is a separate, much later building nearer the bazaar. The map link goes to the 16th-century one, which matches the date and the position on your map.</p>
+      </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="stop" data-n="9" data-map="40.5313,72.7945">
+      <div class="chip">9</div>
+      <button class="card">
+        <p class="name">The Uzbek Mahalla</p>
+        <p class="native">Махалля · residential quarter</p>
+        <p class="gist">Blank walls outside, courtyards inside. Walk quietly.</p>
+      </button>
+      <div class="more">
+        <p>A <b>mahalla</b> is not just a neighbourhood, it's a social institution. The physical form is distinctive and you'll see it immediately: high blank walls to the street, no windows facing out, a single gate per household opening into a courtyard with a vine, a raised platform for sitting and eating, and rooms arranged around it. Life turns inward.</p>
+        <p>The social form matters more. Mahallas run their own committees, mediate disputes, organise the collective labour and expense of weddings and funerals, and function as a mutual-aid network. Under the Soviets they persisted quietly beneath the official structures; they are still how much of daily life is organised here.</p>
+        <h4>The craft</h4>
+        <p>Knife-making workshops operate in these lanes — small forges producing the Osh <em>pichok</em> by hand. If you find one open it's a genuinely good look at a living trade, and buying direct from the maker is the right way to get one.</p>
+        <h4>Please</h4>
+        <p>This is where the 2010 violence hit hardest, and much of what you see was rebuilt afterwards. It is also simply people's homes. Walk through rather than linger, keep the camera down unless invited, and greet people — <em>assalomu alaykum</em> goes a long way. The map pin is approximate; the quarter is the destination, not a point.</p>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="stop" data-n="10" data-map="40.5298309,72.7928238" data-pid="ChIJ6ZkbEoOuvTgR98PcA4B5fMg">
+      <div class="chip">10</div>
+      <button class="card">
+        <p class="name">Base of Sulaiman-Too</p>
+        <p class="native">UNESCO World Heritage · 11th-c. bathhouse</p>
+        <p class="gist">The oldest sacred site in the country, still in daily use.</p>
+      </button>
+      <div class="more">
+        <p>The excavated ruins here are a <b>hammam</b> from the 11th century, the Karakhanid period, when Osh was a real town of a real Islamic state — bath complexes were standard urban infrastructure, with hypocaust heating under the floors. It's a good reminder that this city's Islamic history is a thousand years deep and not a recent overlay.</p>
+        <h4>The mountain</h4>
+        <p>Sulaiman-Too became Kyrgyzstan's <b>first UNESCO World Heritage Site</b> in 2009, listed as a sacred landscape rather than a monument. People have been coming here to worship since at least the Bronze Age; over a hundred petroglyph sites have been catalogued on its slopes, and the ridge holds a network of caves and shrines that have been in continuous ritual use for millennia.</p>
+        <p>The Islamic layer came later. The name attaches the hill to the Prophet Sulaiman — Solomon — and one of its peaks is called his throne, <em>Takht-i-Sulaiman</em>. What you'll actually see is folk practice sitting on top of much older mountain worship: pilgrims rubbing against particular rocks, sliding down a stone worn glassy by centuries of bodies, tying cloth to branches, circling shrines. It's associated with fertility, back pain and healing. Some say three pilgrimages here equal a hajj — a claim orthodox clergy firmly reject, and an argument that is still live.</p>
+        <h4>Practical</h4>
+        <p class="note">Small entry fee for the mountain (recently around 70 som), separate from the museum. Modest dress. These are worshippers, not an attraction — watch from a distance and don't photograph people at the shrines.</p>
+      </div>
+    </div>
+
+    <!-- 11 -->
+    <div class="stop" data-n="11" data-map="40.5304447,72.7902925" data-pid="ChIJFYZNxQ-svTgRMXg6HXHgJQs">
+      <div class="chip">11</div>
+      <button class="card">
+        <p class="name">Babur's House</p>
+        <p class="native">Дом Бабура · founded 1497</p>
+        <p class="gist">A teenager's prayer hut. He went on to found the Mughal Empire.</p>
+      </button>
+      <div class="more">
+        <p>Zahir-ud-din Muhammad Babur was born in 1483, descended from Timur on his father's side and Genghis Khan on his mother's, and inherited the Fergana Valley at twelve when his father died in an accident involving a collapsing dovecote. At about fourteen he had a small retreat — a <em>hujra</em> — built up here, to pray and to look at his valley.</p>
+        <h4>What happened next</h4>
+        <p>He lost Fergana. He took Samarkand and lost that too, twice. Pushed out of Central Asia entirely, he went south, took Kabul in 1504, and in 1526 won the battle of Panipat and founded the <b>Mughal Empire</b> — which ruled most of the Indian subcontinent until the British ended it in 1857, and which produced the Taj Mahal, Fatehpur Sikri and a good deal of what the world now thinks of as Indian imperial culture.</p>
+        <p>He also wrote the <b>Baburnama</b>, one of the great autobiographies in any language: candid, observant, funny, full of notes on fruit and birds and his own failures. Osh appears in it, and he writes about this hill with real affection — he had, he says, seen nothing better.</p>
+        <h4>What you're looking at</h4>
+        <p class="note">The present building is a reconstruction; the earlier structure was destroyed in the twentieth century. The view is the same one Babur was writing about, which is the actual point of coming up.</p>
+      </div>
+    </div>
+
+    <!-- 12 -->
+    <div class="stop" data-n="12" data-map="40.5288521,72.7837115" data-pid="ChIJO95tgA2svTgRR8-vWINlnGc">
+      <div class="chip">12</div>
+      <button class="card">
+        <p class="name">Cave Museum</p>
+        <p class="native">Opened 1978 · inside the mountain</p>
+        <p class="gist">Thin collection, extraordinary building, blissfully cool.</p>
+      </button>
+      <div class="more">
+        <p>Your guidebook says most visitors skip it. Go anyway, but go for the container rather than the contents. A glass-and-concrete arch seals a natural cave mouth, and behind it a series of halls were blasted and cut into the rock. It opened in 1978, timed to the city's claimed three-thousandth anniversary.</p>
+        <h4>Why it's interesting</h4>
+        <p>Think about what it is: an officially atheist state carved a museum of scientific and archaeological explanation directly into the side of a working pilgrimage mountain, while pilgrims continued climbing past the entrance. It's not subtle. Soviet policy toward Central Asian sacred sites oscillated between suppression, neglect, and this — absorption, reframing the holy mountain as heritage and natural history.</p>
+        <h4>Expect</h4>
+        <p class="note">Displays on regional archaeology, petroglyphs, pre-Islamic belief and local wildlife, many of them reproductions, with signage largely in Kyrgyz and Russian. Small fee, roughly 70 som. Hours are approximately 9:00–18:00 with a lunch closure; related museums on the mountain are closed Mondays, so check the door. On a hot afternoon the cave temperature alone justifies the ticket.</p>
+      </div>
+    </div>
+
+    <!-- 13 -->
+    <div class="stop" data-n="13" data-map="40.5286127,72.7829024" data-pid="ChIJDX-5ghKsvTgRzs4UQFgOYwI">
+      <div class="chip">13</div>
+      <button class="card">
+        <p class="name">Sulaiman-Too Exit</p>
+        <p class="native">West side · end of the walk</p>
+        <p class="gist">Stay for sunset if you can possibly manage it.</p>
+      </button>
+      <div class="more">
+        <p>The walk ends here, on the western flank. If you have any energy left, the thing to do is reverse the logic: don't leave. Get back up onto the ridge for the last hour of light, when the heat goes, the whole Fergana Valley opens out to the west, and the call to prayer comes up at you from several mosques at slightly different moments.</p>
+        <h4>Getting back</h4>
+        <p class="note">Ride-hailing apps work in Osh and are cheap. If you're flagging a car on the street, agree the price first. The city centre is a short ride from here.</p>
+        <h4>Then eat</h4>
+        <p>You are in the best food region in Kyrgyzstan and it isn't close. Osh <b>plov</b> is its own school, distinct from the Tashkent and Samarkand versions. Also: laghman hand-pulled to order, samsa from the tandyr, and shashlik. Traditionally plov is a lunch dish here — if you want the proper version, plan it for the middle of the day rather than the evening.</p>
+      </div>
+    </div>
+
+    <div class="aside">
+      <b>Worth knowing · the climb</b>
+      <p>Sulaiman-Too is not a hard hike but it is a real one: stone stairways, some steep sections, limestone polished slick by several thousand years of feet, and almost no shade. Reckon on 30–45 minutes up at a steady pace. Do it early morning or in the last two hours before sunset — the middle of an August day in the Fergana Valley is genuinely punishing. Take more water than feels necessary.</p>
+    </div>
+
+    <div class="terminus"><span class="dot"><i></i></span><b>End</b> &nbsp;<em>Sulaiman-Too, west side</em><a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=40.5286127,72.7829024&amp;query_place_id=ChIJDX-5ghKsvTgRzs4UQFgOYwI">Maps &rsaquo;</a></div>
+  </section>
+
+  <section class="practical">
+    <h2>Walking it today</h2>
+    <ul>
+      <li><b>Heat.</b> Osh sits lower and hotter than Bishkek — the Fergana Valley in August regularly runs into the high thirties. Split the walk: city stops in the morning, mountain in the evening. Or start at 16:00 and finish on the ridge at sunset.</li>
+      <li><b>Dress.</b> Noticeably more conservative than Bishkek. Covered shoulders and knees make everything easier, and are expected at the mosque and appreciated on the mountain. Women: carry a scarf.</li>
+      <li><b>Photography.</b> Architecture and views, no problem. Ask before photographing people — particularly women, stallholders, and anyone at a shrine. Never photograph people praying.</li>
+      <li><b>Museums.</b> Most close Mondays. The Cave Museum runs a lunch break. Check the door rather than the internet.</li>
+      <li><b>Cash.</b> Som in small notes for entry fees, the bazaar, ice cream and taxis. Money changers cluster along the bazaar road.</li>
+      <li><b>Language.</b> Kyrgyz, Uzbek and Russian are all in daily use. Russian is the practical bridge. <em>Assalomu alaykum</em> works everywhere and is worth learning.</li>
+      <li><b>Water.</b> Carry it. Refill before the climb, not during — there's little on the ridge.</li>
+      <li><b>2010.</b> Don't open a conversation with it. Read the monuments, and let people bring it up if they want to.</li>
+    </ul>
+  </section>
+
+  <section class="glossary">
+    <h2>Words worth knowing</h2>
+    <dl>
+      <dt>mahalla</dt><dd>Traditional neighbourhood — both the courtyard-house quarter and the social institution that runs it.</dd>
+      <dt>Sulaiman-Too</dt><dd>"Solomon's Mountain." One peak is Takht-i-Sulaiman, Solomon's throne.</dd>
+      <dt>Ak-Buura</dt><dd>"White camel" — the river the walk follows.</dd>
+      <dt>pichok</dt><dd>The Osh knife, hand-forged in the mahalla workshops.</dd>
+      <dt>non / lepyoshka</dt><dd>Round tandyr-baked bread, stamped with a patterned seal. Never place it upside down.</dd>
+      <dt>tandyr</dt><dd>Clay oven, used for bread and samsa. The heat source of Fergana Valley cooking.</dd>
+      <dt>hujra</dt><dd>A small cell or retreat for prayer and study — what Babur built at Stop 11.</dd>
+      <dt>Baburnama</dt><dd>Babur's memoir, written in Chagatai. Osh is in it.</dd>
+      <dt>Chagatai</dt><dd>The Turkic literary language of Central Asia, ancestral to modern Uzbek.</dd>
+      <dt>Karakhanid</dt><dd>The Turkic Islamic dynasty that ruled this region in the 10th–12th centuries.</dd>
+      <dt>smalti</dt><dd>Hand-cut coloured glass used in Soviet monumental mosaic.</dd>
+    </dl>
+  </section>
+
+  <footer>
+    Companion to the Bishkek guide. Same structure, different city, and a considerably older one.<br><br>
+    Where a stop has no reliable map pin — the mosaics, the caravan sculpture, the mahalla — the link lands you in the right block and the button is outlined rather than filled. Follow the guidebook map for those.<br><br>
+    Dates, attributions and casualty figures in this region are contested in places; several stories here (Solomon's throne, the three-thousand-year claim, Babur's hut) are tradition rather than documented fact, which is part of what makes them worth knowing.
+  </footer>
+</div>
+
+<div class="bar">
+  <span id="count">0 of 13 seen</span>
+  <button id="reset" type="button">Reset</button>
+</div>
+
+<script>
+(function(){
+  var stops = Array.prototype.slice.call(document.querySelectorAll('.stop'));
+  var countEl = document.getElementById('count');
+  var seen = {};
+
+  function save(){
+    try { window.storage && window.storage.set('osh-seen', JSON.stringify(seen)); } catch(e){}
+  }
+  function render(){
+    var n = 0;
+    stops.forEach(function(s){
+      var k = s.dataset.n;
+      if(seen[k]){ s.classList.add('seen'); n++; } else { s.classList.remove('seen'); }
+      var b = s.querySelector('.btn.mark');
+      if(b){ b.classList.toggle('on', !!seen[k]); b.textContent = seen[k] ? 'Seen \u2713' : 'Mark as seen'; }
+    });
+    countEl.textContent = n + ' of ' + stops.length + ' seen';
+  }
+
+  stops.forEach(function(s){
+    var card = s.querySelector('.card');
+    var more = s.querySelector('.more');
+
+    var actions = document.createElement('div');
+    actions.className = 'actions';
+
+    if(s.dataset.map){
+      var link = document.createElement('a');
+      link.className = 'btn' + (s.dataset.pid ? '' : ' approx');
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.href = 'https://www.google.com/maps/search/?api=1&query=' + s.dataset.map +
+                  (s.dataset.pid ? '&query_place_id=' + s.dataset.pid : '');
+      link.textContent = s.dataset.pid ? 'Open in Maps' : 'Approx. spot in Maps';
+      link.addEventListener('click', function(e){ e.stopPropagation(); });
+      actions.appendChild(link);
+    }
+
+    var mark = document.createElement('button');
+    mark.type = 'button';
+    mark.className = 'btn mark';
+    mark.textContent = 'Mark as seen';
+    mark.addEventListener('click', function(){
+      seen[s.dataset.n] = !seen[s.dataset.n];
+      render(); save();
+    });
+    var close = document.createElement('button');
+    close.type = 'button';
+    close.className = 'btn';
+    close.textContent = 'Close';
+    close.addEventListener('click', function(){
+      s.classList.remove('open');
+      card.scrollIntoView({block:'center', behavior:'smooth'});
+    });
+    actions.appendChild(mark);
+    actions.appendChild(close);
+    more.appendChild(actions);
+
+    card.setAttribute('aria-expanded','false');
+    card.addEventListener('click', function(){
+      var open = s.classList.toggle('open');
+      card.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+
+  document.getElementById('reset').addEventListener('click', function(){
+    seen = {}; render(); save();
+  });
+
+  (async function(){
+    try {
+      var r = window.storage && await window.storage.get('osh-seen');
+      if(r && r.value) seen = JSON.parse(r.value);
+    } catch(e){}
+    render();
+  })();
+})();
+</script>
+</body>
+</html>

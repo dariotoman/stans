@@ -1,5 +1,6 @@
-const CORE_CACHE = 'stans-core-v3';
+const CORE_CACHE = 'stans-core-v4';
 const TILE_CACHE = 'stans-tiles-v2';
+const FONT_CACHE = 'stans-fonts-v1';
 
 const CORE_ASSETS = [
   './',
@@ -9,6 +10,9 @@ const CORE_ASSETS = [
   './manifest.webmanifest',
   './icon-192.png',
   './icon-512.png',
+  './bishkek-tour.html',
+  './dushanbe-tour.html',
+  './osh-tour.html',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
   './images/ala-too-square.jpg',
@@ -60,7 +64,7 @@ self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys()
       .then(keys => Promise.all(
-        keys.filter(k => k !== CORE_CACHE && k !== TILE_CACHE).map(k => caches.delete(k))
+        keys.filter(k => k !== CORE_CACHE && k !== TILE_CACHE && k !== FONT_CACHE).map(k => caches.delete(k))
       ))
       .then(() => self.clients.claim())
   );
@@ -76,11 +80,29 @@ self.addEventListener('fetch', event => {
     return;
   }
 
+  if (url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com') {
+    event.respondWith(runtimeCacheFirst(req, FONT_CACHE));
+    return;
+  }
+
   if (url.origin === self.location.origin || url.hostname === 'unpkg.com') {
     event.respondWith(coreCacheFirst(req));
     return;
   }
 });
+
+async function runtimeCacheFirst(req, cacheName) {
+  const cache = await caches.open(cacheName);
+  const cached = await cache.match(req);
+  if (cached) return cached;
+  try {
+    const res = await fetch(req);
+    if (res && res.ok) cache.put(req, res.clone());
+    return res;
+  } catch (e) {
+    return cached || new Response('', { status: 504 });
+  }
+}
 
 async function coreCacheFirst(req) {
   const cache = await caches.open(CORE_CACHE);
