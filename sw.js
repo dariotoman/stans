@@ -1,4 +1,4 @@
-const CORE_CACHE = 'stans-core-v4';
+const CORE_CACHE = 'stans-core-v5';
 const TILE_CACHE = 'stans-tiles-v2';
 const FONT_CACHE = 'stans-fonts-v1';
 
