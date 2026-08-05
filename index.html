@@ -249,26 +249,13 @@
         <label for="f-country">Country</label>
         <select id="f-country"><option value="">All</option></select>
       </div>
-      <div class="filter-row">
-        <div>
-          <label for="f-type">Type</label>
-          <select id="f-type">
-            <option value="">All</option>
-            <option value="city">Cities</option>
-            <option value="place">Nature / Routes</option>
-          </select>
-        </div>
-        <div>
-          <label for="f-rating">Min rating</label>
-          <select id="f-rating">
-            <option value="0">Any</option>
-            <option value="1">1★+</option>
-            <option value="2">2★+</option>
-            <option value="3">3★+</option>
-            <option value="4">4★+</option>
-            <option value="5">5★ only</option>
-          </select>
-        </div>
+      <div>
+        <label for="f-type">Type</label>
+        <select id="f-type">
+          <option value="">All</option>
+          <option value="city">Cities</option>
+          <option value="place">Nature / Routes</option>
+        </select>
       </div>
       <div>
         <label for="f-search">Search</label>
@@ -277,7 +264,6 @@
       <div>
         <label for="f-sort">Sort</label>
         <select id="f-sort">
-          <option value="rating">Rating (high → low)</option>
           <option value="name">Name (A → Z)</option>
           <option value="country">Country</option>
         </select>
@@ -293,19 +279,12 @@
 <script src="places.js"></script>
 <script src="route.js"></script>
 <script>
-const RATING_COLORS = { 5: '#16a34a', 4: '#65a30d', 3: '#ca8a04', 2: '#ea580c', 1: '#dc2626', 0: '#9ca3af' };
+const MARKER_COLOR = '#64748b';
 
 const state = { cities: [], places: [], markers: {}, map: null, itineraryLayer: null, itineraryNumMarkers: [] };
 
 function escapeHTML(s) {
   return String(s || '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
-}
-
-function ratingStars(r) {
-  if (!r) return '<span class="rating-stars r0">— unrated</span>';
-  const filled = '★'.repeat(r);
-  const empty = '☆'.repeat(5 - r);
-  return `<span class="rating-stars r${r}">${filled}${empty}</span>`;
 }
 
 function initials(name) {
@@ -317,9 +296,8 @@ function imageStyle(image) {
   return '';
 }
 
-function makeIcon(rating, size = 10) {
-  const color = RATING_COLORS[rating || 0];
-  const html = `<div style="background:${color};width:${size}px;height:${size}px;border-radius:50%;border:1.5px solid white;box-shadow:0 0 0 0.5px rgba(0,0,0,0.35);"></div>`;
+function makeIcon(_ignored, size = 10) {
+  const html = `<div style="background:${MARKER_COLOR};width:${size}px;height:${size}px;border-radius:50%;border:1.5px solid white;box-shadow:0 0 0 0.5px rgba(0,0,0,0.35);"></div>`;
   return L.divIcon({ html, className: '', iconSize: [size, size], iconAnchor: [size/2, size/2] });
 }
 
@@ -335,7 +313,6 @@ function popupHTML(item, cityName) {
       <div class="popup-body">
         <h3>${escapeHTML(item.name)}</h3>
         ${metaParts.length ? `<div class="meta">${metaParts.map(escapeHTML).join(' · ')}</div>` : ''}
-        <div>${ratingStars(item.rating)}</div>
         ${item.notes ? `<div class="notes">${escapeHTML(item.notes)}</div>` : ''}
         ${inCity}
       </div>
@@ -355,16 +332,9 @@ function currentFilters() {
   return {
     country: document.getElementById('f-country').value,
     type: document.getElementById('f-type').value,
-    minRating: +document.getElementById('f-rating').value,
     search: document.getElementById('f-search').value.trim().toLowerCase(),
     sort: document.getElementById('f-sort').value,
   };
-}
-
-function matchRating(r, min) {
-  if (min === 0) return true;
-  if (min === 5) return r === 5;
-  return r >= min;
 }
 
 function matchSearch(hay, q) {
@@ -379,7 +349,6 @@ function filteredCards() {
   if (f.type === '' || f.type === 'city') {
     state.cities.forEach(c => {
       if (f.country && c.country !== f.country) return;
-      if (!matchRating(c.rating || 0, f.minRating)) return;
       const hay = `${c.name} ${c.country} ${c.notes} ${(c.attractions||[]).map(a => a.name + ' ' + a.notes).join(' ')}`;
       if (!matchSearch(hay, f.search)) return;
       cards.push({ kind: 'city', data: c });
@@ -388,16 +357,14 @@ function filteredCards() {
   if (f.type === '' || f.type === 'place') {
     state.places.forEach(p => {
       if (f.country && p.country !== f.country) return;
-      if (!matchRating(p.rating || 0, f.minRating)) return;
       const hay = `${p.name} ${p.country} ${p.category} ${p.notes}`;
       if (!matchSearch(hay, f.search)) return;
       cards.push({ kind: 'place', data: p });
     });
   }
 
-  if (f.sort === 'rating') cards.sort((a,b) => (b.data.rating||0) - (a.data.rating||0) || a.data.name.localeCompare(b.data.name));
-  else if (f.sort === 'name') cards.sort((a,b) => a.data.name.localeCompare(b.data.name));
-  else if (f.sort === 'country') cards.sort((a,b) => (a.data.country||'').localeCompare(b.data.country||'') || a.data.name.localeCompare(b.data.name));
+  if (f.sort === 'country') cards.sort((a,b) => (a.data.country||'').localeCompare(b.data.country||'') || a.data.name.localeCompare(b.data.name));
+  else cards.sort((a,b) => a.data.name.localeCompare(b.data.name));
 
   return cards;
 }
@@ -415,7 +382,7 @@ function renderCityCard(c) {
         <div class="attraction" data-attraction-id="${escapeHTML(a.id)}" data-city-id="${escapeHTML(c.id)}">
           <div class="attraction-thumb" style="${imageStyle(a.image)}">${a.image ? '' : escapeHTML(initials(a.name))}</div>
           <div class="attraction-body">
-            <div class="attraction-name"><span>${escapeHTML(a.name)}</span>${ratingStars(a.rating)}</div>
+            <div class="attraction-name"><span>${escapeHTML(a.name)}</span></div>
             ${a.notes ? `<div class="attraction-notes">${escapeHTML(a.notes)}</div>` : ''}
           </div>
         </div>
@@ -428,7 +395,6 @@ function renderCityCard(c) {
       <div class="card-body" data-city-click="${escapeHTML(c.id)}">
         <div class="card-top">
           <div class="card-name">${escapeHTML(c.name)}</div>
-          <div class="card-rating">${ratingStars(c.rating)}</div>
         </div>
         <div class="card-meta">${meta.map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('')}</div>
         ${c.notes ? `<div class="card-notes">${escapeHTML(c.notes)}</div>` : ''}
@@ -449,7 +415,6 @@ function renderPlaceCard(p) {
       <div class="card-body" data-place-click="${escapeHTML(p.id)}">
         <div class="card-top">
           <div class="card-name">${escapeHTML(p.name)}</div>
-          <div class="card-rating">${ratingStars(p.rating)}</div>
         </div>
         <div class="card-meta">${meta.map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('')}</div>
         ${p.notes ? `<div class="card-notes">${escapeHTML(p.notes)}</div>` : ''}
@@ -536,10 +501,7 @@ function addLegend() {
   legend.onAdd = () => {
     const div = L.DomUtil.create('div', 'legend');
     div.innerHTML = `
-      <div style="font-weight:600;margin-bottom:4px">Rating</div>
-      ${[5,4,3,2,1].map(r => `<div class="legend-row"><span class="legend-dot" style="background:${RATING_COLORS[r]}"></span>${r}★</div>`).join('')}
-      <div class="legend-row"><span class="legend-dot" style="background:${RATING_COLORS[0]}"></span>unrated</div>
-      <div style="font-weight:600;margin:6px 0 4px">Route</div>
+      <div style="font-weight:600;margin-bottom:4px">Route</div>
       <div class="legend-row"><span style="display:inline-block;width:18px;height:0;border-top:3px solid #2563eb"></span>road</div>
       <div class="legend-row"><span style="display:inline-block;width:18px;height:0;border-top:3px dashed #7c3aed"></span>train</div>
       <div style="font-weight:600;margin:6px 0 4px">Day pill</div>
@@ -714,7 +676,7 @@ function toggleMarker(m, show) {
 }
 
 function wireFilters() {
-  ['f-country','f-type','f-rating','f-sort'].forEach(id => {
+  ['f-country','f-type','f-sort'].forEach(id => {
     document.getElementById(id).addEventListener('change', renderSidebar);
   });
   document.getElementById('f-search').addEventListener('input', renderSidebar);
