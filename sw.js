@@ -1,4 +1,4 @@
-const CORE_CACHE = 'stans-core-v5';
+const CORE_CACHE = 'stans-core-v6';
 const TILE_CACHE = 'stans-tiles-v2';
 const FONT_CACHE = 'stans-fonts-v1';
 
@@ -75,7 +75,7 @@ self.addEventListener('fetch', event => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
 
-  if (url.hostname.endsWith('basemaps.cartocdn.com')) {
+  if (url.hostname.endsWith('basemaps.cartocdn.com') || url.hostname.endsWith('opentopomap.org')) {
     event.respondWith(tileCacheFirst(req));
     return;
   }
